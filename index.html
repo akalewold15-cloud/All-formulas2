@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ቀመር መፈለጊያ - Formula Finder</title>
+    <style>
+        /* CSS ቅንብሮች (ምንም ለውጥ የለም) */
+        :root {
+            --tg-theme-bg-color: #f0f0f0;
+            --tg-theme-text-color: #000000;
+            --tg-theme-link-color: #007aff;
+            --tg-theme-hint-color: #888888;
+            --tg-theme-secondary-bg-color: #e6e6e6;
+        }
+
+        .dark-theme {
+            --tg-theme-bg-color: #17212b;
+            --tg-theme-text-color: #ffffff;
+            --tg-theme-link-color: #66b4ff;
+            --tg-theme-hint-color: #a0a0a0;
+            --tg-theme-secondary-bg-color: #213040;
+        }
+
+        body {
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px 0;
+        }
+
+        .settings-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--tg-theme-hint-color);
+            transition: color 0.2s;
+        }
+
+        .full-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            background-color: var(--tg-theme-bg-color);
+            transition: opacity 0.5s ease;
+        }
+        
+        .spinner {
+            border: 4px solid var(--tg-theme-hint-color);
+            border-top: 4px solid var(--tg-theme-link-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #mainContent, #formulaListScreen, #settingsScreen {
+            padding: 20px;
+        }
+
+        .category-button, .setting-option {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: var(--tg-theme-secondary-bg-color);
+            color: var(--tg-theme-text-color);
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .formula-container {
+            display: block;
+            background-color: var(--tg-theme-secondary-bg-color);
+            border: 1px solid var(--tg-theme-hint-color);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        
+        .formula-container h4 {
+            margin-top: 0;
+            color: var(--tg-theme-link-color);
+        }
+        
+        .back-button {
+            background: none;
+            border: none;
+            color: var(--tg-theme-link-color);
+            font-size: 1.1em;
+            padding: 10px 0;
+            cursor: pointer;
+        }
+        
+        #globalSearchInput {
+            background-color: var(--tg-theme-secondary-bg-color);
+            color: var(--tg-theme-text-color);
+            border: 1px solid var(--tg-theme-hint-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcomeScreen" class="full-screen">
+        <h1 data-key="welcome_title">እንኳን ደህና መጡ!</h1>
+        <p data-key="welcome_subtitle">ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን</p>
+        <p style="position: absolute; bottom: 20px; font-size: 0.9em; color: var(--tg-theme-hint-color);" data-key="created_by">
+            Created by Akalewold
+        </p>
+    </div>
+
+    <div id="loadingScreen" class="full-screen" style="opacity: 0; visibility: hidden;">
+        <div class="spinner"></div>
+        <p data-key="loading_text">መረጃዎች እየተጫኑ ነው...</p>
+    </div>
+
+    <div id="mainContent" style="display: none;">
+        <div class="header">
+            <h2 data-key="main_title">ምድብ ይምረጡ</h2>
+            <span class="settings-icon" onclick="showSettingsScreen()">⚙️</span>
+        </div>
+        
+        <input type="text" id="globalSearchInput" placeholder="ቀመር በየትኛውም ምድብ ፈልግ..." style="width: 95%; padding: 10px; margin-bottom: 15px;">
+
+        <div id="categoryList">
+            </div>
+    </div>
+    
+    <div id="formulaListScreen" style="display: none;">
+        <button class="back-button" onclick="showMainContent()">← <span data-key="back_to_categories">ወደ ምድቦች ተመለስ</span></button>
+        <h2 id="currentCategoryTitle"></h2>
+        <div id="formulasInCategory">
+            </div>
+    </div>
+    
+    <div id="settingsScreen" style="display: none;">
+        <button class="back-button" onclick="showMainContent()">← <span data-key="back_to_main">ወደ ዋናው ገጽ ተመለስ</span></button>
+        <h2 data-key="settings_title">ቅንብሮች</h2>
+        
+        <h3><span data-key="settings_language">ቋንቋ</span>: <span id="currentLanguage"></span></h3>
+        <div class="setting-option" onclick="setLanguage('am')">
+            <span>Amharic</span>
+            <span id="checkAmharic"></span>
+        </div>
+        <div class="setting-option" onclick="setLanguage('en')">
+            <span>English</span>
+            <span id="checkEnglish"></span>
+        </div>
+
+        <h3><span data-key="settings_theme">ቴም</span>: <span id="currentTheme"></span></h3>
+        <div class="setting-option" onclick="setTheme('light')">
+            <span data-key="theme_light">ብርሃናማ (Light)</span>
+            <span id="checkLight"></span>
+        </div>
+        <div class="setting-option" onclick="setTheme('dark')">
+            <span data-key="theme_dark">ጥቁር (Dark)</span>
+            <span id="checkDark"></span>
+        </div>
+    </div>
+
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // --- 2. የቋንቋ መረጃ (Translation Data) ---
+        const translations = {
+            'am': {
+                welcome_title: "እንኳን ደህና መጡ!",
+                welcome_subtitle: "ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን",
+                created_by: "Created by Akalewold",
+                loading_text: "መረጃዎች እየተጫኑ ነው...",
+                main_title: "ምድብ ይምረጡ",
+                back_to_categories: "ወደ ምድቦች ተመለስ",
+                back_to_main: "ወደ ዋናው ገጽ ተመለስ",
+                settings_title: "ቅንብሮች",
+                settings_language: "ቋንቋ",
+                settings_theme: "ቴም",
+                theme_light: "ብርሃናማ (Light)",
+                theme_dark: "ጥቁር (Dark)",
+                search_placeholder: "ቀመር በየትኛውም ምድብ ፈልግ...",
+                language_name: { 'am': "አማርኛ", 'en': "እንግሊዝኛ" },
+                theme_name: { 'light': "ብርሃናማ", 'dark': "ጥቁር" },
+                // የምድብ ትርጉሞች:
+                "ባዮሎጂ": "ባዮሎጂ/ጤና",
+                "ፊዚክስ": "ፊዚክስ", 
+                "ኬሚስትሪ": "ኬሚስትሪ", 
+                "ሒሳብ": "ሒሳብ",
+                "ኢኮኖሚክስ": "ኢኮኖሚክስ",
+                "ጂኦግራፊ": "ጂኦግራፊ",
+                no_formula_found: "ለዚህ ፍለጋ ምንም ቀመር አልተገኘም።",
+                formula_word: "ቀመር",
+                category_formulas: "ቀመሮች",
+                search_result: "የፍለጋ ውጤት"
+            },
+            'en': {
+                welcome_title: "Welcome!",
+                welcome_subtitle: "To the Universal Formula Finder Application",
+                created_by: "Created by Akalewold",
+                loading_text: "Loading data...",
+                main_title: "Select Category",
+                back_to_categories: "Back to Categories",
+                back_to_main: "Back to Main",
+                settings_title: "Settings",
+                settings_language: "Language",
+                settings_theme: "Theme",
+                theme_light: "Light",
+                theme_dark: "Dark",
+                search_placeholder: "Search formula across all categories...",
+                language_name: { 'am': "Amharic", 'en': "English" },
+                theme_name: { 'light': "Light", 'dark': "Dark" },
+                // የምድብ ትርጉሞች:
+                "ባዮሎጂ": "Biology/Health",
+                "ፊዚክስ": "Physics", 
+                "ኬሚስትሪ": "Chemistry", 
+                "ሒሳብ": "Maths",
+                "ኢኮኖሚክስ": "Economics",
+                "ጂኦግራፊ": "Geography",
+                no_formula_found: "No formula found for this search.",
+                formula_word: "Formula",
+                category_formulas: "Formulas",
+                search_result: "Search Result"
+            }
+        };
+
+        // --- 3. የ ቀመር ዝርዝር (ምንም ለውጥ የለም) ---
+        const formulas = [
+            // --- ሒሳብ (Mathematics) ---
+            { 
+                name: { am: "ኳድራቲክ ፎርሙላ", en: "Quadratic Formula" }, 
+                subject: { am: "ሒሳብ/አልጀብራ", en: "Maths/Algebra" }, 
+                formula: "x = [-b ± sqrt(b² - 4ac)] / 2a", 
+                description: { am: "ለ ax² + bx + c = 0 መፍትሔ ለማግኘት", en: "To find solutions for ax² + bx + c = 0" }
+            },
+            { 
+                name: { am: "ፓይታጎሪያን ቴረም", en: "Pythagorean Theorem" }, 
+                subject: { am: "ሒሳብ/ጂኦሜትሪ", en: "Maths/Geometry" }, 
+                formula: "a² + b² = c²", 
+                description: { am: "በቀኝ ማዕዘን ሶስት ማዕዘን ላይ የጎኖች ግንኙነት", en: "Relation of sides in a right triangle" }
+            },
+            { 
+                name: { am: "የክበብ ስፋት", en: "Area of a Circle" }, 
+                subject: { am: "ሒሳብ/ጂኦሜትሪ", en: "Maths/Geometry" }, 
+                formula: "A = πr²", 
+                description: { am: "Radius (r) ያለው የክበብ ስፋት", en: "Area of a circle with radius (r)" }
+            },
+            { 
+                name: { am: "የተዋጽኦ ህግ (Power Rule)", en: "Derivative (Power Rule)" }, 
+                subject: { am: "ሒሳብ/ካልኩለስ", en: "Maths/Calculus" }, 
+                formula: "d/dx(xⁿ) = n * xⁿ⁻¹", 
+                description: { am: "የአንድ ኃይል ተግባር ተዋጽኦን ለማግኘት", en: "To find the derivative of a power function" }
+            },
+            { 
+                name: { am: "የሎጋሪዝም ህግ", en: "Logarithm Rule" }, 
+                subject: { am: "ሒሳብ/አልጀብራ", en: "Maths/Algebra" }, 
+                formula: "logₐ(x) = ln(x) / ln(a)", 
+                description: { am: "ሎጋሪዝምን ከተለያየ መሠረት ወደ ተፈጥሯዊ መሠረት ለመቀየር", en: "To convert logarithm from any base to natural base" }
+            },
+            // --- ፊዚክስ (Physics) ---
+            { 
+                name: { am: "ጉልበት (Force - ኒውተን 2ኛ ህግ)", en: "Force (Newton's 2nd Law)" }, 
+                subject: { am: "ፊዚክስ/ሜካኒክስ", en: "Physics/Mechanics" }, 
+                formula: "F = m * a", 
+                description: { am: "ጉልበት = የጅምላ × ፍጥንጥነት", en: "Force = mass × acceleration" }
+            },
+            { 
+                name: { am: "ጉልበት (ኪነቲክ ኢነርጂ)", en: "Kinetic Energy" }, 
+                subject: { am: "ፊዚክስ/ኢነርጂ", en: "Physics/Energy" }, 
+                formula: "KE = (1/2)mv²", 
+                description: { am: "በእንቅስቃሴ ምክንያት የሚመጣ ጉልበት", en: "Energy due to motion" }
+            },
+            { 
+                name: { am: "የሙቀት ለውጥ", en: "Heat Transfer (Q)" }, 
+                subject: { am: "ፊዚክስ/ቴርሞዳይናሚክስ", en: "Physics/Thermodynamics" }, 
+                formula: "Q = mcΔT", 
+                description: { am: "የጅምላ (m) የሆነ ነገር የሙቀት ለውጥ ለማግኘት", en: "To find the heat change for a mass (m) with specific heat (c)" }
+            },
+            { 
+                name: { am: "የስራ ቀመር", en: "Work Formula" }, 
+                subject: { am: "ፊዚክስ/ሜካኒክስ", en: "Physics/Mechanics" }, 
+                formula: "W = F * d", 
+                description: { am: "ስራ = ጉልበት × ርቀት", en: "Work done equals Force times displacement" }
+            },
+            { 
+                name: { am: "የኤሌክትሪክ ኃይል", en: "Electric Power" }, 
+                subject: { am: "ፊዚክስ/ኤሌክትሪክ", en: "Physics/Electric" }, 
+                formula: "P = IV", 
+                description: { am: "ኃይል = ጅረት × ቮልቴጅ", en: "Power equals Current times Voltage" }
+            },
+            // --- ኬሚስትሪ (Chemistry) ---
+            { 
+                name: { am: "ሞል ብዛት (Moles)", en: "Moles" }, 
+                subject: { am: "ኬሚስትሪ/ስሌት", en: "Chemistry/Calculations" }, 
+                formula: "n = m / M", 
+                description: { am: "ሞል = የጅምላ / ሞላር ክብደት", en: "Moles = Mass / Molar Mass" }
+            },
+            { 
+                name: { am: "የጋዝ ህግ (Ideal Gas Law)", en: "Ideal Gas Law" }, 
+                subject: { am: "ኬሚስትሪ/ጋዝ", en: "Chemistry/Gas" }, 
+                formula: "PV = nRT", 
+                description: { am: "ግፊት × መጠን = ሞል × ቋሚ × የሙቀት መጠን", en: "Pressure × Volume = Moles × Constant × Temperature" }
+            },
+            { 
+                name: { am: "ፒ ኤች (pH)", en: "pH" }, 
+                subject: { am: "ኬሚስትሪ/አሲድ", en: "Chemistry/Acids" }, 
+                formula: "pH = -log[H⁺]", 
+                description: { am: "የአሲዳማነት መለኪያ", en: "Measure of acidity" }
+            },
+            { 
+                name: { am: "የኬሚካል እኩልነት (Kc)", en: "Equilibrium Constant (Kc)" }, 
+                subject: { am: "ኬሚስትሪ/ሪአክሽን", en: "Chemistry/Reactions" }, 
+                formula: "Kc = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ", 
+                description: { am: "የኬሚካል ሪአክሽን እኩልነት ለማግኘት", en: "To find the chemical reaction equilibrium constant" }
+            },
+            
+            // --- ባዮሎጂ/ጤና (Biology/Health) ---
+            { 
+                name: { am: "የሰውነት ክብደት መመዘኛ (BMI)", en: "Body Mass Index (BMI)" }, 
+                subject: { am: "ባዮሎጂ/ጤና", en: "Biology/Health" }, 
+                formula: "BMI = mass(kg) / height(m)²", 
+                description: { am: "የሰውነት ክብደት እና ቁመት መመዘኛ", en: "A measure of body weight relative to height" }
+            },
+            { 
+                name: { am: "የመተንፈሻ ምት (RR)", en: "Respiratory Rate (RR)" }, 
+                subject: { am: "ባዮሎጂ/መተንፈሻ", en: "Biology/Respiratory" }, 
+                formula: "RR = Breaths / Minute", 
+                description: { am: "በደቂቃ የሚወሰዱ የአተነፋፈስ ብዛት", en: "Number of breaths taken per minute" }
+            },
+            { 
+                name: { am: "የጄኔቲክ እድል", en: "Genetic Probability" }, 
+                subject: { am: "ባዮሎጂ/ጄኔቲክስ", en: "Biology/Genetics" }, 
+                formula: "P(A) × P(B) = P(A and B)", 
+                description: { am: "የሁለት ገለልተኛ ክስተቶች የመከሰት እድል", en: "Probability of two independent events occurring" }
+            },
+            { 
+                name: { am: "የልብ ምት (HR)", en: "Heart Rate (HR)" }, 
+                subject: { am: "ባዮሎጂ/ጤና", en: "Biology/Health" }, 
+                formula: "HR = 60 / Interval(sec)", 
+                description: { am: "በደቂቃ የልብ ምቶች ብዛት", en: "Number of heartbeats per minute" }
+            },
+            
+            // --- ኢኮኖሚክስ እና ሌሎች (Economics & Other) ---
+            { 
+                name: { am: "ቀላል ወለድ (Simple Interest)", en: "Simple Interest" }, 
+                subject: { am: "ኢኮኖሚክስ/ፋይናንስ", en: "Economics/Finance" }, 
+                formula: "I = P * r * t", 
+                description: { am: "ወለድ = ዋናው ብድር × የወለድ መጠን × ጊዜ", en: "Interest = Principal × Rate × Time" }
+            },
+            { 
+                name: { am: "የዋጋ የመለጠጥ (Demand Elasticity)", en: "Price Elasticity of Demand" }, 
+                subject: { am: "ኢኮኖሚክስ/ገበያ", en: "Economics/Market" }, 
+                formula: "E = (% Δ Quantity) / (% Δ Price)", 
+                description: { am: "የዋጋ ለውጥ በምርት ፍላጎት ላይ የሚያሳድረው ተጽዕኖ", en: "Impact of price change on product demand" }
+            }
+            
+            // ... እዚህ ተጨማሪ ቀመሮችን መጨመር ትችላለህ ...
+        ];
+
+        // --- 4. ግሎባል ተለዋዋጮች እና ተግባራት ---
+        let currentLang = localStorage.getItem('appLang') || 'am';
+        let currentTheme = localStorage.getItem('appTheme') || 'light';
+        let categories = []; 
+        let categorizedFormulas = {}; 
+
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const formulaListScreen = document.getElementById('formulaListScreen');
+        const settingsScreen = document.getElementById('settingsScreen');
+        const categoryList = document.getElementById('categoryList');
+        const formulasInCategory = document.getElementById('formulasInCategory');
+        const currentCategoryTitle = document.getElementById('currentCategoryTitle');
+        const globalSearchInput = document.getElementById('globalSearchInput');
+        
+        function applyTranslations() {
+            const t = translations[currentLang];
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (t[key]) el.textContent = t[key];
+            });
+            globalSearchInput.placeholder = t.search_placeholder;
+            document.getElementById('currentLanguage').textContent = t.language_name[currentLang];
+            document.getElementById('currentTheme').textContent = t.theme_name[currentTheme];
+            updateSettingsChecks();
+            renderCategories();
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('appLang', lang);
+            applyTranslations();
+            if (formulaListScreen.style.display !== 'none' || settingsScreen.style.display !== 'none') {
+                showMainContent(); 
+            }
+        }
+        
+        function setTheme(theme) {
+            currentTheme = theme;
+            localStorage.setItem('appTheme', theme);
+            document.body.classList.remove('dark-theme');
+            if (theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+            applyTranslations();
+        }
+        
+        function updateSettingsChecks() {
+            document.getElementById('checkAmharic').textContent = currentLang === 'am' ? '✅' : '';
+            document.getElementById('checkEnglish').textContent = currentLang === 'en' ? '✅' : '';
+            document.getElementById('checkLight').textContent = currentTheme === 'light' ? '✅' : '';
+            document.getElementById('checkDark').textContent = currentTheme === 'dark' ? '✅' : '';
+        }
+
+        function showSettingsScreen() {
+            mainContent.style.display = 'none';
+            formulaListScreen.style.display = 'none';
+            settingsScreen.style.display = 'block';
+            updateSettingsChecks();
+        }
+
+        /* ----------------------------------------------- */
+        /* የተስተካከለ የinitializeApp() ተግባር         */
+        /* ----------------------------------------------- */
+        function initializeApp() {
+            setTheme(currentTheme); 
+            applyTranslations(); 
+
+            // በChrome/Web Browser ውስጥ ስንሆን Telegram.WebAppን እንዘልለዋለን
+            if (window.Telegram && window.Telegram.WebApp) {
+                // በቴሌግራም ውስጥ ብቻ የሚሰራ ኮድ
+                Telegram.WebApp.ready();
+                // ቴሌግራም ላይ ስንሆን ሎዲንግ ስክሪኑን በፍጥነት እንዘልለዋለን
+                setTimeout(loadContent, 200); 
+            } else {
+                // በ Chrome/Web Browser ውስጥ ስንሆን
+                setTimeout(() => {
+                    welcomeScreen.style.opacity = 0;
+                    loadingScreen.style.visibility = 'visible';
+                    loadingScreen.style.opacity = 1;
+                    
+                    setTimeout(loadContent, 1000); 
+                }, 2000); 
+            }
+
+            globalSearchInput.addEventListener('input', handleGlobalSearch);
+        }
+        /* ----------------------------------------------- */
+        
+
+        function loadContent() {
+            formulas.forEach(item => {
+                const primarySubject = item.subject.am.split('/')[0]; 
+                if (!categorizedFormulas[primarySubject]) {
+                    categorizedFormulas[primarySubject] = [];
+                    categories.push(primarySubject);
+                }
+                categorizedFormulas[primarySubject].push(item);
+            });
+            categories.sort(); 
+            renderCategories();
+            showMainContent();
+        }
+
+        function renderCategories() {
+            categoryList.innerHTML = '';
+            categories.forEach(categoryAmharic => {
+                const count = categorizedFormulas[categoryAmharic].length;
+                const button = document.createElement('button');
+                button.className = 'category-button';
+                let translatedName = translations[currentLang][categoryAmharic] || categoryAmharic;
+                
+                button.innerHTML = `${translatedName} <span>(${count}) →</span>`;
+                button.onclick = () => showFormulas(categoryAmharic); 
+                categoryList.appendChild(button);
+            });
+        }
+        
+        function showMainContent() {
+            settingsScreen.style.display = 'none'; 
+            mainContent.style.display = 'block';
+            formulaListScreen.style.display = 'none';
+            loadingScreen.style.visibility = 'hidden';
+            welcomeScreen.style.display = 'none';
+            globalSearchInput.value = '';
+            renderCategories(); 
+        }
+
+        function showFormulas(categoryAmharic) {
+            const categoryName = categoryAmharic;
+            const categoryTitle = translations[currentLang][categoryName] || categoryName; 
+            
+            currentCategoryTitle.textContent = `${categoryTitle} ${translations[currentLang].category_formulas}`;
+            mainContent.style.display = 'none';
+            formulaListScreen.style.display = 'block';
+            
+            renderFormulaList(categorizedFormulas[categoryAmharic]);
+        }
+
+        function renderFormulaList(formulaData) {
+            formulasInCategory.innerHTML = '';
+            if (formulaData.length === 0) {
+                 formulasInCategory.innerHTML = `<p style="text-align: center;">${translations[currentLang].no_formula_found}</p>`;
+                 return;
+            }
+
+            formulaData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'formula-container';
+                div.innerHTML = `
+                    <h4>${item.name[currentLang] || item.name.am}</h4>
+                    <p style="font-size: 0.9em; color: var(--tg-theme-hint-color);">(${item.subject[currentLang] || item.subject.am})</p>
+                    <strong>${translations[currentLang].formula_word}:</strong> <code>${item.formula}</code><br>
+                    <p>${item.description[currentLang] || item.description.am}</p>
+                `;
+                formulasInCategory.appendChild(div);
+            });
+        }
+        
+        function handleGlobalSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length > 0) {
+                const filtered = formulas.filter(item => 
+                    item.name.am.toLowerCase().includes(searchTerm) || 
+                    (item.name.en && item.name.en.toLowerCase().includes(searchTerm)) || 
+                    item.subject.am.toLowerCase().includes(searchTerm) ||
+                    (item.subject.en && item.subject.en.toLowerCase().includes(searchTerm)) ||
+                    item.description.am.toLowerCase().includes(searchTerm) ||
+                    (item.description.en && item.description.en.toLowerCase().includes(searchTerm))
+                );
+                currentCategoryTitle.textContent = `${translations[currentLang].search_result} (${filtered.length})`;
+                mainContent.style.display = 'none';
+                formulaListScreen.style.display = 'block';
+                renderFormulaList(filtered);
+            } else {
+                showMainContent(); 
+            }
+        }
+
+
+        initializeApp();
+    </script>
+</body>
+</html>
