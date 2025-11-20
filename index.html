@@ -30,7 +30,25 @@
             padding: 0;
             transition: background-color 0.3s, color 0.3s;
         }
-
+        
+        /* Welcome screen የሚታይበት መንገድ ተስተካክሏል */
+        #welcomeScreen {
+            display: none !important; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            background-color: var(--tg-theme-bg-color);
+            transition: opacity 0.5s ease;
+        }
+        
         .header {
             display: flex;
             justify-content: space-between;
@@ -78,6 +96,17 @@
         #mainContent, #formulaListScreen, #settingsScreen {
             padding: 20px;
         }
+
+        /* 💥 አዲስ CSS ለፈጣሪ መረጃ */
+        #creatorInfo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--tg-theme-text-color); /* ወይም ሌላ ጎላ ያለ ቀለም */
+            margin-bottom: 10px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        /* ----------------------------------- */
 
         .category-button, .setting-option {
             padding: 15px;
@@ -131,13 +160,10 @@
 </head>
 <body>
 
-    <div id="welcomeScreen" class="full-screen">
+    <div id="welcomeScreen" class="full-screen" style="display: none;"> 
         <h1 data-key="welcome_title">እንኳን ደህና መጡ!</h1>
         <p data-key="welcome_subtitle">ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን</p>
-        <p style="position: absolute; bottom: 20px; font-size: 0.9em; color: var(--tg-theme-hint-color);" data-key="created_by">
-            Created by Akalewold
-        </p>
-    </div>
+        </div>
 
     <div id="loadingScreen" class="full-screen" style="opacity: 0; visibility: hidden;">
         <div class="spinner"></div>
@@ -150,6 +176,7 @@
             <span class="settings-icon" onclick="showSettingsScreen()">⚙️</span>
         </div>
         
+        <div id="creatorInfo" data-key="created_by">Created by Akalewold</div>
         <input type="text" id="globalSearchInput" placeholder="ቀመር በየትኛውም ምድብ ፈልግ..." style="width: 95%; padding: 10px; margin-bottom: 15px;">
 
         <div id="categoryList">
@@ -196,7 +223,7 @@
             'am': {
                 welcome_title: "እንኳን ደህና መጡ!",
                 welcome_subtitle: "ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን",
-                created_by: "Created by Akalewold",
+                created_by: "Created by Akalewold", // ይህ ጽሁፍ አሁን በትልቁ ይታያል
                 loading_text: "መረጃዎች እየተጫኑ ነው...",
                 main_title: "ምድብ ይምረጡ",
                 back_to_categories: "ወደ ምድቦች ተመለስ",
@@ -251,7 +278,7 @@
             }
         };
 
-        // --- 3. የ ቀመር ዝርዝር (ምንም ለውጥ የለም) ---
+        // --- 3. የ ቀመር ዝርዝር (ሁሉም የተጨመሩ ቀመሮች) ---
         const formulas = [
             // --- ሒሳብ (Mathematics) ---
             { 
@@ -284,6 +311,18 @@
                 formula: "logₐ(x) = ln(x) / ln(a)", 
                 description: { am: "ሎጋሪዝምን ከተለያየ መሠረት ወደ ተፈጥሯዊ መሠረት ለመቀየር", en: "To convert logarithm from any base to natural base" }
             },
+             { 
+                name: { am: "አማካይ (Mean)", en: "Arithmetic Mean" }, 
+                subject: { am: "ሒሳብ/ስታቲስቲክስ", en: "Maths/Statistics" }, 
+                formula: "x̄ = (∑x) / n", 
+                description: { am: "የአንድ የውሂብ ስብስብ አማካይ", en: "Average of a set of data" }
+            },
+            { 
+                name: { am: "የመቶኛ ለውጥ", en: "Percentage Change" }, 
+                subject: { am: "ሒሳብ/ፋይናንስ", en: "Maths/Finance" }, 
+                formula: "Change% = [(New - Old) / Old] × 100", 
+                description: { am: "በሁለት እሴቶች መካከል ያለውን መቶኛ ለውጥ ለማግኘት", en: "To find the percentage change between two values" }
+            },
             // --- ፊዚክስ (Physics) ---
             { 
                 name: { am: "ጉልበት (Force - ኒውተን 2ኛ ህግ)", en: "Force (Newton's 2nd Law)" }, 
@@ -315,6 +354,12 @@
                 formula: "P = IV", 
                 description: { am: "ኃይል = ጅረት × ቮልቴጅ", en: "Power equals Current times Voltage" }
             },
+             { 
+                name: { am: "የኤሌክትሪክ ቮልቴጅ (Ohm's Law)", en: "Electric Voltage (Ohm's Law)" }, 
+                subject: { am: "ፊዚክስ/ኤሌክትሪክ", en: "Physics/Electric" }, 
+                formula: "V = I * R", 
+                description: { am: "ቮልቴጅ = ጅረት × መቋቋም", en: "Voltage = Current × Resistance" }
+            },
             // --- ኬሚስትሪ (Chemistry) ---
             { 
                 name: { am: "ሞል ብዛት (Moles)", en: "Moles" }, 
@@ -339,6 +384,18 @@
                 subject: { am: "ኬሚስትሪ/ሪአክሽን", en: "Chemistry/Reactions" }, 
                 formula: "Kc = [C]ᶜ[D]ᵈ / [A]ᵃ[B]ᵇ", 
                 description: { am: "የኬሚካል ሪአክሽን እኩልነት ለማግኘት", en: "To find the chemical reaction equilibrium constant" }
+            },
+            { 
+                name: { am: "ሞላሪቲ (Molarity)", en: "Molarity" }, 
+                subject: { am: "ኬሚስትሪ/መፍትሄ", en: "Chemistry/Solutions" }, 
+                formula: "M = mol / L", 
+                description: { am: "ሞል የሟሚ በሊትር መፍትሄ", en: "Moles of solute per liter of solution" }
+            },
+            { 
+                name: { am: "የሞል ክፍልፋይ", en: "Mole Fraction" }, 
+                subject: { am: "ኬሚስትሪ/መፍትሄ", en: "Chemistry/Solutions" }, 
+                formula: "xᵢ = nᵢ / n(total)", 
+                description: { am: "የአንድ አካል ሞል በአጠቃላይ ሞል ሲካፈል", en: "Moles of one component divided by total moles" }
             },
             
             // --- ባዮሎጂ/ጤና (Biology/Health) ---
@@ -366,6 +423,12 @@
                 formula: "HR = 60 / Interval(sec)", 
                 description: { am: "በደቂቃ የልብ ምቶች ብዛት", en: "Number of heartbeats per minute" }
             },
+            { 
+                name: { am: "የሳንባ አቅም (TLC)", en: "Total Lung Capacity (TLC)" }, 
+                subject: { am: "ባዮሎጂ/መተንፈሻ", en: "Biology/Respiratory" }, 
+                formula: "TLC = Vᴛ + IRV + ERV + RV", 
+                description: { am: "ጠቅላላ የሳንባ አቅም", en: "Total volume of air in the lungs after a maximal inspiration" }
+            },
             
             // --- ኢኮኖሚክስ እና ሌሎች (Economics & Other) ---
             { 
@@ -379,9 +442,13 @@
                 subject: { am: "ኢኮኖሚክስ/ገበያ", en: "Economics/Market" }, 
                 formula: "E = (% Δ Quantity) / (% Δ Price)", 
                 description: { am: "የዋጋ ለውጥ በምርት ፍላጎት ላይ የሚያሳድረው ተጽዕኖ", en: "Impact of price change on product demand" }
+            },
+             { 
+                name: { am: "የሕዝብ እድገት ፍጥነት", en: "Population Growth Rate" }, 
+                subject: { am: "ጂኦግራፊ/ስነ ሕዝብ", en: "Geography/Demography" }, 
+                formula: "R = (B - D) / P", 
+                description: { am: "እድገት = (ልደት - ሞት) / አጠቃላይ ህዝብ", en: "Growth = (Births - Deaths) / Total Population" }
             }
-            
-            // ... እዚህ ተጨማሪ ቀመሮችን መጨመር ትችላለህ ...
         ];
 
         // --- 4. ግሎባል ተለዋዋጮች እና ተግባራት ---
@@ -447,20 +514,26 @@
         }
 
         /* ----------------------------------------------- */
-        /* የተስተካከለ የinitializeApp() ተግባር         */
+        /* የመጨረሻው የinitializeApp() ተግባር (Welcome screenን ይዘልላል) */
         /* ----------------------------------------------- */
         function initializeApp() {
             setTheme(currentTheme); 
             applyTranslations(); 
 
-            // በChrome/Web Browser ውስጥ ስንሆን Telegram.WebAppን እንዘልለዋለን
+            // በቴሌግራም ውስጥ ወይም በዌብ ብሮውዘር ውስጥ ካለን
             if (window.Telegram && window.Telegram.WebApp) {
-                // በቴሌግራም ውስጥ ብቻ የሚሰራ ኮድ
-                Telegram.WebApp.ready();
-                // ቴሌግራም ላይ ስንሆን ሎዲንግ ስክሪኑን በፍጥነት እንዘልለዋለን
-                setTimeout(loadContent, 200); 
+                Telegram.WebApp.ready(); 
+                
+                // ወዲያውኑ ወደ ሎዲንግ ስክሪን ይሂድ (Welcome screen ስለተሰወረ)
+                loadingScreen.style.visibility = 'visible';
+                loadingScreen.style.opacity = 1;
+                
+                // ኮንቴንቱን በፍጥነት ሎድ ያድርግ
+                setTimeout(loadContent, 100); 
+                
             } else {
-                // በ Chrome/Web Browser ውስጥ ስንሆን
+                // በ Chrome/Web Browser ውስጥ ስንሆን (Welcome screenን አይዝልም)
+                welcomeScreen.style.display = 'flex'; // Welcome screenን አሳይ
                 setTimeout(() => {
                     welcomeScreen.style.opacity = 0;
                     loadingScreen.style.visibility = 'visible';
@@ -514,4 +587,58 @@
         }
 
         function showFormulas(categoryAmharic) {
+            const categoryName = categoryAmharic;
+            const categoryTitle = translations[currentLang][categoryName] || categoryName; 
+            
+            currentCategoryTitle.textContent = `${categoryTitle} ${translations[currentLang].category_formulas}`;
+            mainContent.style.display = 'none';
+            formulaListScreen.style.display = 'block';
+            
+            renderFormulaList(categorizedFormulas[categoryAmharic]);
+        }
+
+        function renderFormulaList(formulaData) {
+            formulasInCategory.innerHTML = '';
+            if (formulaData.length === 0) {
+                 formulasInCategory.innerHTML = `<p style="text-align: center;">${translations[currentLang].no_formula_found}</p>`;
+                 return;
+            }
+
+            formulaData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'formula-container';
+                div.innerHTML = `
+                    <h4>${item.name[currentLang] || item.name.am}</h4>
+                    <p style="font-size: 0.9em; color: var(--tg-theme-hint-color);">(${item.subject[currentLang] || item.subject.am})</p>
+                    <strong>${translations[currentLang].formula_word}:</strong> <code>${item.formula}</code><br>
+                    <p>${item.description[currentLang] || item.description.am}</p>
+                `;
+                formulasInCategory.appendChild(div);
+            });
+        }
         
+        function handleGlobalSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm.length > 0) {
+                const filtered = formulas.filter(item => 
+                    item.name.am.toLowerCase().includes(searchTerm) || 
+                    (item.name.en && item.name.en.toLowerCase().includes(searchTerm)) || 
+                    item.subject.am.toLowerCase().includes(searchTerm) ||
+                    (item.subject.en && item.subject.en.toLowerCase().includes(searchTerm)) ||
+                    item.description.am.toLowerCase().includes(searchTerm) ||
+                    (item.description.en && item.description.en.toLowerCase().includes(searchTerm))
+                );
+                currentCategoryTitle.textContent = `${translations[currentLang].search_result} (${filtered.length})`;
+                mainContent.style.display = 'none';
+                formulaListScreen.style.display = 'block';
+                renderFormulaList(filtered);
+            } else {
+                showMainContent(); 
+            }
+        }
+
+
+        initializeApp();
+    </script>
+</body>
+</html>
