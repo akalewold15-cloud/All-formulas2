@@ -1,4 +1,4 @@
-// 1. የቀመሮች ዳታቤዝ (ምንም ለውጥ የለም)
+// 1. የቀመሮች ዳታቤዝ (የተጨመሩ ቀመሮች)
 const formulas = [
     // --- Algebra / General Math ---
     { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
@@ -6,6 +6,8 @@ const formulas = [
     { name: "Distance Formula (3D)", formula: "d = sqrt((x₂ - x₁)² + (y₂ - y₁)² + (z₂ - z₁)²)", category: "algebra" },
     { name: "Compound Interest", formula: "A = P(1 + r/n)^(nt)", category: "algebra" },
     { name: "Logarithm Change of Base", formula: "logₐ(b) = logₓ(b) / logₓ(a)", category: "algebra" },
+    { name: "Arithmetic Series Sum", formula: "Sₙ = n/2 * (a₁ + aₙ)", category: "algebra" },
+    { name: "Geometric Series Sum", formula: "Sₙ = a₁ * (1 - rⁿ) / (1 - r)", category: "algebra" },
     
     // --- Geometry / Trigonometry ---
     { name: "Pythagorean Theorem", formula: "a² + b² = c²", category: "geometry" },
@@ -18,9 +20,11 @@ const formulas = [
     // --- Physics / Advanced Mechanics ---
     { name: "Newton's Second Law", formula: "F = ma", category: "physics" },
     { name: "Kinetic Energy", formula: "KE = ½mv²", category: "physics" },
-    { name: "Kinetic Energy (Relativistic)", formula: "KE = (γ - 1)mc², γ = 1 / sqrt(1 - v²/c²)", category: "physics" },
+    { name: "Mass-Energy Equivalence", formula: "E = mc²", category: "physics" }, 
+    { name: "Lorentz Factor", formula: "γ = 1 / sqrt(1 - v²/c²)", category: "physics" }, 
     { name: "Gravitational Force", formula: "F = G(m₁m₂ / r²)", category: "physics" },
     { name: "Ohm's Law (Electricity)", formula: "V = IR", category: "physics" },
+    { name: "Work Done", formula: "W = Fd cos(θ)", category: "physics" }, 
 
     // --- Calculus / Differential Equations ---
     { name: "Derivative Power Rule", formula: "d/dx (xⁿ) = nxⁿ⁻¹", category: "calculus" },
@@ -32,6 +36,8 @@ const formulas = [
     { name: "Ideal Gas Law", formula: "PV = nRT", category: "chemistry" },
     { name: "Gibbs Free Energy", formula: "∆G = ∆H - T∆S", category: "chemistry" },
     { name: "pH Calculation", formula: "pH = -log₁₀[H⁺]", category: "chemistry" },
+    { name: "Boyle's Law", formula: "P₁V₁ = P₂V₂", category: "chemistry" },
+    { name: "Molarity", formula: "M = moles of solute / liters of solution", category: "chemistry" },
     
     // --- Statistics ---
     { name: "Standard Deviation", formula: "σ = sqrt(Σ(xᵢ - μ)² / N)", category: "statistics" },
@@ -39,12 +45,13 @@ const formulas = [
     { name: "Probability (Binomial)", formula: "P(k) = C(n, k) * pᵏ * (1-p)ⁿ⁻ᵏ", category: "statistics" }
 ];
 
+
 const formulaList = document.getElementById('formula-list');
 const searchInput = document.getElementById('search-input');
 const categoryButtonsContainer = document.getElementById('category-buttons'); 
 let activeCategory = 'all'; 
 
-// 2. ቀመሮችን የሚያሳይ ዋና ተግባር (አልተቀየረም)
+
 function displayFormulas(data) {
     formulaList.innerHTML = ''; 
     
@@ -53,7 +60,7 @@ function displayFormulas(data) {
         noResultsMessage.textContent = "No formulas found. Try a different search or category.";
         noResultsMessage.style.textAlign = "center";
         noResultsMessage.style.marginTop = "20px";
-        noResultsMessage.style.color = "#6c757d";
+        noResultsMessage.style.color = "#BDC3C7";
         formulaList.appendChild(noResultsMessage);
         return; 
     }
@@ -71,7 +78,7 @@ function displayFormulas(data) {
     });
 }
 
-// 3. የፍለጋ እና የማጣራት ሎጂክ (አልተቀየረም)
+
 function filterFormulas() {
     const searchTerm = searchInput.value.toLowerCase();
     
@@ -87,8 +94,9 @@ function filterFormulas() {
     displayFormulas(filteredFormulas);
 }
 
-// 4. የግብዣ (Share) ተግባር (አልተቀየረም)
+
 function shareApp() {
+    // URL በ index.html ውስጥ አለ
     const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
     const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
     
@@ -103,37 +111,51 @@ function shareApp() {
     }
 }
 
-// 5. ገጹ ሲከፈት ሁሉንም ማስኬድ
-document.addEventListener('DOMContentLoaded', () => {
 
-    // 🛑 የተስተካከለው Modal Logic እዚህ አለ 🛑
-    const userStatsCard = document.getElementById('user-stats-card');
+document.addEventListener('DOMContentLoaded', () => {
+    const appContainer = document.getElementById('app-container');
+    const splashScreen = document.getElementById('splash-screen');
+
+    // 🛑 Splash Screen Logic
+    const totalAnimationTime = 1.0 + 0.8; // 1.0s (ፊደላት) + 0.8s (ባር) = 1.8s
+    
+    setTimeout(() => {
+        if (splashScreen) {
+            splashScreen.style.display = 'none';
+        }
+        if (appContainer) {
+            appContainer.style.display = 'block'; // አፑን ያሳያል
+        }
+    }, 1800); // 1.8 ሰከንድ ከቆየ በኋላ አፑ ይከፈታል
+
+    // Modal ሎጂክ (አሁን ለ Community Info ያገለግላል)
+    const inviteCard = document.getElementById('invite-card');
     const modal = document.getElementById('user-modal');
-    // የ X መዝጊያውን ቁልፍ በትክክል ማግኘት
     const closeButton = modal ? modal.querySelector('.close-button') : null; 
 
-    // 1. Modal እንዲከፍት
-    if (userStatsCard && modal) {
-        userStatsCard.addEventListener('click', () => {
+    // Invite Card ሲነካ Modal (ማብራሪያ) እንዲከፍት
+    if (inviteCard && modal) {
+        inviteCard.addEventListener('click', (event) => {
+            // shareApp() በ HTML ውስጥ ስለሚሰራ እዚህ ላይ Modal ን ብቻ እንከፍታለን
             modal.style.display = 'block';
         });
     }
 
-    // 2. Modal እንዲዘጋ (በ X ምልክት ሲነካ)
+    // Modal እንዲዘጋ
     if (closeButton && modal) {
         closeButton.addEventListener('click', () => {
             modal.style.display = 'none';
         });
     }
 
-    // 3. Modal እንዲዘጋ (ከ Modal ውጭ ሲነካ)
+    // Modal እንዲዘጋ (ከ Modal ውጭ ሲነካ)
     window.addEventListener('click', (event) => {
         if (modal && event.target === modal) {
             modal.style.display = 'none';
         }
     });
 
-    // የቀደሙት ተግባራት ይቀጥላሉ
+    
     displayFormulas(formulas);
     
     searchInput.addEventListener('input', filterFormulas);
@@ -152,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    
     const formulaCountElement = document.getElementById('formula-count');
     if (formulaCountElement) {
         formulaCountElement.textContent = formulas.length + " Formulas";
