@@ -112,30 +112,9 @@ function shareApp() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const appContainer = document.getElementById('app-container');
-    const splashScreen = document.getElementById('splash-screen');
-
-    // 🛑 Splash Screen Animation Logic
-    if (splashScreen && appContainer) {
-        // 1. መጀመሪያ ላይ አፑን ከመክፈታችን በፊት Splash Screen እንዲጠፋ የሚደርገውን class እንጨምራለን
-        setTimeout(() => {
-            splashScreen.classList.add('fade-out-splash');
-            
-            // 2. ከጥቂት ጊዜ በኋላ App Container እንዲታይ እና አኒሜት እንዲሆን እናደርጋለን
-            setTimeout(() => {
-                appContainer.style.display = 'block'; // ይታይ
-                appContainer.classList.add('app-scale-in'); // አኒሜት ያድርግ
-                splashScreen.style.display = 'none'; // Splash Screen ከ UI ላይ እንዲጠፋ እናደርጋለን
-            }, 1500); // 1.5 ሰከንድ (የመጠባበቂያ + fade-out ጊዜ)
-
-        }, 100); // ገጹ ከተጫነ በኋላ ትንሽ ቆይቶ እንዲጀምር
-
-
-    } else if (appContainer) {
-        // በሆነ ምክንያት splashScreen ከጠፋ ወዲያውኑ አፑን ይከፍታል
-        appContainer.style.display = 'block';
-    }
-
+    
+    // 🛑 ምንም Splash Screen Logic የለም 🛑
+    // አፑ ወዲያውኑ ይከፈታል
 
     // Modal ሎጂክ 
     const inviteCard = document.getElementById('invite-card');
