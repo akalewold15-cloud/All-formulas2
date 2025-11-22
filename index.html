@@ -17,18 +17,17 @@
         
         <input type="text" id="search-input" placeholder="Formula search...">
         
-        <select id="category-filter">
-            <option value="all">All Categories</option>
-            <option value="algebra">Algebra</option>
-            <option value="geometry">Geometry</option>
-            <option value="physics">Physics</option>
-            <option value="calculus">Calculus</option>
-            <option value="chemistry">Chemistry</option>
-            <option value="statistics">Statistics</option> 
-        </select>
+        <div id="category-buttons">
+            <button class="cat-button active" data-category="all">All</button>
+            <button class="cat-button" data-category="algebra">Algebra</button>
+            <button class="cat-button" data-category="geometry">Geometry</button>
+            <button class="cat-button" data-category="physics">Physics</button>
+            <button class="cat-button" data-category="calculus">Calculus</button>
+            <button class="cat-button" data-category="chemistry">Chemistry</button>
+            <button class="cat-button" data-category="statistics">Statistics</button>
+        </div>
         
         <div id="formula-list">
-            
             </div>
         
         <hr style="margin: 30px 0;">
@@ -41,7 +40,7 @@
             </div>
             <div class="stat-card">
                 <i class="fas fa-calculator"></i>
-                <h2>1000+ Formulas</h2> 
+                <h2 id="formula-count">24+ Formulas</h2> 
                 <p>Extensive Formula Database</p>
             </div>
         </div>
