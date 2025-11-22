@@ -14,7 +14,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* የፍለጋ መስኩን (Search Box) ማሻሻል */
+/* የፍለጋ መስኩን እና ምድብ መምረጫውን ማሻሻል */
 #search-input, #category-filter {
     border: 2px solid #007BFF;
     border-radius: 8px; 
@@ -34,6 +34,73 @@ h1 {
     transition: transform 0.3s;
     margin-bottom: 20px;
     padding: 15px;
+}
+
+.formula-card:hover {
+    transform: translateY(-3px); 
+}
+
+.formula-card h3 {
+    color: #007BFF; 
+    margin-top: 0;
+}
+
+/* --- አዲስ የስታቲስቲክስ እና ግብዣ (Invite) ዲዛይን --- */
+
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #FFFFFF;
+    flex: 1;
+    text-align: center;
+    padding: 15px 10px;
+    border-radius: 10px;
+    border: 1px solid #E9ECEF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card i {
+    font-size: 24px;
+    color: #007BFF;
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    font-size: 1.2em;
+    margin: 5px 0 0;
+    color: #343A40;
+}
+
+.stat-card p {
+    font-size: 0.8em;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* የግብዣ ቁልፍ ዲዛይን */
+#invite-button {
+    background-color: #28A745; /* አረንጓዴ ቀለም */
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#invite-button:hover {
+    background-color: #218838;
+}
+
+#invite-button i {
+    margin-right: 10px;
 }
 
 .formula-card:hover {
