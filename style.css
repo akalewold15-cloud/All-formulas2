@@ -1,0 +1,48 @@
+/* ---- አዲስ የቀለም እና አጠቃላይ የገጽታ ለውጦች ---- */
+
+/* ለሙሉ ገጽታው የጀርባ ቀለም እና የቅርጸ ቁምፊ */
+body {
+    background-color: #F8F9FA; /* ፈካ ያለ ግራጫ ጀርባ */
+    color: #343A40; /* ጥቁር ግራጫ ጽሑፍ */
+    font-family: Arial, sans-serif; /* የ ቅርጸ ቁምፊ ለውጥ */
+    padding: 20px; /* ከገጹ ጠርዝ ትንሽ ክፍተት እንዲኖር */
+}
+
+/* የርዕሱን እና የፍለጋ ቁልፎች ዋናውን ሰማያዊ ቀለም መጠቀም */
+h1 {
+    color: #007BFF; 
+    border-bottom: 2px solid #007BFF;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* የፍለጋ መስኩን (Search Box) ማሻሻል */
+#search-input {
+    border: 2px solid #007BFF;
+    border-radius: 8px; /* ጠርዝ ማለስለስ */
+    padding: 10px;
+    width: 100%; /* ሙሉውን ስፋት እንዲይዝ */
+    box-sizing: border-box; /* padding በስፋቱ ውስጥ እንዲካተት */
+    margin-bottom: 15px;
+}
+
+/* የቀመር ካርዶች (Formula Cards) */
+.formula-card {
+    background-color: #FFFFFF; /* ነጭ የካርድ ጀርባ */
+    border: 1px solid #E9ECEF; /* ፈካ ያለ ጠርዝ */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ትንሽ ጥላ መጨመር */
+    transition: transform 0.3s;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.formula-card:hover {
+    transform: translateY(-3px); /* ሲነካው ትንሽ እንዲነሳ ማድረግ */
+}
+
+/* ለቀመር እራሱ (Formula Text) የሚሆን ስታይል */
+.formula-card h3 {
+    color: #007BFF; /* የቀመር ርዕስ ሰማያዊ ማድረግ */
+    margin-top: 0;
+}
