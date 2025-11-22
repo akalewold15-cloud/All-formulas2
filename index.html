@@ -7,6 +7,8 @@
     
     <link rel="stylesheet" href="style.css">
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
 </head>
 <body>
     
@@ -21,22 +23,32 @@
             <option value="geometry">Geometry</option>
             <option value="physics">Physics</option>
             <option value="calculus">Calculus</option>
-            <option value="chemistry">Chemistry</option> 
+            <option value="chemistry">Chemistry</option>
+            <option value="statistics">Statistics</option> 
         </select>
         
         <div id="formula-list">
             
-            <div class="formula-card">
-                <h3>Pythagorean Theorem</h3>
-                <p>Formula: a² + b² = c²</p>
             </div>
-            
-            <div class="formula-card">
-                <h3>Quadratic Formula</h3>
-                <p>Formula: x = [-b ± sqrt(b²-4ac)] / 2a</p>
+        
+        <hr style="margin: 30px 0;">
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h2>500+ Users</h2> 
+                <p>Formula Finders Community</p>
             </div>
-            
+            <div class="stat-card">
+                <i class="fas fa-calculator"></i>
+                <h2>1000+ Formulas</h2> 
+                <p>Extensive Formula Database</p>
+            </div>
         </div>
+        
+        <button id="invite-button" onclick="shareApp()">
+            <i class="fas fa-share-alt"></i> Invite Friends
+        </button>
         
     </div>
 
