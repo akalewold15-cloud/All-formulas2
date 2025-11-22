@@ -1,5 +1,4 @@
-// 1. የቀመሮች ዳታቤዝ (ሰፋ ያለ እና ውስብስብ ዝርዝር)
-// ... [ይህ ክፍል አልተቀየረም]
+// 1. የቀመሮች ዳታቤዝ (ይህ ክፍል አልተቀየረም)
 const formulas = [
     // --- Algebra / General Math ---
     { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
@@ -42,7 +41,8 @@ const formulas = [
 
 const formulaList = document.getElementById('formula-list');
 const searchInput = document.getElementById('search-input');
-const categoryFilter = document.getElementById('category-filter');
+const categoryButtonsContainer = document.getElementById('category-buttons'); 
+let activeCategory = 'all'; 
 
 // 2. ቀመሮችን የሚያሳይ ዋና ተግባር
 function displayFormulas(data) {
@@ -74,13 +74,12 @@ function displayFormulas(data) {
 // 3. የፍለጋ እና የማጣራት ሎጂክ
 function filterFormulas() {
     const searchTerm = searchInput.value.toLowerCase();
-    const selectedCategory = categoryFilter.value;
     
     const filteredFormulas = formulas.filter(formula => {
         const matchesSearch = formula.name.toLowerCase().includes(searchTerm) || 
                               formula.formula.toLowerCase().includes(searchTerm);
         
-        const matchesCategory = selectedCategory === 'all' || formula.category === selectedCategory;
+        const matchesCategory = activeCategory === 'all' || formula.category === activeCategory;
         
         return matchesSearch && matchesCategory;
     });
@@ -90,8 +89,8 @@ function filterFormulas() {
 
 // 4. የግብዣ (Share) ተግባር
 function shareApp() {
-    const appUrl = window.location.href; 
-    // የቴሌግራም ቦትህ የግብዣ ሊንክ እዚህ ቢገባ ይመረጣል
+    // 🛑 አሁን የላክከውን ቋሚ አድራሻ እዚህ እንጠቀማለን!
+    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
     const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
     
     if (navigator.share) {
@@ -101,28 +100,32 @@ function shareApp() {
             url: appUrl,
         }).catch((error) => console.log('Error sharing', error));
     } else {
-        // Share API ከሌለ (በአንዳንድ ዴስክቶፖች ላይ)
         prompt("Copy this link to share the app:", appUrl);
     }
 }
 
 // 5. ገጹ ሲከፈት ሁሉንም ማስኬድ
 document.addEventListener('DOMContentLoaded', () => {
-    // ቀመሮችን ማሳየት
     displayFormulas(formulas);
     
-    // የፍለጋ እና የምድብ ለውጥ በሚኖርበት ጊዜ ማጣሪያውን ማስኬድ
     searchInput.addEventListener('input', filterFormulas);
-    categoryFilter.addEventListener('change', filterFormulas);
-
-    // የግብዣ ቁልፉን ማገናኘት (አሁን በ HTML ላይ ተያይዟል)
     
-    // 🛑 አዲስ ኮድ: የቀመር ብዛት ካርዱን በእውነተኛው ቁጥር ማዘመን
+    categoryButtonsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('cat-button')) {
+            document.querySelectorAll('.cat-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            activeCategory = event.target.dataset.category;
+            
+            filterFormulas();
+        }
+    });
+
     const formulaCountElement = document.getElementById('formula-count');
     if (formulaCountElement) {
         formulaCountElement.textContent = formulas.length + " Formulas";
-        // የ 1000+ ህልምህን ለማሳየት:
-        // formulaCountElement.textContent = (formulas.length + 975) + "+ Formulas"; 
-        // ከፈለክ ከላይ ባለው ፎርሙላ በመጠቀም ትልቅ ቁጥር ማሳየት ትችላለህ
     }
 });
