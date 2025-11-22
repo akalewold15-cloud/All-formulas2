@@ -1,5 +1,4 @@
-            <button onclick="shareApp()">Invite Friends Now!</button>
-         html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,18 +12,17 @@
 </head>
 <body>
     
-    <div id="app-container">
-        <h1>Akalewold Formula Finder</h1>
+    <div id="app-container"> <h1>Akalewold Formula Finder</h1>
         
         <div class="stats-container">
-            <div class="stat-card" id="user-stats-card"> 
-                <i class="fas fa-users"></i>
-                <h2>Active Members</h2> 
-                <p>Formula Finders Community</p>
+            <div class="stat-card" id="invite-card" onclick="shareApp()"> 
+                <i class="fas fa-share-alt"></i>
+                <h2>Invite Friends</h2> 
+                <p>Grow the Community</p>
             </div>
             <div class="stat-card">
                 <i class="fas fa-calculator"></i>
-                <h2 id="formula-count">26 Formulas</h2> 
+                <h2 id="formula-count">32 Formulas</h2> 
                 <p>Extensive Formula Database</p>
             </div>
         </div>
@@ -44,26 +42,20 @@
         <div id="formula-list">
             </div>
         
-        <hr style="margin: 30px 0;">
-        
-        <button id="invite-button" onclick="shareApp()">
-            <i class="fas fa-share-alt"></i> Invite Friends
-        </button>
-        
     </div>
     
     <div id="user-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Formula Finders Community</h2>
-            <p><strong>የማህበረሰቡ ሁኔታ (Community Status):</strong></p>
-            <p>ይህ አፕሊኬሽን አሁን ባለው የቴክኖሎጂ ደረጃ (Static web application) ላይ ያለ በመሆኑ፣ ትክክለኛውን የተጠቃሚዎች ብዛት በቅጽበት የመቁጠር ችሎታ የለውም።</p>
-            <p>ስለዚህ፣ ይህ ካርድ አፑን በቴሌግራም ቦት በኩል ወይም በቀጥታ የምትጠቀሙትን **ሁሉንም ሰዎች** እንደ **Active Members** ይገልጻል።</p>
+            <h2>Akalewold Community</h2>
+            <p><strong>እንኳን ደህና መጣችሁ!</strong></p>
+            <p>ይህ አፕ የተፈጠረው የፎርሙላ ፍለጋን ቀላል እና ፈጣን ለማድረግ ነው።</p>
+            <p>አፑ እንዲያድግ እና እንዲታወቅ **Invite Friends** የሚለውን ካርድ በመጫን ላልደረሳቸው ጓደኞችዎ ያካፍሉ!</p>
             
             <hr>
             
-            <p>እርስዎም ይህን አፕ በማጋራት የማህበረሰቡ አካል ይሁኑ!</p>
-
+            <button onclick="shareApp()">Invite Friends Now!</button>
+        </div>
     </div>
 
     <script src="script.js"></script> 
