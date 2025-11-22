@@ -1,186 +1,159 @@
-/* ---- አጠቃላይ ገጽታ ---- */
+// 1. የቀመሮች ዳታቤዝ (ምንም ለውጥ የለም)
+const formulas = [
+    // --- Algebra / General Math ---
+    { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
+    { name: "Slope Intercept Form", formula: "y = mx + b", category: "algebra" },
+    { name: "Distance Formula (3D)", formula: "d = sqrt((x₂ - x₁)² + (y₂ - y₁)² + (z₂ - z₁)²)", category: "algebra" },
+    { name: "Compound Interest", formula: "A = P(1 + r/n)^(nt)", category: "algebra" },
+    { name: "Logarithm Change of Base", formula: "logₐ(b) = logₓ(b) / logₓ(a)", category: "algebra" },
+    
+    // --- Geometry / Trigonometry ---
+    { name: "Pythagorean Theorem", formula: "a² + b² = c²", category: "geometry" },
+    { name: "Area of a Circle", formula: "A = πr²", category: "geometry" },
+    { name: "Area of a Triangle (Heron's Formula)", formula: "A = sqrt(s(s-a)(s-b)(s-c)), where s = (a+b+c)/2", category: "geometry" },
+    { name: "Law of Sines", formula: "a/sin(A) = b/sin(B) = c/sin(C)", category: "geometry" },
+    { name: "Law of Cosines", formula: "c² = a² + b² - 2ab cos(C)", category: "geometry" },
+    { name: "Volume of a Sphere", formula: "V = (4/3)πr³", category: "geometry" },
+    
+    // --- Physics / Advanced Mechanics ---
+    { name: "Newton's Second Law", formula: "F = ma", category: "physics" },
+    { name: "Kinetic Energy", formula: "KE = ½mv²", category: "physics" },
+    { name: "Kinetic Energy (Relativistic)", formula: "KE = (γ - 1)mc², γ = 1 / sqrt(1 - v²/c²)", category: "physics" },
+    { name: "Gravitational Force", formula: "F = G(m₁m₂ / r²)", category: "physics" },
+    { name: "Ohm's Law (Electricity)", formula: "V = IR", category: "physics" },
 
-body {
-    background-color: #F8F9FA; 
-    color: #343A40; 
-    font-family: Arial, sans-serif; 
-    padding: 20px; 
+    // --- Calculus / Differential Equations ---
+    { name: "Derivative Power Rule", formula: "d/dx (xⁿ) = nxⁿ⁻¹", category: "calculus" },
+    { name: "Product Rule (Derivative)", formula: "(fg)' = f'g + fg'", category: "calculus" },
+    { name: "Integration by Parts", formula: "∫u dv = uv - ∫v du", category: "calculus" },
+    { name: "Chain Rule", formula: "d/dx f(g(x)) = f'(g(x))g'(x)", category: "calculus" },
+    
+    // --- Chemistry / Thermodynamics ---
+    { name: "Ideal Gas Law", formula: "PV = nRT", category: "chemistry" },
+    { name: "Gibbs Free Energy", formula: "∆G = ∆H - T∆S", category: "chemistry" },
+    { name: "pH Calculation", formula: "pH = -log₁₀[H⁺]", category: "chemistry" },
+    
+    // --- Statistics ---
+    { name: "Standard Deviation", formula: "σ = sqrt(Σ(xᵢ - μ)² / N)", category: "statistics" },
+    { name: "Z-Score", formula: "z = (x - μ) / σ", category: "statistics" },
+    { name: "Probability (Binomial)", formula: "P(k) = C(n, k) * pᵏ * (1-p)ⁿ⁻ᵏ", category: "statistics" }
+];
+
+const formulaList = document.getElementById('formula-list');
+const searchInput = document.getElementById('search-input');
+const categoryButtonsContainer = document.getElementById('category-buttons'); 
+let activeCategory = 'all'; 
+
+// 2. ቀመሮችን የሚያሳይ ዋና ተግባር (አልተቀየረም)
+function displayFormulas(data) {
+    formulaList.innerHTML = ''; 
+    
+    if (data.length === 0) {
+        const noResultsMessage = document.createElement('p');
+        noResultsMessage.textContent = "No formulas found. Try a different search or category.";
+        noResultsMessage.style.textAlign = "center";
+        noResultsMessage.style.marginTop = "20px";
+        noResultsMessage.style.color = "#6c757d";
+        formulaList.appendChild(noResultsMessage);
+        return; 
+    }
+
+    data.forEach(formula => {
+        const card = document.createElement('div');
+        card.classList.add('formula-card');
+        
+        card.innerHTML = `
+            <h3>${formula.name}</h3>
+            <p><strong>Category:</strong> ${formula.category.charAt(0).toUpperCase() + formula.category.slice(1)}</p>
+            <p>Formula: ${formula.formula}</p>
+        `;
+        formulaList.appendChild(card);
+    });
 }
 
-h1 {
-    color: #007BFF; 
-    border-bottom: 2px solid #007BFF;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+// 3. የፍለጋ እና የማጣራት ሎጂክ (አልተቀየረም)
+function filterFormulas() {
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    const filteredFormulas = formulas.filter(formula => {
+        const matchesSearch = formula.name.toLowerCase().includes(searchTerm) || 
+                              formula.formula.toLowerCase().includes(searchTerm);
+        
+        const matchesCategory = activeCategory === 'all' || formula.category === activeCategory;
+        
+        return matchesSearch && matchesCategory;
+    });
+    
+    displayFormulas(filteredFormulas);
 }
 
-/* የፍለጋ መስኩን ማሻሻል */
-#search-input {
-    border: 2px solid #007BFF;
-    border-radius: 8px; 
-    padding: 10px;
-    width: 100%; 
-    box-sizing: border-box; 
-    margin-bottom: 15px;
-    font-size: 16px;
+// 4. የግብዣ (Share) ተግባር (አልተቀየረም)
+function shareApp() {
+    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
+    const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Akalewold Formula Finder',
+            text: shareText,
+            url: appUrl,
+        }).catch((error) => console.log('Error sharing', error));
+    } else {
+        prompt("Copy this link to share the app:", appUrl);
+    }
 }
 
-/* --- የ Category Buttons ዲዛይን --- */
-#category-buttons {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 8px; 
-    margin-bottom: 25px;
-    justify-content: center; 
-}
+// 5. ገጹ ሲከፈት ሁሉንም ማስኬድ
+document.addEventListener('DOMContentLoaded', () => {
 
-.cat-button {
-    background-color: #FFFFFF; 
-    color: #343A40; 
-    border: 1px solid #B0C4DE; /* ያልደመቀ ሰማያዊ ጠርዝ */
-    border-radius: 4px; /* ካሬ መልክ */
-    padding: 8px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-}
+    // 🛑 የተስተካከለው Modal Logic እዚህ አለ 🛑
+    const userStatsCard = document.getElementById('user-stats-card');
+    const modal = document.getElementById('user-modal');
+    // የ X መዝጊያውን ቁልፍ በትክክል ማግኘት
+    const closeButton = modal ? modal.querySelector('.close-button') : null; 
 
-.cat-button:hover {
-    background-color: #F0F8FF; 
-}
+    // 1. Modal እንዲከፍት
+    if (userStatsCard && modal) {
+        userStatsCard.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+    }
 
-.cat-button.active {
-    background-color: #007BFF; 
-    color: white;
-    border-color: #007BFF; 
-}
+    // 2. Modal እንዲዘጋ (በ X ምልክት ሲነካ)
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
 
-/* የቀመር ካርዶች (Formula Cards) */
-.formula-card {
-    background-color: #FFFFFF; 
-    border: 1px solid #E9ECEF; 
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    transition: transform 0.3s;
-    margin-bottom: 20px;
-    padding: 15px;
-}
+    // 3. Modal እንዲዘጋ (ከ Modal ውጭ ሲነካ)
+    window.addEventListener('click', (event) => {
+        if (modal && event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
-.formula-card:hover {
-    transform: translateY(-3px); 
-}
+    // የቀደሙት ተግባራት ይቀጥላሉ
+    displayFormulas(formulas);
+    
+    searchInput.addEventListener('input', filterFormulas);
+    
+    categoryButtonsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('cat-button')) {
+            document.querySelectorAll('.cat-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            activeCategory = event.target.dataset.category;
+            
+            filterFormulas();
+        }
+    });
 
-.formula-card h3 {
-    color: #007BFF; 
-    margin-top: 0;
-}
-
-/* --- የስታቲስቲክስ እና ግብዣ (Invite) ዲዛይን --- */
-.stats-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    background-color: #FFFFFF;
-    flex: 1;
-    text-align: center;
-    padding: 15px 10px;
-    border-radius: 10px;
-    border: 1px solid #E9ECEF;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    cursor: pointer; /* 🛑 አሁን ካርዱ እንዲነካ ተደርጓል 🛑 */
-    transition: box-shadow 0.3s;
-}
-
-.stat-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* ሲነካ ይበልጥ እንዲደምቅ */
-}
-
-.stat-card i {
-    font-size: 24px;
-    color: #007BFF;
-    margin-bottom: 5px;
-}
-
-.stat-card h2 {
-    font-size: 1.2em;
-    margin: 5px 0 0;
-    color: #343A40;
-}
-
-.stat-card p {
-    font-size: 0.8em;
-    color: #6c757d;
-    margin: 0;
-}
-
-/* የግብዣ ቁልፍ ዲዛይን (አልተቀየረም) */
-#invite-button {
-    background-color: #28A745; 
-    color: white;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 8px;
-    width: 100%;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#invite-button:hover {
-    background-color: #218838;
-}
-
-#invite-button i {
-    margin-right: 10px;
-}
-
-/* --- 🛑 አዲሱ የ Modal (Pop-up) ዲዛይን 🛑 --- */
-.modal {
-    display: none; /* መጀመሪያ ላይ ይደበቃል */
-    position: fixed; 
-    z-index: 10; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); /* ጥቁር ግልጽነት ያለው ጀርባ */
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* ከላይ 15% እና በመሃል */
-    padding: 25px;
-    border: 1px solid #888;
-    width: 80%; 
-    max-width: 400px; /* ስፋቱን መገደብ */
-    border-radius: 10px;
-    position: relative;
-    text-align: center;
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-}
-
-.modal-content button {
-    margin-top: 15px;
-    /* የ Invite Button ዲዛይንን ይወስዳል */
-    background-color: #28A745; 
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-}
+    const formulaCountElement = document.getElementById('formula-count');
+    if (formulaCountElement) {
+        formulaCountElement.textContent = formulas.length + " Formulas";
+    }
+});
