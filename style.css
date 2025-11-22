@@ -1,200 +1,114 @@
-/* ---- 🛑 አዲስ Vibrant/Trendy ገጽታ 🛑 ---- */
+/* ---- 🛑 የካርድ ቅርጽ እና ቀለም ማድመቂያ 🛑 ---- */
 
 body {
-    /* ከቀለም ወደ ቀለም የሚደረግ ሽግግር (Gradient Background) */
-    background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
-    color: #34495E; /* ጥቁር ሰማያዊ ጽሑፍ */
+    /* ከቀለም ወደ ቀለም የሚደረግ ሽግግር (ይበልጥ ደማቅ ለማድረግ) */
+    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); 
+    color: #37474F; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
     padding: 20px; 
 }
 
 h1 {
-    color: #00BCD4; /* ደማቅ Teal ቀለም */
-    border-bottom: 2px solid #00BCD4;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-weight: 600;
+    color: #039BE5; /* ደማቅ ሰማያዊ */
+    border-bottom: 3px solid #039BE5;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    font-weight: 700;
 }
 
 /* የፍለጋ መስኩን ማሻሻል */
 #search-input {
-    border: 2px solid #00BCD4;
-    border-radius: 25px; /* ይበልጥ የተጠጋጋ */
-    padding: 12px 20px;
+    border: 3px solid #039BE5; /* ጠርዙን ማድመቅ */
+    border-radius: 30px; 
+    padding: 15px 25px; /* ቦታ መጨመር */
     width: 100%; 
     box-sizing: border-box; 
-    margin-bottom: 15px;
-    font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 188, 212, 0.1);
+    margin-bottom: 20px;
+    font-size: 17px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* --- የ Category Buttons ዲዛይን --- */
 #category-buttons {
     display: flex;
     flex-wrap: wrap; 
-    gap: 10px; 
-    margin-bottom: 25px;
+    gap: 12px; 
+    margin-bottom: 30px;
     justify-content: center; 
 }
 
 .cat-button {
     background-color: #FFFFFF; 
-    color: #34495E; 
-    border: 1px solid #B2EBF2; 
-    border-radius: 20px; /* ይበልጥ የተጠጋጋ */
-    padding: 8px 18px;
-    font-size: 14px;
+    color: #37474F; 
+    border: 2px solid #B3E5FC; 
+    border-radius: 25px; /* ይበልጥ እንዲጠጋጋ */
+    padding: 10px 20px;
+    font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.1s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.cat-button:hover {
-    background-color: #E0F7FA; 
-    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* አሁን የተመረጠው አዝራር ዲዛይን */
 .cat-button.active {
-    background-color: #FF9800; /* ደማቅ ብርቱካንማ (Orange) ቀለም */
+    background-color: #FFB300; /* ደማቅ ወርቃማ ብርቱካንማ */
     color: white;
-    border-color: #FF9800; 
-    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+    border-color: #FFB300; 
+    box-shadow: 0 5px 15px rgba(255, 179, 0, 0.4);
 }
 
 /* የቀመር ካርዶች (Formula Cards) */
 .formula-card {
     background-color: #FFFFFF; 
-    border: none; /* ጠርዙን አስወግደን በጥላ እንተካለን */
-    border-radius: 12px; /* የተጠጋጋ ጠርዝ */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* ይበልጥ የደመቀ ጥላ */
+    border: none;
+    border-radius: 18px; /* ይበልጥ የተጠጋጋ */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* ጥላውን ማድመቅ */
     transition: transform 0.3s;
-    margin-bottom: 20px;
-    padding: 20px;
-}
-
-.formula-card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    margin-bottom: 25px;
+    padding: 25px;
 }
 
 .formula-card h3 {
-    color: #00BCD4; /* Teal ርዕስ */
+    color: #039BE5; 
     margin-top: 0;
-    font-size: 1.3em;
+    font-size: 1.4em;
 }
 
-/* --- የስታቲስቲክስ እና ግብዣ (Invite) ዲዛይን --- */
+/* --- የስታቲስቲክስ ካርዶች --- */
 .stats-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 20px;
 }
 
 .stat-card {
     background-color: #FFFFFF;
-    flex: 1;
-    text-align: center;
-    padding: 15px 10px;
-    border-radius: 12px; /* የተጠጋጋ ጠርዝ */
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-    cursor: pointer; 
-    transition: box-shadow 0.3s, transform 0.2s;
-}
-
-.stat-card:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); 
-    transform: translateY(-2px);
+    border-radius: 20px; /* ይበልጥ የተጠጋጋ */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card i {
-    font-size: 28px; /* ትልልቅ አይከኖች */
-    color: #FF9800; /* ብርቱካንማ አይከን */
-    margin-bottom: 5px;
+    font-size: 30px; 
+    color: #FFB300; /* ወርቃማ ብርቱካንማ */
 }
 
 .stat-card h2 {
-    font-size: 1.4em;
-    margin: 5px 0 0;
-    color: #34495E;
-    font-weight: 700;
-}
-
-.stat-card p {
-    font-size: 0.9em;
-    color: #7F8C8D;
-    margin: 0;
+    font-size: 1.5em;
+    font-weight: 800;
 }
 
 /* የግብዣ ቁልፍ ዲዛይን */
 #invite-button {
-    background-color: #2ECC71; /* ደማቅ አረንጓዴ */
+    background-color: #4CAF50; /* ደማቅ አረንጓዴ */
     color: white;
-    border: none;
-    padding: 15px 20px;
-    border-radius: 10px; /* የተጠጋጋ ጠርዝ */
-    width: 100%;
-    font-size: 18px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.4);
+    border-radius: 12px;
+    padding: 18px 25px;
+    font-size: 19px;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
 }
 
 #invite-button:hover {
-    background-color: #27AE60;
-    transform: translateY(-1px);
+    background-color: #43A047;
 }
 
-#invite-button i {
-    margin-right: 10px;
-}
-
-/* --- የ Modal (Pop-up) ዲዛይን --- */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 10; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.6); 
-}
-
+/* Modalን ማድመቅ */
 .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto; 
-    padding: 25px;
-    border: none;
-    width: 90%; 
-    max-width: 450px; 
-    border-radius: 15px; /* ይበልጥ የተጠጋጋ */
-    position: relative;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-}
-
-.modal-content button {
-    margin-top: 15px;
-    background-color: #2ECC71; 
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: none; /* ጥላውን እናስወግዳለን */
+    border-radius: 20px;
 }
