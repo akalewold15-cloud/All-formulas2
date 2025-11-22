@@ -1,182 +1,235 @@
-// 1. የቀመሮች ዳታቤዝ (የተጨመሩ ቀመሮች)
-const formulas = [
-    // --- Algebra / General Math ---
-    { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
-    { name: "Slope Intercept Form", formula: "y = mx + b", category: "algebra" },
-    { name: "Distance Formula (3D)", formula: "d = sqrt((x₂ - x₁)² + (y₂ - y₁)² + (z₂ - z₁)²)", category: "algebra" },
-    { name: "Compound Interest", formula: "A = P(1 + r/n)^(nt)", category: "algebra" },
-    { name: "Logarithm Change of Base", formula: "logₐ(b) = logₓ(b) / logₓ(a)", category: "algebra" },
-    { name: "Arithmetic Series Sum", formula: "Sₙ = n/2 * (a₁ + aₙ)", category: "algebra" },
-    { name: "Geometric Series Sum", formula: "Sₙ = a₁ * (1 - rⁿ) / (1 - r)", category: "algebra" },
-    
-    // --- Geometry / Trigonometry ---
-    { name: "Pythagorean Theorem", formula: "a² + b² = c²", category: "geometry" },
-    { name: "Area of a Circle", formula: "A = πr²", category: "geometry" },
-    { name: "Area of a Triangle (Heron's Formula)", formula: "A = sqrt(s(s-a)(s-b)(s-c)), where s = (a+b+c)/2", category: "geometry" },
-    { name: "Law of Sines", formula: "a/sin(A) = b/sin(B) = c/sin(C)", category: "geometry" },
-    { name: "Law of Cosines", formula: "c² = a² + b² - 2ab cos(C)", category: "geometry" },
-    { name: "Volume of a Sphere", formula: "V = (4/3)πr³", category: "geometry" },
-    
-    // --- Physics / Advanced Mechanics ---
-    { name: "Newton's Second Law", formula: "F = ma", category: "physics" },
-    { name: "Kinetic Energy", formula: "KE = ½mv²", category: "physics" },
-    { name: "Mass-Energy Equivalence", formula: "E = mc²", category: "physics" }, 
-    { name: "Lorentz Factor", formula: "γ = 1 / sqrt(1 - v²/c²)", category: "physics" }, 
-    { name: "Gravitational Force", formula: "F = G(m₁m₂ / r²)", category: "physics" },
-    { name: "Ohm's Law (Electricity)", formula: "V = IR", category: "physics" },
-    { name: "Work Done", formula: "W = Fd cos(θ)", category: "physics" }, 
+/* ---- 🛑 የመጨረሻ ማስተካከያ: Simple & Compact Dark Theme 🛑 ---- */
 
-    // --- Calculus / Differential Equations ---
-    { name: "Derivative Power Rule", formula: "d/dx (xⁿ) = nxⁿ⁻¹", category: "calculus" },
-    { name: "Product Rule (Derivative)", formula: "(fg)' = f'g + fg'", category: "calculus" },
-    { name: "Integration by Parts", formula: "∫u dv = uv - ∫v du", category: "calculus" },
-    { name: "Chain Rule", formula: "d/dx f(g(x)) = f'(g(x))g'(x)", category: "calculus" },
-    
-    // --- Chemistry / Thermodynamics ---
-    { name: "Ideal Gas Law", formula: "PV = nRT", category: "chemistry" },
-    { name: "Gibbs Free Energy", formula: "∆G = ∆H - T∆S", category: "chemistry" },
-    { name: "pH Calculation", formula: "pH = -log₁₀[H⁺]", category: "chemistry" },
-    { name: "Boyle's Law", formula: "P₁V₁ = P₂V₂", category: "chemistry" },
-    { name: "Molarity", formula: "M = moles of solute / liters of solution", category: "chemistry" },
-    
-    // --- Statistics ---
-    { name: "Standard Deviation", formula: "σ = sqrt(Σ(xᵢ - μ)² / N)", category: "statistics" },
-    { name: "Z-Score", formula: "z = (x - μ) / σ", category: "statistics" },
-    { name: "Probability (Binomial)", formula: "P(k) = C(n, k) * pᵏ * (1-p)ⁿ⁻ᵏ", category: "statistics" }
-];
+body {
+    /* በጣም ቀላል ጥቁር ዳራ */
+    background-color: #2c3e50; 
+    color: #ECF0F1; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    padding: 10px; 
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-x: hidden; 
+}
 
+#app-container {
+    background-color: #34495e; 
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    padding: 15px; 
+    max-width: 550px; 
+    width: 100%;
+    margin-top: 10px;
+}
 
-const formulaList = document.getElementById('formula-list');
-const searchInput = document.getElementById('search-input');
-const categoryButtonsContainer = document.getElementById('category-buttons'); 
-let activeCategory = 'all'; 
+h1 {
+    color: #8E44AD; 
+    border-bottom: 2px solid #8E44AD;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.7em; 
+}
 
+/* የፍለጋ መስኩን ማሻሻል */
+#search-input {
+    background-color: #445A6F; 
+    color: #ECF0F1;
+    border: none;
+    border-radius: 20px; 
+    padding: 10px 15px; 
+    margin-bottom: 15px;
+    font-size: 14px; 
+}
 
-function displayFormulas(data) {
-    formulaList.innerHTML = ''; 
-    
-    if (data.length === 0) {
-        const noResultsMessage = document.createElement('p');
-        noResultsMessage.textContent = "No formulas found. Try a different search or category.";
-        noResultsMessage.style.textAlign = "center";
-        noResultsMessage.style.marginTop = "20px";
-        noResultsMessage.style.color = "#BDC3C7";
-        formulaList.appendChild(noResultsMessage);
-        return; 
-    }
+/* --- የ Category Buttons ዲዛይን --- */
+#category-buttons {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 6px; 
+    margin-bottom: 20px;
+    justify-content: center; 
+}
 
-    data.forEach(formula => {
-        const card = document.createElement('div');
-        card.classList.add('formula-card');
-        
-        card.innerHTML = `
-            <h3>${formula.name}</h3>
-            <p><strong>Category:</strong> ${formula.category.charAt(0).toUpperCase() + formula.category.slice(1)}</p>
-            <p>Formula: ${formula.formula}</p>
-        `;
-        formulaList.appendChild(card);
-    });
+.cat-button {
+    background-color: #445A6F; 
+    color: #ECF0F1; 
+    border: none;
+    border-radius: 15px; 
+    padding: 5px 12px; 
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* አሁን የተመረጠው አዝራር ዲዛይን (Active) */
+.cat-button.active {
+    background-color: #9B59B6; 
+    color: white;
+    box-shadow: 0 2px 5px rgba(155, 89, 182, 0.5); 
+    font-weight: 600;
+}
+
+/* የቀመር ካርዶች (Formula Cards) */
+.formula-card {
+    background-color: #445A6F; 
+    border-radius: 10px; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); 
+    margin-bottom: 10px;
+    padding: 15px; 
+}
+
+.formula-card:hover {
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.formula-card h3 {
+    color: #9B59B6; 
+    font-size: 1.2em; 
+    margin-bottom: 4px; 
+}
+
+.formula-card p {
+    font-size: 0.9em;
+    color: #BDC3C7;
+    margin: 2px 0;
+}
+
+/* --- የስታቲስቲክስ ካርዶች (Invite/Formula Count) --- */
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px; 
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    background-color: #445A6F;
+    flex: 1;
+    min-width: 45%; 
+    text-align: center;
+    padding: 10px; 
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer; 
+    transition: box-shadow 0.3s, transform 0.2s;
+    color: white; 
+}
+
+.stat-card i {
+    font-size: 20px; 
+    color: #9B59B6; 
+    margin-bottom: 5px; 
+}
+
+.stat-card h2 {
+    font-size: 1.2em; 
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-card p {
+    font-size: 0.75em;
+    color: #BDC3C7;
+    margin: 0;
 }
 
 
-function filterFormulas() {
-    const searchTerm = searchInput.value.toLowerCase();
-    
-    const filteredFormulas = formulas.filter(formula => {
-        const matchesSearch = formula.name.toLowerCase().includes(searchTerm) || 
-                              formula.formula.toLowerCase().includes(searchTerm);
-        
-        const matchesCategory = activeCategory === 'all' || formula.category === activeCategory;
-        
-        return matchesSearch && matchesCategory;
-    });
-    
-    displayFormulas(filteredFormulas);
+/* ================================== */
+/* 🛑 Splash Screen & Animation CSS 🛑 */
+/* ================================== */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2c3e50; 
+    z-index: 200; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#splash-title {
+    font-size: 3.5em; 
+    font-weight: 900;
+    color: #ECF0F1; 
+    text-shadow: 0 0 15px rgba(155, 89, 182, 0.8); 
+    margin: 0;
+}
+
+#splash-screen p {
+    color: #9B59B6; 
+    font-size: 1.5em;
+    margin-top: 5px;
+    font-weight: 300;
+}
+
+/* 🛑 Splash Screen የሚጠፋበት አኒሜሽን 🛑 */
+.fade-out-splash {
+    animation: fadeOut 0.5s ease-out forwards;
+    animation-delay: 1.2s; /* ከ 1.2 ሰከንድ በኋላ መጥፋት ይጀምራል */
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* 🛑 App Container ወደ ውስጥ የሚገባበት አኒሜሽን 🛑 */
+.app-scale-in {
+    opacity: 0;
+    transform: scale(0.98); /* ትንሽ ትንሽ ሆኖ ይጀምራል */
+    animation: scaleIn 0.5s ease-out forwards;
+    animation-delay: 1.6s; /* Splash ከተጠናቀቀ በኋላ ይጀምራል */
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 
-function shareApp() {
-    // URL በ index.html ውስጥ አለ
-    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
-    const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: 'Akalewold Formula Finder',
-            text: shareText,
-            url: appUrl,
-        }).catch((error) => console.log('Error sharing', error));
-    } else {
-        prompt("Copy this link to share the app:", appUrl);
-    }
+/* (የModal CSS አልተነካም) */
+.modal {
+    position: fixed; 
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.7); 
+    backdrop-filter: blur(5px); 
 }
 
+.modal-content {
+    background-color: #34495E;
+    color: #ECF0F1;
+    margin: 15% auto; 
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 400px; 
+    text-align: center;
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const appContainer = document.getElementById('app-container');
-    const splashScreen = document.getElementById('splash-screen');
-
-    // 🛑 Splash Screen Logic
-    const totalAnimationTime = 1.0 + 0.8; // 1.0s (ፊደላት) + 0.8s (ባር) = 1.8s
-    
-    setTimeout(() => {
-        if (splashScreen) {
-            splashScreen.style.display = 'none';
-        }
-        if (appContainer) {
-            appContainer.style.display = 'block'; // አፑን ያሳያል
-        }
-    }, 1800); // 1.8 ሰከንድ ከቆየ በኋላ አፑ ይከፈታል
-
-    // Modal ሎጂክ (አሁን ለ Community Info ያገለግላል)
-    const inviteCard = document.getElementById('invite-card');
-    const modal = document.getElementById('user-modal');
-    const closeButton = modal ? modal.querySelector('.close-button') : null; 
-
-    // Invite Card ሲነካ Modal (ማብራሪያ) እንዲከፍት
-    if (inviteCard && modal) {
-        inviteCard.addEventListener('click', (event) => {
-            // shareApp() በ HTML ውስጥ ስለሚሰራ እዚህ ላይ Modal ን ብቻ እንከፍታለን
-            modal.style.display = 'block';
-        });
-    }
-
-    // Modal እንዲዘጋ
-    if (closeButton && modal) {
-        closeButton.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-    }
-
-    // Modal እንዲዘጋ (ከ Modal ውጭ ሲነካ)
-    window.addEventListener('click', (event) => {
-        if (modal && event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    
-    displayFormulas(formulas);
-    
-    searchInput.addEventListener('input', filterFormulas);
-    
-    categoryButtonsContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('cat-button')) {
-            document.querySelectorAll('.cat-button').forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
-            
-            activeCategory = event.target.dataset.category;
-            
-            filterFormulas();
-        }
-    });
-
-    
-    const formulaCountElement = document.getElementById('formula-count');
-    if (formulaCountElement) {
-        formulaCountElement.textContent = formulas.length + " Formulas";
-    }
-});
+.modal-content button {
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+}
