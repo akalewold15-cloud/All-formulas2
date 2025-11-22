@@ -1,4 +1,4 @@
-/* ---- 🛑 የመጨረሻ ማስተካከያ: Simple & Compact Dark Theme 🛑 ---- */
+/* ---- 🛑 የመጨረሻው አስተማማኝ እና ማራኪ ገጽታ 🛑 ---- */
 
 body {
     /* በጣም ቀላል ጥቁር ዳራ */
@@ -11,7 +11,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden; /* ለሞባይል እይታ ወሳኝ */
 }
 
 #app-container {
@@ -34,7 +34,7 @@ h1 {
     font-size: 1.7em; 
 }
 
-/* የፍለጋ መስኩን ማሻሻል */
+/* የፍለጋ መስኩ */
 #search-input {
     background-color: #445A6F; 
     color: #ECF0F1;
@@ -43,7 +43,9 @@ h1 {
     padding: 10px 15px; 
     margin-bottom: 15px;
     font-size: 14px; 
+    width: calc(100% - 30px); /* 100% ቦታ እንዲይዝ */
 }
+
 
 /* --- የ Category Buttons ዲዛይን --- */
 #category-buttons {
@@ -65,7 +67,6 @@ h1 {
     transition: background-color 0.3s;
 }
 
-/* አሁን የተመረጠው አዝራር ዲዛይን (Active) */
 .cat-button.active {
     background-color: #9B59B6; 
     color: white;
@@ -80,6 +81,7 @@ h1 {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); 
     margin-bottom: 10px;
     padding: 15px; 
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .formula-card:hover {
@@ -103,7 +105,7 @@ h1 {
 .stats-container {
     display: flex;
     justify-content: space-between;
-    gap: 8px; 
+    gap: 10px; /* 10px */
     margin-bottom: 15px;
 }
 
@@ -112,98 +114,39 @@ h1 {
     flex: 1;
     min-width: 45%; 
     text-align: center;
-    padding: 10px; 
+    padding: 12px; /* ትንሽ ጨመር */
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer; 
     transition: box-shadow 0.3s, transform 0.2s;
     color: white; 
 }
+.stat-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(155, 89, 182, 0.4);
+}
 
 .stat-card i {
-    font-size: 20px; 
-    color: #9B59B6; 
+    font-size: 24px; /* ትንሽ ጨምር */
+    color: #1ABC9C; /* አረንጓዴ/ሰማያዊ ለምልልስ */
     margin-bottom: 5px; 
 }
 
 .stat-card h2 {
-    font-size: 1.2em; 
+    font-size: 1.3em; /* ትንሽ ጨምር */
     font-weight: 700;
     margin: 0;
 }
 
 .stat-card p {
-    font-size: 0.75em;
+    font-size: 0.8em;
     color: #BDC3C7;
     margin: 0;
 }
 
-
-/* ================================== */
-/* 🛑 Splash Screen & Animation CSS 🛑 */
-/* ================================== */
-#splash-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #2c3e50; 
-    z-index: 200; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-#splash-title {
-    font-size: 3.5em; 
-    font-weight: 900;
-    color: #ECF0F1; 
-    text-shadow: 0 0 15px rgba(155, 89, 182, 0.8); 
-    margin: 0;
-}
-
-#splash-screen p {
-    color: #9B59B6; 
-    font-size: 1.5em;
-    margin-top: 5px;
-    font-weight: 300;
-}
-
-/* 🛑 Splash Screen የሚጠፋበት አኒሜሽን 🛑 */
-.fade-out-splash {
-    animation: fadeOut 0.5s ease-out forwards;
-    animation-delay: 1.2s; /* ከ 1.2 ሰከንድ በኋላ መጥፋት ይጀምራል */
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; visibility: hidden; }
-}
-
-/* 🛑 App Container ወደ ውስጥ የሚገባበት አኒሜሽን 🛑 */
-.app-scale-in {
-    opacity: 0;
-    transform: scale(0.98); /* ትንሽ ትንሽ ሆኖ ይጀምራል */
-    animation: scaleIn 0.5s ease-out forwards;
-    animation-delay: 1.6s; /* Splash ከተጠናቀቀ በኋላ ይጀምራል */
-}
-
-@keyframes scaleIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.98);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-
-/* (የModal CSS አልተነካም) */
+/* Modal CSS አልተነካም */
 .modal {
+    display: none;
     position: fixed; 
     z-index: 100; 
     left: 0;
