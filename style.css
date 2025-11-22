@@ -33,17 +33,19 @@ h1 {
     font-size: 1.7em; 
 }
 
-/* 🛑 የተጠቃሚ ቆጠራ ባጅ CSS 🛑 */
+/* 🛑 የተጠቃሚ ቆጠራ ባጅ CSS (ይህ ባጁ እንዲታይ ያደርጋል!) 🛑 */
 #user-count-badge {
     text-align: center; 
     margin-bottom: 15px; 
-    border-bottom: 2px solid #445A6F; /* ከስር ቀጭን መስመር */
+    border-bottom: 2px solid #445A6F; 
     padding-bottom: 10px;
 }
 
 #user-count-badge img {
     max-width: 100%; 
     height: auto;
+    /* ባጁ በትክክል መታየቱን ለማረጋገጥ ይህ አስፈላጊ ነው */
+    display: inline-block; 
 }
 
 /* የፍለጋ መስኩ */
