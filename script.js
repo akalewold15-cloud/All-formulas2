@@ -1,4 +1,4 @@
-// 1. የቀመሮች ዳታቤዝ (32 ቀመሮች)
+// 1. የቀመሮች ዳታቤዝ (አሁን 46 ቀመሮች)
 const formulas = [
     // --- Algebra / General Math ---
     { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
@@ -8,7 +8,9 @@ const formulas = [
     { name: "Logarithm Change of Base", formula: "logₐ(b) = logₓ(b) / logₓ(a)", category: "algebra" },
     { name: "Arithmetic Series Sum", formula: "Sₙ = n/2 * (a₁ + aₙ)", category: "algebra" },
     { name: "Geometric Series Sum", formula: "Sₙ = a₁ * (1 - rⁿ) / (1 - r)", category: "algebra" },
-    
+    { name: "Factoring Difference of Squares", formula: "a² - b² = (a - b)(a + b)", category: "algebra" },
+    { name: "Binomial Theorem", formula: "(x + y)ⁿ = Σ [C(n, k) * xᵏ * yⁿ⁻ᵏ]", category: "algebra" },
+
     // --- Geometry / Trigonometry ---
     { name: "Pythagorean Theorem", formula: "a² + b² = c²", category: "geometry" },
     { name: "Area of a Circle", formula: "A = πr²", category: "geometry" },
@@ -16,21 +18,29 @@ const formulas = [
     { name: "Law of Sines", formula: "a/sin(A) = b/sin(B) = c/sin(C)", category: "geometry" },
     { name: "Law of Cosines", formula: "c² = a² + b² - 2ab cos(C)", category: "geometry" },
     { name: "Volume of a Sphere", formula: "V = (4/3)πr³", category: "geometry" },
+    { name: "Circumference of a Circle", formula: "C = 2πr", category: "geometry" },
+    { name: "Area of Trapezoid", formula: "A = ½(b₁ + b₂)h", category: "geometry" },
+    { name: "Vector Dot Product", formula: "A ⋅ B = |A||B|cos(θ)", category: "geometry" },
     
     // --- Physics / Advanced Mechanics ---
     { name: "Newton's Second Law", formula: "F = ma", category: "physics" },
     { name: "Kinetic Energy", formula: "KE = ½mv²", category: "physics" },
     { name: "Mass-Energy Equivalence", formula: "E = mc²", category: "physics" }, 
-    { name: "Lorentz Factor", formula: "γ = 1 / sqrt(1 - v²/c²)", category: "physics" }, 
+    { name: "Lorentz Factor (Relativity)", formula: "γ = 1 / sqrt(1 - v²/c²)", category: "physics" }, 
     { name: "Gravitational Force", formula: "F = G(m₁m₂ / r²)", category: "physics" },
     { name: "Ohm's Law (Electricity)", formula: "V = IR", category: "physics" },
     { name: "Work Done", formula: "W = Fd cos(θ)", category: "physics" }, 
+    { name: "Power", formula: "P = W/t", category: "physics" },
+    { name: "Pressure (Fluids)", formula: "P = F/A", category: "physics" },
+    { name: "Momentum", formula: "p = mv", category: "physics" },
 
     // --- Calculus / Differential Equations ---
     { name: "Derivative Power Rule", formula: "d/dx (xⁿ) = nxⁿ⁻¹", category: "calculus" },
     { name: "Product Rule (Derivative)", formula: "(fg)' = f'g + fg'", category: "calculus" },
     { name: "Integration by Parts", formula: "∫u dv = uv - ∫v du", category: "calculus" },
     { name: "Chain Rule", formula: "d/dx f(g(x)) = f'(g(x))g'(x)", category: "calculus" },
+    { name: "Fundamental Theorem of Calculus", formula: "∫ₐᵇ f(x) dx = F(b) - F(a)", category: "calculus" },
+    { name: "Taylor Series Expansion", formula: "f(x) = Σ [fⁿ(a) / n!] * (x - a)ⁿ", category: "calculus" },
     
     // --- Chemistry / Thermodynamics ---
     { name: "Ideal Gas Law", formula: "PV = nRT", category: "chemistry" },
@@ -38,11 +48,15 @@ const formulas = [
     { name: "pH Calculation", formula: "pH = -log₁₀[H⁺]", category: "chemistry" },
     { name: "Boyle's Law", formula: "P₁V₁ = P₂V₂", category: "chemistry" },
     { name: "Molarity", formula: "M = moles of solute / liters of solution", category: "chemistry" },
-    
+    { name: "Specific Heat", formula: "q = mc∆T", category: "chemistry" },
+    { name: "Nernst Equation", formula: "E = E° - (RT/nF)ln(Q)", category: "chemistry" },
+
     // --- Statistics ---
     { name: "Standard Deviation", formula: "σ = sqrt(Σ(xᵢ - μ)² / N)", category: "statistics" },
     { name: "Z-Score", formula: "z = (x - μ) / σ", category: "statistics" },
-    { name: "Probability (Binomial)", formula: "P(k) = C(n, k) * pᵏ * (1-p)ⁿ⁻ᵏ", category: "statistics" }
+    { name: "Probability (Binomial)", formula: "P(k) = C(n, k) * pᵏ * (1-p)ⁿ⁻ᵏ", category: "statistics" },
+    { name: "Mean (Average)", formula: "μ = Σxᵢ / N", category: "statistics" },
+    { name: "Coefficient of Variation", formula: "CV = (σ / μ) * 100%", category: "statistics" }
 ];
 
 
@@ -113,6 +127,9 @@ function shareApp() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // 🛑 አፕሊኬሽኑ ሲከፈት ወዲያውኑ ቀመሮቹን ያሳያል (Clean Startup)
+    displayFormulas(formulas);
+    
     // Modal ሎጂክ 
     const inviteCard = document.getElementById('invite-card');
     const modal = document.getElementById('user-modal');
@@ -139,8 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
-    displayFormulas(formulas);
     
     searchInput.addEventListener('input', filterFormulas);
     
