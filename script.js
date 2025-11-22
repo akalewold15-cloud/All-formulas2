@@ -112,9 +112,6 @@ function shareApp() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // 🛑 ምንም Splash Screen Logic የለም 🛑
-    // አፑ ወዲያውኑ ይከፈታል
 
     // Modal ሎጂክ 
     const inviteCard = document.getElementById('invite-card');
@@ -160,10 +157,4 @@ document.addEventListener('DOMContentLoaded', () => {
             filterFormulas();
         }
     });
-
-    
-    const formulaCountElement = document.getElementById('formula-count');
-    if (formulaCountElement) {
-        formulaCountElement.textContent = formulas.length + " Formulas";
-    }
 });
