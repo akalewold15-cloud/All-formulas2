@@ -1,4 +1,4 @@
-// 1. የቀመሮች ዳታቤዝ (ይህ ክፍል አልተቀየረም)
+// 1. የቀመሮች ዳታቤዝ (ምንም ለውጥ የለም)
 const formulas = [
     // --- Algebra / General Math ---
     { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
@@ -44,7 +44,7 @@ const searchInput = document.getElementById('search-input');
 const categoryButtonsContainer = document.getElementById('category-buttons'); 
 let activeCategory = 'all'; 
 
-// 2. ቀመሮችን የሚያሳይ ዋና ተግባር
+// 2. ቀመሮችን የሚያሳይ ዋና ተግባር (አልተቀየረም)
 function displayFormulas(data) {
     formulaList.innerHTML = ''; 
     
@@ -71,7 +71,7 @@ function displayFormulas(data) {
     });
 }
 
-// 3. የፍለጋ እና የማጣራት ሎጂክ
+// 3. የፍለጋ እና የማጣራት ሎጂክ (አልተቀየረም)
 function filterFormulas() {
     const searchTerm = searchInput.value.toLowerCase();
     
@@ -87,9 +87,8 @@ function filterFormulas() {
     displayFormulas(filteredFormulas);
 }
 
-// 4. የግብዣ (Share) ተግባር
+// 4. የግብዣ (Share) ተግባር (አልተቀየረም)
 function shareApp() {
-    // 🛑 አሁን የላክከውን ቋሚ አድራሻ እዚህ እንጠቀማለን!
     const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
     const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
     
@@ -106,6 +105,35 @@ function shareApp() {
 
 // 5. ገጹ ሲከፈት ሁሉንም ማስኬድ
 document.addEventListener('DOMContentLoaded', () => {
+
+    // 🛑 የተስተካከለው Modal Logic እዚህ አለ 🛑
+    const userStatsCard = document.getElementById('user-stats-card');
+    const modal = document.getElementById('user-modal');
+    // የ X መዝጊያውን ቁልፍ በትክክል ማግኘት
+    const closeButton = modal ? modal.querySelector('.close-button') : null; 
+
+    // 1. Modal እንዲከፍት
+    if (userStatsCard && modal) {
+        userStatsCard.addEventListener('click', () => {
+            modal.style.display = 'block';
+        });
+    }
+
+    // 2. Modal እንዲዘጋ (በ X ምልክት ሲነካ)
+    if (closeButton && modal) {
+        closeButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    // 3. Modal እንዲዘጋ (ከ Modal ውጭ ሲነካ)
+    window.addEventListener('click', (event) => {
+        if (modal && event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // የቀደሙት ተግባራት ይቀጥላሉ
     displayFormulas(formulas);
     
     searchInput.addEventListener('input', filterFormulas);
