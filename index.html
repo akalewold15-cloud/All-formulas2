@@ -15,6 +15,19 @@
     <div id="app-container">
         <h1>Akalewold Formula Finder</h1>
         
+        <div class="stats-container">
+            <div class="stat-card" id="user-stats-card"> 
+                <i class="fas fa-users"></i>
+                <h2>500+ Users</h2> 
+                <p>Formula Finders Community</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-calculator"></i>
+                <h2 id="formula-count">24+ Formulas</h2> 
+                <p>Extensive Formula Database</p>
+            </div>
+        </div>
+        
         <input type="text" id="search-input" placeholder="Formula search...">
         
         <div id="category-buttons">
@@ -32,23 +45,21 @@
         
         <hr style="margin: 30px 0;">
         
-        <div class="stats-container">
-            <div class="stat-card">
-                <i class="fas fa-users"></i>
-                <h2>500+ Users</h2> 
-                <p>Formula Finders Community</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-calculator"></i>
-                <h2 id="formula-count">24+ Formulas</h2> 
-                <p>Extensive Formula Database</p>
-            </div>
-        </div>
-        
         <button id="invite-button" onclick="shareApp()">
             <i class="fas fa-share-alt"></i> Invite Friends
         </button>
         
+    </div>
+    
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Formula Finders Community</h2>
+            <p><strong>Akalewold Formula Finder</strong> በትምህርት ማህበረሰብ ውስጥ እያደገ ያለ ፕሮጀክት ነው።</p>
+            <p>አሁን ያለው የ"500+ Users" ቁጥር ፕሮጀክቱ ለመድረስ ያለመውን **ትልቅ ራዕይ** ያሳያል እና አፕሊኬሽኑን በቴሌግራም ላይ የሚጠቀሙ **አጠቃላይ ሰዎችን** ለመወከል የተቀመጠ ነው።</p>
+            <p>እርስዎም ይህን አፕ በማጋራት የማህበረሰቡ አካል ይሁኑ!</p>
+            <button onclick="shareApp()">Invite Friends Now!</button>
+        </div>
     </div>
 
     <script src="script.js"></script> 
