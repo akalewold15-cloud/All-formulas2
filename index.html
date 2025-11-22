@@ -1,68 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akalewold Formula Finder</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-</head>
-<body>
-    
-    <div id="app-container"> 
-        <h1>Akalewold Formula Finder</h1>
-        
-        <div id="user-count-badge">
-            <img src="https://komarev.com/pub/github/forks/akalewold15-cloud/All-formulas2.svg?color=1ABC9C" alt="Real-time visitors count">
-        </div>
-        
-        <div class="stats-container">
-            <div class="stat-card" id="invite-card" onclick="shareApp()"> 
-                <i class="fas fa-share-alt"></i>
-                <h2>Invite Friends</h2> 
-                <p>Grow the Community</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-star"></i>
-                <h2>App Version</h2> 
-                <p>1.2.0 (Stable)</p>
-            </div>
-        </div>
-        
-        <input type="text" id="search-input" placeholder="Formula search...">
-        
-        <div id="category-buttons">
-            <button class="cat-button active" data-category="all">All</button>
-            <button class="cat-button" data-category="algebra">Algebra</button>
-            <button class="cat-button" data-category="geometry">Geometry</button>
-            <button class="cat-button" data-category="physics">Physics</button>
-            <button class="cat-button" data-category="calculus">Calculus</button>
-            <button class="cat-button" data-category="chemistry">Chemistry</button>
-            <button class="cat-button" data-category="statistics">Statistics</button>
-        </div>
-        
-        <div id="formula-list">
-            </div>
-        
-    </div>
-    
-    <div id="user-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Akalewold Community</h2>
-            <p><strong>እንኳን ደህና መጣችሁ!</strong></p>
-            <p>ይህ አፕ የተፈጠረው የፎርሙላ ፍለጋን ቀላል እና ፈጣን ለማድረግ ነው።</p>
-            <p>አፑ እንዲያድግ እና እንዲታወቅ <strong>Invite Friends</strong> የሚለውን ካርድ በመጫን ላልደረሳቸው ጓደኞችዎ ያካፍሉ!</p>
-            
-            <hr>
-            
-            <button onclick="shareApp()">Invite Friends Now!</button>
-        </div>
-    </div>
+/* ---- 🛑 የመጨረሻው አስተማማኝ እና ማራኪ ገጽታ 🛑 ---- */
 
-    <script src="script.js"></script> 
-</body>
-</html>
+body {
+    background-color: #2c3e50; 
+    color: #ECF0F1; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    padding: 10px; 
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    overflow-x: hidden; 
+}
+
+#app-container {
+    background-color: #34495e; 
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    padding: 15px; 
+    max-width: 550px; 
+    width: 100%;
+    margin-top: 10px;
+}
+
+h1 {
+    color: #8E44AD; 
+    border-bottom: none; 
+    padding-bottom: 0;
+    margin-bottom: 5px; 
+    font-weight: 700;
+    text-align: center;
+    font-size: 1.7em; 
+}
+
+/* 🛑 የተጠቃሚ ቆጠራ ባጅ CSS 🛑 */
+#user-count-badge {
+    text-align: center; 
+    margin-bottom: 15px; 
+    border-bottom: 2px solid #445A6F; 
+    padding-bottom: 10px;
+}
+
+#user-count-badge img {
+    max-width: 100%; 
+    height: auto;
+    display: inline-block; /* ቆጣሪው እንዳይጠፋ ያደርጋል */
+}
+
+/* የፍለጋ መስኩ */
+#search-input {
+    background-color: #445A6F; 
+    color: #ECF0F1;
+    border: none;
+    border-radius: 20px; 
+    padding: 10px 15px; 
+    margin-bottom: 15px;
+    font-size: 14px; 
+    width: calc(100% - 30px);
+}
+
+/* --- የ Category Buttons ዲዛይን --- */
+#category-buttons {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 6px; 
+    margin-bottom: 20px;
+    justify-content: center; 
+}
+
+.cat-button {
+    background-color: #445A6F; 
+    color: #ECF0F1; 
+    border: none;
+    border-radius: 15px; 
+    padding: 5px 12px; 
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cat-button.active {
+    background-color: #9B59B6; 
+    color: white;
+    box-shadow: 0 2px 5px rgba(155, 89, 182, 0.5); 
+    font-weight: 600;
+}
+
+/* የቀመር ካርዶች (Formula Cards) */
+.formula-card {
+    background-color: #445A6F; 
+    border-radius: 10px; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); 
+    margin-bottom: 10px;
+    padding: 15px; 
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.formula-card h3 {
+    color: #9B59B6; 
+    font-size: 1.2em; 
+    margin-bottom: 4px; 
+}
+
+.formula-card p {
+    font-size: 0.9em;
+    color: #BDC3C7;
+    margin: 2px 0;
+}
+
+/* --- የስታቲስቲክስ ካርዶች (Invite/Version) --- */
+.stats-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; 
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    background-color: #445A6F;
+    flex: 1;
+    min-width: 45%; 
+    text-align: center;
+    padding: 12px; 
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer; 
+    transition: box-shadow 0.3s, transform 0.2s;
+    color: white; 
+}
+
+.stat-card i {
+    font-size: 24px; 
+    color: #1ABC9C; 
+    margin-bottom: 5px; 
+}
+
+.stat-card h2 {
+    font-size: 1.3em; 
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-card p {
+    font-size: 0.8em;
+    color: #BDC3C7;
+    margin: 0;
+}
+
+/* Modal CSS */
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.7); 
+    backdrop-filter: blur(5px); 
+}
+
+.modal-content {
+    background-color: #34495E;
+    color: #ECF0F1;
+    margin: 15% auto; 
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 400px; 
+    text-align: center;
+}
+
+.modal-content button {
+    background-color: #1ABC9C;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+}
