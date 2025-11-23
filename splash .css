@@ -1,0 +1,53 @@
+/* ---- 🛑 SPLASH SCREEN ዲዛይን 🛑 ---- */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #0d1a26; /* ጥቁር ዳራ */
+    color: #e6eef5; 
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#splash-container {
+    text-align: center;
+}
+
+.splash-title {
+    color: #4a90e2; /* ሰማያዊ ቀለም */
+    font-size: 3em; 
+    font-weight: 800;
+    margin-bottom: 25px;
+    animation: pulse 1.5s infinite; /* ለተወሰነ እንቅስቃሴ */
+}
+
+p {
+    color: #1abc9c;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+.loader {
+    border: 5px solid #1a2c3d;
+    border-top: 5px solid #1abc9c;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
