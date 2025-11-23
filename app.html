@@ -1,64 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akalewold Formula Finder | 1000 Formulas</title>
-    
-    <link rel="stylesheet" href="./style.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-</head>
-<body>
-    
-    <div id="app-container"> 
-        <h1>Akalewold Formula Finder</h1>
-        
-        <div class="stats-container">
-            <div class="stat-card" id="invite-card"> 
-                <i class="fas fa-users"></i>
-                <h2>Invite Friends</h2> 
-                <p>Grow the Community</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-calculator"></i>
-                <h2>Formula Count</h2> 
-                <p id="formula-count-display">Loading...</p> 
-            </div>
-        </div>
-        
-        <div class="search-box">
-             <i class="fas fa-search"></i>
-             <input type="text" id="search-input" placeholder="Search formulas by name or symbol...">
-        </div>
-        
-        <div id="category-buttons">
-            <button class="cat-button active" data-category="all">All</button>
-            <button class="cat-button" data-category="algebra">Algebra</button>
-            <button class="cat-button" data-category="geometry">Geometry</button>
-            <button class="cat-button" data-category="physics">Physics</button>
-            <button class="cat-button" data-category="calculus">Calculus</button>
-            <button class="cat-button" data-category="chemistry">Chemistry</button>
-            <button class="cat-button" data-category="statistics">Statistics</button>
-        </div>
-        
-        <div id="formula-list">
-        </div>
-        
-    </div>
-    
-    <div id="user-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Invite Akalewold Community</h2>
-            <p><strong>Thank you for using the app!</strong></p>
-            <p>Please share the app with your friends to grow the community.</p>
-            <hr>
-            <button onclick="shareApp()">Share App Now!</button>
-        </div>
-    </div>
+// ... (የኮዱ መጀመሪያ እንደነበረው ይቆያል)
 
-    <script src="./formulas_data.js"></script>
-    <script src="./script.js"></script> 
-</body>
-</html>
+// የማጋራት ተግባር
+function shareApp() {
+    // 🛑 የእርስዎን ትክክለኛ GitHub Pages URL እዚህ ይጠቀሙ 🛑
+    // በሪፖዚተሪ ስም (All-formulas2) በትክክል እንዲሄድ ተደርጓል
+    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
+    const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Akalewold Formula Finder',
+            text: shareText,
+            url: appUrl,
+        }).catch((error) => console.log('Error sharing', error));
+    } else {
+        prompt("Copy this link to share the app:", appUrl);
+    }
+}
+
+// ... (የኮዱ መጨረሻ እንደነበረው ይቆያል)
