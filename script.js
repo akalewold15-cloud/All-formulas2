@@ -1,4 +1,4 @@
-// 1. የቀመሮች ዳታቤዝ (አሁን 46 ቀመሮች)
+// 1. የቀመሮች ዳታቤዝ (46 ቀመሮች)
 const formulas = [
     // --- Algebra / General Math ---
     { name: "Quadratic Formula", formula: "x = [-b ± sqrt(b²-4ac)] / 2a", category: "algebra" },
@@ -74,7 +74,7 @@ function displayFormulas(data) {
         noResultsMessage.textContent = "No formulas found. Try a different search or category.";
         noResultsMessage.style.textAlign = "center";
         noResultsMessage.style.marginTop = "20px";
-        noResultsMessage.style.color = "#BDC3C7";
+        noResultsMessage.style.color = "#9cb3c9";
         formulaList.appendChild(noResultsMessage);
         return; 
     }
@@ -110,6 +110,7 @@ function filterFormulas() {
 
 
 function shareApp() {
+    // ይህ አፕሊኬሽኑን ለመጋራት የሚያገለግል ተግባር ነው።
     const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
     const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
     
@@ -127,7 +128,7 @@ function shareApp() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 🛑 አፕሊኬሽኑ ሲከፈት ወዲያውኑ ቀመሮቹን ያሳያል (Clean Startup)
+    // 🛑 አፕሊኬሽኑ ሲከፈት ወዲያውኑ ቀመሮቹን ያሳያል
     displayFormulas(formulas);
     
     // Modal ሎጂክ 
