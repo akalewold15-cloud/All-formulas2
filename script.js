@@ -110,8 +110,7 @@ function filterFormulas() {
 
 
 function shareApp() {
-    // ይህ አፕሊኬሽኑን ለመጋራት የሚያገለግል ተግባር ነው።
-    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/"; 
+    const appUrl = "https://akalewold15-cloud.github.io/All-formulas2/index.html"; 
     const shareText = "I found the ultimate formula finder! Check out Akalewold Formula Finder for all your study needs! Share this link: " + appUrl;
     
     if (navigator.share) {
@@ -128,7 +127,7 @@ function shareApp() {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 🛑 አፕሊኬሽኑ ሲከፈት ወዲያውኑ ቀመሮቹን ያሳያል
+    // 🛑 አፕሊኬሽኑ ሲከፈት ወዲያውኑ ቀመሮቹን ያሳያል (ምንም Splash Screen Logic የለም) 🛑
     displayFormulas(formulas);
     
     // Modal ሎጂክ 
