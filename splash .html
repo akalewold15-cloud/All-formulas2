@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    
+    <link rel="stylesheet" href="splash.css"> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ከ2 ሰከንድ በኋላ ወደ ዋናው ገጽ (index.html) መዝለል
+            setTimeout(() => {
+                window.location.href = 'index.html'; 
+            }, 2000); // 2000ms = 2 ሰከንድ
+        });
+    </script>
+</head>
+<body>
+    <div id="splash-container">
+        <h1 class="splash-title">Akalewold Formula Finder</h1>
+        <div class="loader"></div>
+        <p>Loading World-Class Formulas...</p>
+    </div>
+</body>
+</html>
