@@ -4,67 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akalewold Formula Finder</title>
-    
-    <script>
-        // የድሮውን Interstitial SDK አስገብተናል
-        var a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://nap5k.com/js/full.js?z=5329068";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(a,s);
-    </script>
+
+    <script>(function(s){s.dataset.zone='10232517',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     <style>
+        /* ⭐️ World-Class Dark Mode Design ⭐️ */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #0d0d0d; /* ጥቁር የጀርባ ቀለም */
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 0;
+            color: #f0f0f0; /* ነጭ ጽሁፍ */
+            overflow-x: hidden;
+            transition: opacity 0.5s;
         }
+
+        /* የመግቢያ ገጽ (Splash Screen) */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0d0d0d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #f0f0f0;
+            font-size: 2em;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+            opacity: 1;
+        }
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        #splash-screen h2 {
+            margin: 0;
+            font-weight: 600;
+            color: #a0a0ff;
+        }
+        
         #app-container {
             max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
+            margin: 20px auto;
+            background-color: #1f1f1f; /* ጥቁር ፓኔል */
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* ጠንካራ ጥላ */
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
         }
+        #app-container.visible {
+            opacity: 1;
+        }
+        
         h1 {
-            color: #007bff;
+            color: #b0b0ff; /* ለዋናው ርዕስ የሚያምር ሰማያዊ */
             text-align: center;
             margin-bottom: 25px;
             font-size: 1.8em;
+            font-weight: 500;
         }
-        /* የInfo Bar Style */
+
+        /* ⭐️ የባህሪ ካርዶች (Feature Cards) ⭐️ */
         .info-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .info-card {
+            flex: 1;
+            padding: 20px 15px;
+            border-radius: 12px;
             text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #e9f5ff; 
-            border-radius: 8px;
-            font-size: 0.9em;
-            color: #0056b3;
-            border: 1px solid #cce5ff;
-        }
-        .info-bar a {
-            color: #007bff;
-            text-decoration: none;
+            font-size: 1.1em;
             font-weight: bold;
-            margin-left: 10px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        .info-bar a:hover {
-            text-decoration: underline;
+        
+        /* የቀመር ቆጣሪ ካርድ (ግራዲየንት 1) */
+        #formula-count-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* ሮዝ/ቀይ ግራዲየንት */
         }
+        
+        /* የጋብዝ ሊንክ ካርድ (ግራዲየንት 2) */
+        #invite-link-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* ሰማያዊ/ሳይያን ግራዲየንት */
+        }
+
+        .info-card a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            margin-top: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
         .search-container {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         input[type="text"] {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e1e4e8;
-            border-radius: 8px;
+            border: 2px solid #333;
+            background-color: #2c2c2c;
+            color: #f0f0f0;
+            border-radius: 10px;
             font-size: 1em;
             box-sizing: border-box;
             transition: border-color 0.3s;
         }
         input[type="text"]:focus {
-            border-color: #007bff;
+            border-color: #00f2fe; /* የሳይያን ሀይላይት */
             outline: none;
         }
         ul {
@@ -73,28 +129,30 @@
             margin: 0;
         }
         li {
-            background-color: #ffffff;
+            background-color: #2c2c2c; /* የጥቁር ዝርዝር ዳራ */
             padding: 15px;
             margin-bottom: 12px;
-            border-radius: 8px;
-            border: 1px solid #e1e4e8;
-            border-left: 5px solid #007bff;
+            border-radius: 10px;
+            border: 1px solid #333;
+            /* ትንሽ የግራዲየንት ግራ ጠርዝ */
+            border-left: 5px solid; 
+            border-image: linear-gradient(to bottom, #f093fb, #4facfe) 1;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         li:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         li strong {
             display: block;
-            color: #2c3e50;
+            color: #ffffff;
             font-size: 1.1em;
             margin-bottom: 4px;
         }
         li span {
-            color: #555;
+            color: #b0b0b0;
             font-family: 'Courier New', Courier, monospace;
-            background: #f8f9fa;
+            background: #333;
             padding: 2px 6px;
             border-radius: 4px;
         }
@@ -108,12 +166,24 @@
 </head>
 <body>
 
+    <div id="splash-screen">
+        <h2>Akalewold Formula Finder</h2>
+        <p style="font-size: 0.5em; font-weight: 300; opacity: 0.7;">Loading World-Class Formulas...</p>
+    </div>
+
     <div id="app-container"> 
         <h1>Akalewold Formula Finder</h1>
         
         <div class="info-bar">
-            <span id="formula-count">...loading...</span>
-            <a href="#" id="invite-link" target="_blank">🤝 ሰዎችን ጋብዝ</a>
+            <div class="info-card" id="formula-count-card">
+                <span id="formula-count">...loading...</span>
+                <p style="font-size: 0.7em; margin: 0; opacity: 0.9;">ጠቅላላ ቀመሮች</p>
+            </div>
+            
+            <div class="info-card" id="invite-link-card">
+                <a href="#" id="invite-link" target="_blank">🤝 ሰዎችን ጋብዝ</a>
+                <p style="font-size: 0.7em; margin: 0; opacity: 0.9;">ተጠቃሚዎችን በመጨመር ገቢ ይጨምሩ</p>
+            </div>
         </div>
         
         <div class="search-container">
@@ -145,7 +215,7 @@
         ];
 
         const formulas = [];
-        // 1000 ቀመሮች እንዲመስሉ ለማድረግ የቀመሮቹን ዝርዝር ደጋግመን እንጨምራለን (84 * 12 = 1008 Formulas)
+        // 1000 ቀመሮች እንዲመስሉ ለማድረግ የቀመሮቹን ዝርዝር ደጋግመን እንጨምራለን
         for (let i = 0; i < 84; i++) { 
              baseFormulas.forEach(item => {
                 formulas.push({
@@ -163,6 +233,8 @@
         const noResultMsg = document.getElementById('no-result');
         const formulaCountElement = document.getElementById('formula-count');
         const inviteLinkElement = document.getElementById('invite-link');
+        const splashScreen = document.getElementById('splash-screen');
+        const appContainer = document.getElementById('app-container');
 
         function displayFormulas(formulasToShow) {
             listContainer.innerHTML = '';
@@ -192,7 +264,7 @@
         });
 
         // 1. የFormula ብዛት አሳይ
-        formulaCountElement.textContent = `ጠቅላላ ቀመሮች: ${formulas.length}`;
+        formulaCountElement.textContent = `${formulas.length}+`;
 
         // 2. የጋብዝ ሊንክ አዘጋጅ (Telegram Share)
         const appUrl = window.location.href; 
@@ -201,8 +273,17 @@
         inviteLinkElement.href = `https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(shareText)}`;
 
 
-        // መጀመሪያ ስንከፍት ሁሉንም 1000+ ቀመሮችን አሳይ
-        displayFormulas(formulas);
+        // የመግቢያ ገጹን የሚደብቅ ፋንክሽን
+        window.addEventListener('load', () => {
+            // መጀመሪያ ስንከፍት ሁሉንም 1000+ ቀመሮችን አሳይ
+            displayFormulas(formulas); 
+
+            // ለ 2 ሰከንዶች በኋላ የመግቢያ ገጹን ደብቅ
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+                appContainer.classList.add('visible'); // ዋናውን ገጽ አሳየ
+            }, 2000); // 2000 ሚሊሰከንድ = 2 ሰከንድ
+        });
     </script>
 </body>
 </html>
