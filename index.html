@@ -10,15 +10,15 @@
         /* ⭐️ World-Class Dark Mode Design ⭐️ */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0d0d0d; /* ጥቁር የጀርባ ቀለም */
+            background-color: #0d0d0d;
             margin: 0;
             padding: 0;
-            color: #f0f0f0; /* ነጭ ጽሁፍ */
+            color: #f0f0f0;
             overflow-x: hidden;
             transition: opacity 0.5s;
         }
 
-        /* የመግቢያ ገጽ (Splash Screen) */
+        /* የመግቢያ ገጽ (Splash Screen) እና አኒሜሽን ማሻሻያ */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -45,14 +45,30 @@
             font-weight: 600;
             color: #a0a0ff;
         }
+        /* ቀላል ሎዲንግ አኒሜሽን */
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            margin: 0 4px;
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
         
         #app-container {
             max-width: 600px;
             margin: 20px auto;
-            background-color: #1f1f1f; /* ጥቁር ፓኔል */
+            background-color: #1f1f1f;
             padding: 25px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* ጠንካራ ጥላ */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.5s ease-in;
         }
@@ -61,14 +77,14 @@
         }
         
         h1 {
-            color: #b0b0ff; /* ለዋናው ርዕስ የሚያምር ሰማያዊ */
+            color: #b0b0ff;
             text-align: center;
             margin-bottom: 25px;
             font-size: 1.8em;
             font-weight: 500;
         }
 
-        /* ⭐️ የባህሪ ካርዶች (Feature Cards) ⭐️ */
+        /* የባህሪ ካርዶች (Feature Cards) */
         .info-bar {
             display: flex;
             justify-content: space-between;
@@ -85,24 +101,40 @@
             color: white;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        
-        /* የቀመር ቆጣሪ ካርድ (ግራዲየንት 1) */
         #formula-count-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); /* ሮዝ/ቀይ ግራዲየንት */
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
-        
-        /* የጋብዝ ሊንክ ካርድ (ግራዲየንት 2) */
         #invite-link-card {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* ሰማያዊ/ሳይያን ግራዲየንት */
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
-        .info-card a {
-            color: inherit;
-            text-decoration: none;
-            display: block;
-            margin-top: 5px;
-            font-size: 0.9em;
-            opacity: 0.8;
+        /* ⭐️ የካታጎሪ ቁልፎች Style ⭐️ */
+        .category-container {
+            display: flex;
+            justify-content: space-between;
+            overflow-x: auto;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 5px; 
+        }
+        .category-button {
+            flex-shrink: 0; /* እንዳይጠበቡ */
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background-color: #333;
+            color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, transform 0.1s;
+            font-weight: 500;
+        }
+        .category-button:hover {
+            background-color: #444;
+        }
+        .category-button.active {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0, 242, 254, 0.3);
         }
 
         .search-container {
@@ -120,7 +152,7 @@
             transition: border-color 0.3s;
         }
         input[type="text"]:focus {
-            border-color: #00f2fe; /* የሳይያን ሀይላይት */
+            border-color: #00f2fe;
             outline: none;
         }
         ul {
@@ -129,12 +161,11 @@
             margin: 0;
         }
         li {
-            background-color: #2c2c2c; /* የጥቁር ዝርዝር ዳራ */
+            background-color: #2c2c2c;
             padding: 15px;
             margin-bottom: 12px;
             border-radius: 10px;
             border: 1px solid #333;
-            /* ትንሽ የግራዲየንት ግራ ጠርዝ */
             border-left: 5px solid; 
             border-image: linear-gradient(to bottom, #f093fb, #4facfe) 1;
             transition: transform 0.2s, box-shadow 0.2s;
@@ -168,7 +199,12 @@
 
     <div id="splash-screen">
         <h2>Akalewold Formula Finder</h2>
-        <p style="font-size: 0.5em; font-weight: 300; opacity: 0.7;">Loading World-Class Formulas...</p>
+        <div style="margin-top: 20px;">
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        </div>
+        <p style="font-size: 0.5em; font-weight: 300; opacity: 0.7; margin-top: 10px;">Loading World-Class Formulas...</p>
     </div>
 
     <div id="app-container"> 
@@ -185,9 +221,15 @@
                 <p style="font-size: 0.7em; margin: 0; opacity: 0.9;">ተጠቃሚዎችን በመጨመር ገቢ ይጨምሩ</p>
             </div>
         </div>
-        
+
+        <div class="category-container" id="category-container">
+            <button class="category-button active" data-category="All">ሁሉም</button>
+            <button class="category-button" data-category="Math">ሂሳብ</button>
+            <button class="category-button" data-category="Physics">ፊዚክስ</button>
+            <button class="category-button" data-category="Other">ሌሎች</button>
+        </div>
         <div class="search-container">
-            <input type="text" id="formula-search" placeholder="ቀመር ፈልግ (ለምሳሌ: Force, Area, Ohm)...">
+            <input type="text" id="formula-search" placeholder="በስም ወይም በምልክት ፈልግ (ለምሳሌ: Force, π, Ohm)...">
         </div>
         
         <ul id="formula-list">
@@ -212,16 +254,20 @@
             { name: "Pressure", formula: "P = F / A", tags: "physics force area pascal" },
             { name: "Momentum", formula: "p = m × v", tags: "physics motion mass" },
             { name: "Frequency", formula: "f = 1 / T", tags: "physics wave period" },
+            { name: "Pythagorean Theorem", formula: "a² + b² = c²", tags: "math geometry triangle" },
+            { name: "Quadratic Formula", formula: "x = [-b ± √(b²-4ac)] / 2a", tags: "math algebra" },
+            { name: "Chemical Mole", formula: "n = m / M", tags: "chemistry mass" },
+            { name: "Ideal Gas Law", formula: "PV = nRT", tags: "chemistry physics" },
         ];
 
         const formulas = [];
         // 1000 ቀመሮች እንዲመስሉ ለማድረግ የቀመሮቹን ዝርዝር ደጋግመን እንጨምራለን
-        for (let i = 0; i < 84; i++) { 
+        for (let i = 0; i < 63; i++) { 
              baseFormulas.forEach(item => {
                 formulas.push({
                     name: `${item.name} (Ref ${i + 1})`,
                     formula: item.formula,
-                    tags: `${item.tags} set${i + 1}`
+                    tags: item.tags 
                 });
              });
         }
@@ -235,6 +281,9 @@
         const inviteLinkElement = document.getElementById('invite-link');
         const splashScreen = document.getElementById('splash-screen');
         const appContainer = document.getElementById('app-container');
+        const categoryContainer = document.getElementById('category-container');
+        
+        let currentCategory = 'All'; 
 
         function displayFormulas(formulasToShow) {
             listContainer.innerHTML = '';
@@ -251,17 +300,40 @@
             }
         }
 
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
+        function filterAndDisplay() {
+            const searchTerm = searchInput.value.toLowerCase();
             
             const filteredFormulas = formulas.filter(item => {
-                return item.name.toLowerCase().includes(searchTerm) || 
-                       item.formula.toLowerCase().includes(searchTerm) ||
-                       item.tags.toLowerCase().includes(searchTerm);
+                const passesCategory = currentCategory === 'All' || 
+                                       item.tags.toLowerCase().includes(currentCategory.toLowerCase());
+                
+                const passesSearch = item.name.toLowerCase().includes(searchTerm) || 
+                                     item.formula.toLowerCase().includes(searchTerm) ||
+                                     item.tags.toLowerCase().includes(searchTerm);
+                                     
+                return passesCategory && passesSearch;
             });
 
             displayFormulas(filteredFormulas);
+        }
+
+        searchInput.addEventListener('input', filterAndDisplay);
+
+        // የካታጎሪ ቁልፎችን የመጫን ተግባር
+        categoryContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-button')) {
+                // የድሮውን active አስወግድ
+                document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+                
+                // አዲሱን active አድርግ
+                e.target.classList.add('active');
+                
+                // ካታጎሪውን ቀይርና አጣራ
+                currentCategory = e.target.dataset.category;
+                filterAndDisplay();
+            }
         });
+
 
         // 1. የFormula ብዛት አሳይ
         formulaCountElement.textContent = `${formulas.length}+`;
@@ -275,14 +347,14 @@
 
         // የመግቢያ ገጹን የሚደብቅ ፋንክሽን
         window.addEventListener('load', () => {
-            // መጀመሪያ ስንከፍት ሁሉንም 1000+ ቀመሮችን አሳይ
-            displayFormulas(formulas); 
+            // መጀመሪያ ስንከፍት ሁሉንም ቀመሮችን አሳይ
+            filterAndDisplay(); 
 
             // ለ 2 ሰከንዶች በኋላ የመግቢያ ገጹን ደብቅ
             setTimeout(() => {
                 splashScreen.classList.add('hidden');
                 appContainer.classList.add('visible'); // ዋናውን ገጽ አሳየ
-            }, 2000); // 2000 ሚሊሰከንድ = 2 ሰከንድ
+            }, 2000); 
         });
     </script>
 </body>
