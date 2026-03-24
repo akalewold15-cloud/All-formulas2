@@ -1,9 +1,9 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Math Formulas | Akalewold</title>
+    <title>All-Formulas Pro | Akalewold</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #1a237e; --accent: #ff9800; --bg: #f0f2f5; }
@@ -22,115 +22,95 @@
             justify-content: center; font-weight: bold; border: 2px solid white; 
         }
 
-        /* Subject Grid - 2 Columns (ዲዛይኑ አልተቀየረም) */
+        /* Subject Grid - 2 Columns */
         .subject-grid { 
             display: grid; grid-template-columns: repeat(2, 1fr); 
-            gap: 12px; padding: 15px; 
+            gap: 10px; padding: 15px; 
         }
         .subject-card { 
-            background: white; padding: 25px 15px; border-radius: 15px; 
+            background: white; padding: 20px; border-radius: 15px; 
             text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); 
-            cursor: pointer; transition: 0.3s; border-bottom: 4px solid #eee;
+            cursor: pointer; transition: 0.3s;
         }
-        .subject-card:hover { transform: translateY(-5px); border-bottom-color: var(--accent); }
-        .subj-icon { font-size: 30px; display: block; margin-bottom: 8px; }
+        .subject-card:hover { transform: scale(1.03); }
+        .subj-icon { font-size: 25px; display: block; margin-bottom: 5px; }
 
-        /* Formula Page Content */
+        /* Formula Page */
         .container { padding: 15px; max-width: 800px; margin: auto; }
         .page-section { display: none; }
         .active { display: block; animation: fadeIn 0.4s; }
         
         .formula-card { 
-            background: white; padding: 18px; border-radius: 12px; 
-            margin-bottom: 12px; border-left: 6px solid var(--primary); 
+            background: white; padding: 15px; border-radius: 12px; 
+            margin-bottom: 12px; border-left: 5px solid var(--primary); 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .formula-card b { color: #333; font-size: 16px; }
         .formula-box { 
-            background: #f8f9fa; padding: 12px; border-radius: 8px; 
+            background: #f8f9fa; padding: 10px; border-radius: 8px; 
             font-family: 'Courier New', monospace; color: #c62828; 
-            font-size: 16px; margin-top: 10px; overflow-x: auto;
-            border: 1px solid #eee;
+            font-size: 15px; margin-top: 10px; overflow-x: auto;
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .back-btn { background: none; border: none; color: var(--primary); font-weight: bold; cursor: pointer; padding: 10px 0; font-size: 15px; }
+        .back-btn { background: none; border: none; color: var(--primary); font-weight: bold; cursor: pointer; padding: 10px 0; }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="font-size: 22px; cursor: pointer;" onclick="showPage('home')">☰</div>
-        <div style="font-weight: 600; font-size: 18px;">All Math Formulas</div>
+        <div style="font-size: 20px; cursor: pointer;" onclick="showPage('home')">☰</div>
+        <div style="font-weight: 600;">All-Formulas Pro</div>
         <div class="avatar-circle" id="userInitial">A</div>
     </header>
 
     <div class="container">
         <section id="page-home" class="page-section active">
-            <div style="background: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                <h2 style="margin:0; color: var(--primary);">ሰላም Akalewold! 👋</h2>
-                <p style="color: #666; font-size: 14px; margin-top: 10px;">ከ 1,300 በላይ ፎርሙላዎች በየምዕራፉ ተከፋፍለዋል</p>
+            <div style="background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; text-align: center;">
+                <h2 style="margin:0;">ሰላም <span id="uName">Akalewold</span>!</h2>
+                <p style="color: #666; font-size: 14px;">ከ 1,300 በላይ ፎርሙላዎች ዝግጁ ናቸው</p>
             </div>
             
             <div class="subject-grid">
-                <div class="subject-card" onclick="showPage('numberSets')"><span class="subj-icon">🔢</span>Number Sets</div>
-                <div class="subject-card" onclick="showPage('algebra')"><span class="subj-icon">➗</span>Algebra</div>
-                <div class="subject-card" onclick="showPage('geometry')"><span class="subj-icon">📐</span>Geometry</div>
-                <div class="subject-card" onclick="showPage('trig')"><span class="subj-icon">📉</span>Trigonometry</div>
-                <div class="subject-card" onclick="showPage('calculus')"><span class="subj-icon">♾️</span>Calculus</div>
-                <div class="subject-card" onclick="showPage('prob')"><span class="subj-icon">🎲</span>Probability</div>
+                <div class="subject-card" onclick="showPage('math')"><span class="subj-icon">📐</span>Math</div>
+                <div class="subject-card" onclick="showPage('physics')"><span class="subj-icon">⚡</span>Physics</div>
+                <div class="subject-card" onclick="showPage('chemistry')"><span class="subj-icon">🧪</span>Chemistry</div>
+                <div class="subject-card" onclick="showPage('biology')"><span class="subj-icon">🧬</span>Biology</div>
+                <div class="subject-card" onclick="showPage('civics')"><span class="subj-icon">⚖️</span>Civics</div>
+                <div class="subject-card" onclick="showPage('geography')"><span class="subj-icon">🌍</span>Geography</div>
             </div>
         </section>
 
         <section id="page-content" class="page-section">
-            <button class="back-btn" onclick="showPage('home')">← ተመለስ (Back)</button>
-            <h2 id="sectionTitle" style="color: var(--primary); border-bottom: 2px solid #ddd; padding-bottom: 10px;">Subject</h2>
+            <button class="back-btn" onclick="showPage('home')">← Back to Dashboard</button>
+            <h2 id="sectionTitle" style="color: var(--primary);">Subject</h2>
             <div id="formulaList"></div>
         </section>
     </div>
 
     <script>
-        // User Info
         const studentName = "Akalewold"; 
         document.getElementById('userInitial').innerText = studentName[0];
+        document.getElementById('uName').innerText = studentName;
 
-        // ከመጽሐፉ (PDF) የተወሰዱ ዋና ዋና ፎርሙላዎች ዝርዝር
-        const mathData = {
-            numberSets: [
-                {t: "Commutative Law", f: "a + b = b + a \n ab = ba"},
-                {t: "Associative Law", f: "(a + b) + c = a + (b + c) \n (ab)c = a(bc)"},
-                {t: "Distributive Law", f: "a(b + c) = ab + ac"},
-                {t: "Complex Numbers", f: "z = a + bi"}
-            ],
-            algebra: [
-                {t: "Square of Sum", f: "(a + b)² = a² + 2ab + b²"},
-                {t: "Square of Difference", f: "(a - b)² = a² - 2ab + b²"},
+        // ከመጽሐፍህ የተወሰዱ አንዳንድ ፎርሙላዎች
+        const data = {
+            math: [
+                {t: "Special Product", f: "(a + b)² = a² + 2ab + b²"},
                 {t: "Difference of Squares", f: "a² - b² = (a - b)(a + b)"},
                 {t: "Quadratic Formula", f: "x = [-b ± √(b² - 4ac)] / 2a"},
-                {t: "Logarithm Rules", f: "log_a(MN) = log_a M + log_a N \n log_a(M/N) = log_a M - log_a N"},
-                {t: "Exponents", f: "aⁿ * aᵐ = aⁿ⁺ᵐ \n (aⁿ)ᵐ = aⁿᵐ"}
+                {t: "Logarithm Product", f: "log_a(MN) = log_a M + log_a N"},
+                {t: "Circle Area", f: "A = πr²"}
             ],
-            geometry: [
-                {t: "Area of Circle", f: "A = πr²"},
-                {t: "Circumference", f: "C = 2πr"},
-                {t: "Pythagorean Theorem", f: "a² + b² = c²"},
-                {t: "Volume of Cylinder", f: "V = πr²h"},
-                {t: "Area of Triangle", f: "A = ½ * base * height"}
+            physics: [
+                {t: "Newton's 2nd Law", f: "F = ma"},
+                {t: "Work", f: "W = Fd cos θ"},
+                {t: "Ohm's Law", f: "V = IR"},
+                {t: "Power", f: "P = VI = I²R"}
             ],
-            trig: [
-                {t: "Fundamental Identity", f: "sin²x + cos²x = 1"},
-                {t: "Tangent Identity", f: "tan x = sin x / cos x"},
-                {t: "Double Angle sin", f: "sin(2x) = 2 sin x cos x"},
-                {t: "Double Angle cos", f: "cos(2x) = cos²x - sin²x"}
-            ],
-            calculus: [
-                {t: "Power Rule (Derivative)", f: "d/dx(xⁿ) = nxⁿ⁻¹"},
-                {t: "Derivative of sin x", f: "d/dx(sin x) = cos x"},
-                {t: "Integral of xⁿ", f: "∫ xⁿ dx = (xⁿ⁺¹)/(n+1) + C"}
-            ],
-            prob: [
-                {t: "Probability of Event", f: "P(A) = n(A) / n(S)"},
-                {t: "Expected Value", f: "E(X) = Σ x * P(x)"}
+            chemistry: [
+                {t: "Ideal Gas Law", f: "PV = nRT"},
+                {t: "Molarity", f: "M = n / V"},
+                {t: "Mole Calculation", f: "n = m / M"}
             ]
         };
 
@@ -142,26 +122,14 @@
                 document.getElementById('page-content').classList.add('active');
                 renderFormulas(id);
             }
-            window.scrollTo(0,0);
         }
 
-        function renderFormulas(key) {
-            const titleMap = {
-                numberSets: "Number Sets",
-                algebra: "Algebra Formulas",
-                geometry: "Geometry",
-                trig: "Trigonometry",
-                calculus: "Calculus",
-                prob: "Probability"
-            };
-            document.getElementById('sectionTitle').innerText = titleMap[key];
+        function renderFormulas(subj) {
+            document.getElementById('sectionTitle').innerText = subj.toUpperCase();
             let html = "";
-            let list = mathData[key];
+            let list = data[subj] || [{t: "Coming Soon", f: "Adding more formulas..."}];
             list.forEach(item => {
-                html += `<div class="formula-card">
-                            <b>${item.t}</b>
-                            <div class="formula-box">${item.f.replace(/\n/g, '<br>')}</div>
-                         </div>`;
+                html += `<div class="formula-card"><b>${item.t}</b><div class="formula-box">${item.f}</div></div>`;
             });
             document.getElementById('formulaList').innerHTML = html;
         }
