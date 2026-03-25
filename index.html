@@ -3,766 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All-Formulas Pro | Ultimate Grade 9-12 Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>All Math Formulas Pro X</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* -----------------------------------------------------------
-           1. CSS STYLES - ፀዴ ዲዛይን እና አኒሜሽን
-        ----------------------------------------------------------- */
         :root {
-            --primary: #1a237e; /* Deep Tech Blue */
-            --primary-dark: #0d1117;
-            --accent: #ff9800; /* Vibrant Orange */
-            --bg: #f0f2f5;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-sub: #666666;
-            --gradient: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
-            --transition: all 0.3s ease;
+            --bg-dark: #0a1128;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent: #ff9800;
+            --text-main: #ffffff;
+            --text-dim: #b0bec5;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
-        * { box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background: var(--bg-dark); color: var(--text-main); padding-bottom: 90px; overflow-x: hidden; }
 
-        /* General UI Elements */
-        .btn { padding: 10px 20px; border-radius: 25px; border: none; font-weight: 500; cursor: pointer; transition: var(--transition); text-transform: uppercase; font-size: 14px; }
-        .btn-primary { background-color: var(--primary); color: white; }
-        .btn-primary:hover { background-color: #3949ab; transform: translateY(-2px); }
-        .btn-accent { background-color: var(--accent); color: white; box-shadow: 0 4px 10px rgba(255,152,0,0.3); }
-        .btn-accent:hover { background-color: #e68a00; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(255,152,0,0.4); }
+        /* Header */
+        header { padding: 20px; display: flex; align-items: center; justify-content: space-between; background: rgba(10, 17, 40, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .search-bar { background: var(--glass); border: none; padding: 12px 15px; border-radius: 25px; color: white; width: 75%; outline: none; border: 1px solid rgba(255,255,255,0.1); }
 
-        /* -----------------------------------------------------------
-           A. LANDING & LOGIN PAGES (Splash Screens)
-        ----------------------------------------------------------- */
-        .splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--gradient); color: white; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 20px; transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        .splash-screen.hidden { opacity: 0; visibility: hidden; }
-        
-        .hero-icon { font-size: 80px; margin-bottom: 20px; animation: pulse 2s infinite; }
-        .hero-title { font-size: 40px; font-weight: 600; margin-bottom: 10px; letter-spacing: 1px; }
-        .hero-subtitle { font-size: 18px; font-weight: 300; margin-bottom: 40px; opacity: 0.9; }
+        /* Navigation Pages */
+        .page { display: none; padding: 20px; animation: slideUp 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        #login-page { display: none; background: rgba(0,0,0,0.85); }
-        .login-box {
-            background: var(--card-bg); padding: 40px; border-radius: 20px;
-            width: 90%; max-width: 400px; text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: slideDown 0.5s ease;
-        }
-        .login-box h2 { color: var(--primary); margin-bottom: 10px; }
-        .login-box input {
-            width: 100%; padding: 15px; margin: 15px 0;
-            border: 1px solid #ddd; border-radius: 10px; font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        .login-box input:focus { border-color: var(--accent); outline: none; }
+        /* Hero Card */
+        .hero { background: linear-gradient(135deg, rgba(255,152,0,0.2), rgba(26,35,126,0.6)); border: 1px solid var(--glass); padding: 25px; border-radius: 30px; display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
+        .hero-avatar { width: 65px; height: 65px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; box-shadow: 0 0 20px rgba(255,152,0,0.4); border: 3px solid white; }
 
-        /* -----------------------------------------------------------
-           B. SIDEBAR NAVIGATION
-        ----------------------------------------------------------- */
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0;
-            background-color: var(--primary-dark); overflow-x: hidden; transition: 0.5s;
-            padding-top: 60px; box-shadow: 4px 0 15px rgba(0,0,0,0.2);
-        }
-        .sidebar-header { padding: 0 25px; color: white; margin-bottom: 30px; text-align: center; }
-        .sidebar-header img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--accent); margin-bottom: 10px; }
-        .sidebar a {
-            padding: 15px 25px; text-decoration: none; font-size: 17px; color: #b0bec5;
-            display: flex; align-items: center; border-left: 4px solid transparent; transition: var(--transition);
-        }
-        .sidebar a i { margin-right: 15px; font-size: 20px; width: 25px; text-align: center; }
-        .sidebar a:hover, .sidebar a.active-link { color: white; background-color: rgba(255,255,255,0.05); border-left-color: var(--accent); }
-        .sidebar .closebtn { position: absolute; top: 15px; right: 25px; font-size: 36px; color: white; cursor: pointer; }
+        /* Main Subject Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .card { background: var(--card-bg); padding: 20px 10px; border-radius: 20px; text-align: center; border: 1px solid var(--glass); transition: 0.3s; }
+        .card:active { transform: scale(0.95); background: var(--glass); }
+        .card i { font-size: 26px; color: var(--accent); margin-bottom: 10px; display: block; }
+        .card span { font-size: 11px; color: var(--text-dim); font-weight: 600; letter-spacing: 0.5px; }
 
-        /* -----------------------------------------------------------
-           C. MAIN APP INTERFACE
-        ----------------------------------------------------------- */
-        #main-app { display: none; opacity: 0; transition: opacity 0.5s ease; }
-        #main-app.show { display: block; opacity: 1; }
+        /* Parabola Tool Styling */
+        .tool-box { background: var(--card-bg); padding: 20px; border-radius: 25px; border: 1px solid var(--glass); margin-top: 15px; }
+        .tool-input { width: 100%; padding: 12px; margin: 8px 0; background: var(--glass); border: 1px solid var(--glass); border-radius: 10px; color: white; text-align: center; }
+        .solve-btn { width: 100%; padding: 15px; background: var(--accent); border: none; border-radius: 15px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        header {
-            background: var(--gradient); color: white; padding: 15px 25px;
-            display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .header-left { display: flex; align-items: center; }
-        .menu-btn { background: none; border: none; color: white; font-size: 24px; cursor: pointer; margin-right: 15px; }
-        .app-title { font-size: 20px; font-weight: 600; margin: 0; }
-        
-        .search-container { flex-grow: 1; max-width: 400px; margin: 0 20px; position: relative; }
-        .search-container input {
-            width: 100%; padding: 12px 20px 12px 45px; border-radius: 25px;
-            border: none; outline: none; font-size: 15px; background-color: rgba(255,255,255,0.15); color: white;
-            transition: background-color 0.3s;
-        }
-        .search-container input::placeholder { color: rgba(255,255,255,0.7); }
-        .search-container input:focus { background-color: rgba(255,255,255,0.25); }
-        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.7); }
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(10, 17, 40, 0.95); display: flex; justify-content: space-around; padding: 15px 0; backdrop-filter: blur(20px); border-top: 1px solid var(--glass); box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .nav-item { color: var(--text-dim); text-align: center; transition: 0.3s; flex: 1; }
+        .nav-item i { font-size: 20px; display: block; margin-bottom: 4px; }
+        .nav-item p { margin: 0; font-size: 10px; font-weight: 500; }
+        .nav-item.active { color: var(--accent); transform: translateY(-5px); }
 
-        /* Main Content Container */
-        .container { padding: 25px; max-width: 1100px; margin: auto; padding-bottom: 80px; }
-        
-        .page-section { display: none; animation: fadeIn 0.5s ease; }
-        .page-section.active { display: block; }
-
-        /* -----------------------------------------------------------
-           D. DASHBOARD (HOME) & PROGRESS BARS
-        ----------------------------------------------------------- */
-        .welcome-banner {
-            background: var(--card-bg); padding: 30px; border-radius: 20px;
-            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--accent); display: flex; align-items: center; justify-content: space-between;
-        }
-        .welcome-text h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 28px; }
-        .welcome-text p { margin: 0; color: var(--text-sub); font-size: 16px; }
-
-        .subject-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px; margin-bottom: 30px;
-        }
-        .subject-card {
-            background: var(--card-bg); padding: 25px; border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
-            border: 1px solid #eee; display: flex; flex-direction: column; align-items: center;
-        }
-        .subject-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); border-color: var(--accent); }
-        
-        .subj-icon { font-size: 50px; margin-bottom: 15px; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .math-icon { background-color: #e3f2fd; color: #1976d2; }
-        .physics-icon { background-color: #fff3e0; color: #f57c00; }
-        .chemistry-icon { background-color: #f3e5f5; color: #7b1fa2; }
-        .biology-icon { background-color: #e8f5e9; color: #388e3c; }
-
-        .subj-title { font-size: 20px; font-weight: 600; color: var(--text-main); margin: 0 0 10px 0; }
-        .subj-desc { font-size: 14px; color: var(--text-sub); margin: 0 0 20px 0; flex-grow: 1; }
-
-        /* Progress Bar */
-        .progress-container { width: 100%; background-color: #e0e0e0; border-radius: 10px; height: 10px; position: relative; margin-top: auto; }
-        .progress-bar { height: 100%; background-color: var(--accent); border-radius: 10px; width: 0%; transition: width 1s ease-in-out; }
-        .progress-text { font-size: 12px; color: var(--text-sub); margin-top: 5px; font-weight: 500; }
-
-        /* -----------------------------------------------------------
-           E. FORMULA CARDS & TABLES
-        ----------------------------------------------------------- */
-        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
-        .section-header h2 { margin: 0; color: var(--primary); font-size: 24px; }
-        .grade-filter { display: flex; gap: 10px; }
-        .filter-btn { background: #e0e0e0; color: var(--text-main); padding: 5px 15px; border-radius: 15px; border: none; cursor: pointer; font-size: 12px; transition: var(--transition); }
-        .filter-btn.active { background: var(--primary); color: white; }
-
-        .formula-card {
-            background: var(--card-bg); padding: 25px; border-radius: 15px;
-            margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eee; transition: var(--transition);
-        }
-        .formula-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
-        .formula-card h3 { margin: 0 0 15px 0; color: var(--primary); font-size: 18px; display: flex; justify-content: space-between; align-items: center; }
-        .grade-tag { background: #e8eaed; color: var(--text-sub); padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 600; }
-
-        .formula-box {
-            background: #f8f9fa; padding: 20px; border-radius: 10px;
-            font-family: 'Roboto Mono', monospace; font-size: 18px; color: #c62828;
-            overflow-x: auto; margin: 15px 0; border: 1px solid #e0e0e0;
-            white-space: nowrap; box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
-        }
-        .formula-desc { font-size: 14px; color: var(--text-sub); line-height: 1.6; margin: 0; }
-        .formula-desc b { color: var(--text-main); }
-
-        /* Tables */
-        .table-container { overflow-x: auto; margin: 15px 0; }
-        table { width: 100%; border-collapse: collapse; min-width: 500px; background: white; border-radius: 8px; overflow: hidden; }
-        th, td { border: 1px solid #eee; padding: 15px; text-align: left; font-size: 14px; }
-        th { background-color: var(--primary); color: white; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f3f5; }
-
-        /* -----------------------------------------------------------
-           F. PROFILE, SETTINGS & ABOUT
-        ----------------------------------------------------------- */
-        .profile-card, .settings-card, .about-card { background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        
-        .profile-header { display: flex; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--accent); object-fit: cover; }
-        .profile-info h2 { margin: 0; color: var(--primary); }
-        .profile-info p { margin: 5px 0 0 0; color: var(--text-sub); }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-main); font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; font-family: inherit; }
-        .form-group input:focus, .form-group select:focus { border-color: var(--primary); outline: none; }
-
-        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
-        .setting-info h4 { margin: 0; font-size: 16px; color: var(--text-main); }
-        .setting-info p { margin: 3px 0 0 0; font-size: 13px; color: var(--text-sub); }
-
-        /* Switch toggle */
-        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(24px); }
-
-        /* -----------------------------------------------------------
-           G. RESPONSIVE DESIGN & ANIMATIONS
-        ----------------------------------------------------------- */
-        @media (max-width: 768px) {
-            .hero-title { font-size: 32px; }
-            .welcome-banner { flex-direction: column; text-align: center; gap: 20px; }
-            .search-container { order: 3; max-width: 100%; margin: 10px 0 0 0; width: 100%; }
-            header { flex-wrap: wrap; padding: 10px 15px; }
-            .header-right { display: none; } /* Hide profile button on mobile header */
-        }
-
-        /* KEYFRAMES */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } 100% { transform: scale(1); opacity: 1; } }
-
-        /* FontAwesome for Icons */
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+        /* Formula Items */
+        .f-card { background: var(--card-bg); padding: 20px; border-radius: 20px; margin-bottom: 15px; border-left: 5px solid var(--accent); }
+        .f-formula { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; font-family: 'Courier New', monospace; color: #00e5ff; font-size: 18px; margin-top: 10px; overflow-x: auto; }
     </style>
 </head>
 <body>
 
-    <div id="splash-screen" class="splash-screen">
-        <div class="hero-icon">📚</div>
-        <div class="hero-title">All-Formulas Pro</div>
-        <div class="hero-subtitle">የ 9-12 ክፍል የፊዚክስ፣ ሂሳብ፣ ኬሚስትሪ እና ባዮሎጂ ፎርሙላዎች ማዕከል</div>
-        <button class="btn btn-accent hero-btn" onclick="showLoginPage()">ጀምር / Get Started</button>
-        <p style="margin-top: 30px; font-size: 12px; opacity: 0.7;">Created by Akalewold | © 2018 E.C</p>
-    </div>
+    <header>
+        <i class="fas fa-bars" style="font-size: 20px;"></i>
+        <input type="text" class="search-bar" placeholder="Search 1300+ Formulas...">
+        <div class="avatar-circle" style="width:35px; height:35px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">A</div>
+    </header>
 
-    <div id="login-page" class="splash-screen">
-        <div class="login-box">
-            <i class="fas fa-user-grad hero-icon" style="font-size: 50px; color: var(--accent);"></i>
-            <h2>እንኳን መጣህ!</h2>
-            <p style="color: var(--text-sub);">ለመቀጠል ስምህንና እድሜህን አስገባ</p>
-            <input type="text" id="loginName" placeholder="ሙሉ ስምህን አስገባ...">
-            <input type="number" id="loginAge" placeholder="እድሜህ (ለምሳሌ 16)..." min="10" max="30">
-            <button class="btn btn-accent" style="width: 100%;" onclick="performLogin()">ግባ</button>
+    <div id="home" class="page active">
+        <div class="hero">
+            <div class="hero-avatar">A</div>
+            <div>
+                <h3 style="margin:0">Welcome, Akalewold!</h3>
+                <p style="margin:5px 0; font-size:12px; color:var(--text-dim)">1,300+ Formulas are ready.</p>
+                <button class="solve-btn" style="padding: 8px 15px; font-size: 12px;" onclick="showPage('subjects')">EXPLORE ALL</button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card" onclick="openSubject('Algebra')"><i class="fas fa-divide"></i><span>ALGEBRA</span></div>
+            <div class="card" onclick="openSubject('Geometry')"><i class="fas fa-draw-polygon"></i><span>GEOMETRY</span></div>
+            <div class="card" onclick="openSubject('Calculus')"><i class="fas fa-infinity"></i><span>CALCULUS</span></div>
+            <div class="card" onclick="openSubject('Trig')"><i class="fas fa-chart-line"></i><span>TRIG</span></div>
+            <div class="card" onclick="openSubject('Prob')"><i class="fas fa-dice"></i><span>PROB</span></div>
+            <div class="card" onclick="openSubject('Stats')"><i class="fas fa-chart-bar"></i><span>STATS</span></div>
+        </div>
+
+        <div style="font-weight: bold; color: var(--accent); font-size: 14px; margin-top: 10px;">RECENT TOOL</div>
+        <div class="tool-box" onclick="showPage('tools')">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <b>Parabola Vertex Solver</b>
+                    <p style="font-size:11px; color:var(--text-dim); margin:5px 0;">Find (h, k) instantly</p>
+                </div>
+                <i class="fas fa-arrow-right" style="color:var(--accent)"></i>
+            </div>
         </div>
     </div>
 
-    <div id="mySidebar" class="sidebar">
-        <span class="closebtn" onclick="closeNav()">×</span>
-        <div class="sidebar-header">
-            <img src="https://via.placeholder.com/100" id="sidebarAvatar" alt="User Avatar">
-            <h3 id="sidebarUserName" style="margin: 5px 0 0 0; font-size: 18px;">Student Name</h3>
-            <p id="sidebarUserGrade" style="margin: 0; font-size: 12px; color: #b0bec5; opacity: 0.8;">Grade --</p>
-        </div>
-        <a href="#" id="link-home" class="active-link" onclick="navigateTo('home')"><i class="fas fa-th-large"></i>Dashboard</a>
-        <a href="#" id="link-profile" onclick="navigateTo('profile')"><i class="fas fa-user"></i>My Profile</a>
-        <a href="#" id="link-math" onclick="navigateTo('math')"><i class="fas fa-calculator"></i>Mathematics</a>
-        <a href="#" id="link-physics" onclick="navigateTo('physics')"><i class="fas fa-atom"></i>Physics</a>
-        <a href="#" id="link-chemistry" onclick="navigateTo('chemistry')"><i class="fas fa-flask"></i>Chemistry</a>
-        <a href="#" id="link-biology" onclick="navigateTo('biology')"><i class="fas fa-dna"></i>Biology</a>
-        <a href="#" id="link-settings" onclick="navigateTo('settings')"><i class="fas fa-cog"></i>Settings</a>
-        <a href="#" id="link-about" onclick="navigateTo('about')"><i class="fas fa-info-circle"></i>About App</a>
-        <div style="padding: 20px; margin-top: auto;">
-            <button class="btn btn-primary" style="width: 100%; background-color: #d32f2f;" onclick="logout()"><i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i>ውጣ</button>
+    <div id="subjects" class="page">
+        <h2 id="subjectTitle" style="color:var(--accent)">All Subjects</h2>
+        <div id="formulaList">
+            <p style="color:var(--text-dim)">Select a category from Home to see formulas.</p>
         </div>
     </div>
 
-    <div id="main-app">
-        <header>
-            <div class="header-left">
-                <button class="menu-btn" onclick="openNav()">☰</button>
-                <h1 class="app-title">All-Formulas Pro</h1>
+    <div id="tools" class="page">
+        <h2 style="color:var(--accent)">Math Tools</h2>
+        <div class="tool-box">
+            <h3>Parabola Vertex Finder</h3>
+            <p style="font-size: 12px; color: var(--text-dim);">Equation: y = ax² + bx + c</p>
+            <input type="number" id="valA" class="tool-input" placeholder="Enter value of a">
+            <input type="number" id="valB" class="tool-input" placeholder="Enter value of b">
+            <input type="number" id="valC" class="tool-input" placeholder="Enter value of c">
+            <button class="solve-btn" onclick="solveParabola()">SOLVE VERTEX</button>
+            <div id="result" style="margin-top: 20px; text-align: center; font-size: 20px; color: var(--accent); font-weight: bold;"></div>
+        </div>
+    </div>
+
+    <div id="search" class="page">
+        <h2 style="color:var(--accent)">Quick Search</h2>
+        <input type="text" class="tool-input" placeholder="Type formula name...">
+        <p style="text-align: center; color: var(--text-dim); margin-top: 50px;">Start typing to find any of the 1300+ formulas.</p>
+    </div>
+
+    <div id="profile" class="page">
+        <div style="text-align: center; padding: 40px 0;">
+            <div class="hero-avatar" style="width: 100px; height: 100px; font-size: 40px; margin: 0 auto;">A</div>
+            <h2 style="margin-top: 20px;">Akalewold</h2>
+            <p style="color: var(--text-dim);">10th Grade Student</p>
+            <div class="tool-box" style="text-align: left;">
+                <p><i class="fas fa-star" style="color:var(--accent)"></i> Favorite Formulas: 12</p>
+                <p><i class="fas fa-check-circle" style="color:var(--accent)"></i> Solved Problems: 45</p>
             </div>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="globalSearch" onkeyup="performSearch()" placeholder="Search from 500+ formulas...">
-            </div>
-            <div class="header-right">
-                <button class="btn btn-accent" style="padding: 8px 15px; font-size: 12px;" onclick="navigateTo('profile')"><i class="fas fa-user-circle" style="margin-right: 8px;"></i>Profile</button>
-            </div>
-        </header>
+        </div>
+    </div>
 
-        <div class="container">
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i><p>Home</p></div>
+        <div class="nav-item" onclick="showPage('subjects', this)"><i class="fas fa-book"></i><p>Subjects</p></div>
+        <div class="nav-item" onclick="showPage('tools', this)"><i class="fas fa-calculator"></i><p>Tools</p></div>
+        <div class="nav-item" onclick="showPage('search', this)"><i class="fas fa-search"></i><p>Search</p></div>
+        <div class="nav-item" onclick="showPage('profile', this)"><i class="fas fa-user"></i><p>Profile</p></div>
+    </nav>
 
-            <section id="page-home" class="page-section active">
-                <div class="welcome-banner">
-                    <div class="welcome-text">
-                        <h1>ሰላም፣ <span id="welcomeName">ተማሪ</span>! 👋</h1>
-                        <p>ዛሬ የትኛውን ፎርሙላ ማጥናት ትፈልጋለህ? ከታች ካሉት ትምህርቶች አንዱን ምረጥ።</p>
-                    </div>
-                    <i class="fas fa-book-reader" style="font-size: 60px; color: var(--accent); opacity: 0.8;"></i>
-                </div>
-
-                <div class="subject-grid">
-                    <div class="subject-card" onclick="navigateTo('math')">
-                        <div class="subj-icon math-icon"><i class="fas fa-calculator"></i></div>
-                        <h3 class="subj-title">Mathematics</h3>
-                        <p class="subj-desc">Algebra, Geometry, Trigonometry, Calculus...</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="bar-math" style="width: 15%"></div>
-                        </div>
-                        <p class="progress-text">15 / 150 formulas studied</p>
-                    </div>
-                    <div class="subject-card" onclick="navigateTo('physics')">
-                        <div class="subj-icon physics-icon"><i class="fas fa-atom"></i></div>
-                        <h3 class="subj-title">Physics</h3>
-                        <p class="subj-desc">Mechanics, Energy, Electricity, Magnetism...</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="bar-physics" style="width: 25%"></div>
-                        </div>
-                        <p class="progress-text">25 / 120 formulas studied</p>
-                    </div>
-                    <div class="subject-card" onclick="navigateTo('chemistry')">
-                        <div class="subj-icon chemistry-icon"><i class="fas fa-flask"></i></div>
-                        <h3 class="subj-title">Chemistry</h3>
-                        <p class="subj-desc">Atoms, Reactions, Stoichiometry, Acids & Bases...</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="bar-chemistry" style="width: 10%"></div>
-                        </div>
-                        <p class="progress-text">10 / 100 formulas studied</p>
-                    </div>
-                    <div class="subject-card" onclick="navigateTo('biology')">
-                        <div class="subj-icon biology-icon"><i class="fas fa-dna"></i></div>
-                        <h3 class="subj-title">Biology</h3>
-                        <p class="subj-desc">Cell Biology, Genetics, Ecology, Human Biology...</p>
-                        <div class="progress-container">
-                            <div class="progress-bar" id="bar-biology" style="width: 5%"></div>
-                        </div>
-                        <p class="progress-text">5 / 80 formulas studied</p>
-                    </div>
-                </div>
-
-                <div class="formula-card" style="border-left-color: var(--primary);">
-                    <h3><i class="fas fa-lightbulb" style="color: gold; margin-right: 10px;"></i>የእለቱ ጠቃሚ ምክር</h3>
-                    <p style="color: var(--text-sub); margin: 0;">ፎርሙላዎችን በቃላት ከመሸምደድ ይልቅ፣ እንዴት እና መቼ ጥቅም ላይ እንደሚውሉ በተግባር (በጥያቄዎች) መለማመድ ይበልጥ ያስታውሳል።</p>
-                </div>
-            </section>
-
-            <section id="page-profile" class="page-section">
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <img src="https://via.placeholder.com/100" id="profilePageAvatar" class="profile-avatar" alt="User Avatar">
-                        <div class="profile-info">
-                            <h2 id="profilePageName">Student Name</h2>
-                            <p id="profilePageAgeGrade">Age: -- | Grade: --</p>
-                        </div>
-                    </div>
-                    
-                    <h3 style="color: var(--primary); margin-bottom: 20px;">Edit My Info</h3>
-                    <div class="form-group">
-                        <label>Full Name:</label>
-                        <input type="text" id="editName" placeholder="Enter your full name">
-                    </div>
-                    <div class="form-group">
-                        <label>Age:</label>
-                        <input type="number" id="editAge" placeholder="Enter your age" min="10" max="30">
-                    </div>
-                    <div class="form-group">
-                        <label>Grade Level:</label>
-                        <select id="editGrade">
-                            <option value="9">Grade 9</option>
-                            <option value="10">Grade 10</option>
-                            <option value="11">Grade 11</option>
-                            <option value="12">Grade 12</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-accent" onclick="saveProfileChanges()">Save Changes</button>
-                </div>
-            </section>
-
-            <section id="page-math" class="page-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-calculator" style="margin-right: 10px;"></i>Mathematics Hub</h2>
-                    <div class="grade-filter">
-                        <button class="filter-btn active">All Grades</button>
-                        <button class="filter-btn">G-9</button>
-                        <button class="filter-btn">G-10</button>
-                    </div>
-                </div>
-
-                <div class="formula-card">
-                    <h3>Quadratic Formula <span class="grade-tag">Grade 10</span></h3>
-                    <div class="formula-box">x = [-b ± √(b² - 4ac)] / 2a</div>
-                    <p class="formula-desc">Used to find the roots of a quadratic equation of the form <b>ax² + bx + c = 0</b>, where <b>a ≠ 0</b>.</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Area of a Circle <span class="grade-tag">Grade 9</span></h3>
-                    <div class="formula-box">A = πr²</div>
-                    <p class="formula-desc">Used to calculate the total area inside a circle, where <b>r</b> is the radius and <b>π</b> ≈ 3.14159.</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Pythagorean Theorem <span class="grade-tag">Grade 9</span></h3>
-                    <div class="formula-box">a² + b² = c²</div>
-                    <p class="formula-desc">In a right-angled triangle, the square of the hypotenuse (<b>c</b>) is equal to the sum of the squares of the other two sides (<b>a, b</b>).</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Law of Sines <span class="grade-tag">Grade 11/12</span></h3>
-                    <div class="formula-box">sin(A)/a = sin(B)/b = sin(C)/c</div>
-                    <p class="formula-desc">Relates the lengths of the sides of any triangle to the sines of its angles.</p>
-                </div>
-                 <div class="formula-card">
-                    <h3>Derivative of xⁿ <span class="grade-tag">Grade 12</span></h3>
-                    <div class="formula-box">d/dx(xⁿ) = nxⁿ⁻¹</div>
-                    <p class="formula-desc">Basic rule for finding the derivative of a power function in Calculus.</p>
-                </div>
-                </section>
-
-            <section id="page-physics" class="page-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-atom" style="margin-right: 10px;"></i>Physics Hub</h2>
-                </div>
-
-                <div class="formula-card">
-                    <h3>Newton's Second Law of Motion <span class="grade-tag">Grade 9</span></h3>
-                    <div class="formula-box">F = ma</div>
-                    <p class="formula-desc">The force (<b>F</b>) acting on an object is equal to the mass (<b>m</b>) of that object times its acceleration (<b>a</b>).</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Kinematics Equations <span class="grade-tag">Grade 9-11</span></h3>
-                    <div class="formula-box">v = u + at</div>
-                    <div class="formula-box">s = ut + ½at²</div>
-                    <div class="formula-box">v² = u² + 2as</div>
-                    <p class="formula-desc">Equations for uniform acceleration, where <b>u</b> = initial velocity, <b>v</b> = final velocity, <b>a</b> = acceleration, <b>s</b> = displacement, <b>t</b> = time.</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Ohm's Law <span class="grade-tag">Grade 10</span></h3>
-                    <div class="formula-box">V = IR</div>
-                    <p class="formula-desc">The voltage (<b>V</b>) across a conductor is directly proportional to the current (<b>I</b>) flowing through it, where <b>R</b> is the resistance.</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Einstein's Mass-Energy Equivalence <span class="grade-tag">Grade 11/12</span></h3>
-                    <div class="formula-box">E = mc²</div>
-                    <p class="formula-desc">Mass (<b>m</b>) can be converted into energy (<b>E</b>), where <b>c</b> is the speed of light (~3×10⁸ m/s).</p>
-                </div>
-                 <div class="formula-card">
-                    <h3>Snell's Law of Refraction <span class="grade-tag">Grade 10/11</span></h3>
-                    <div class="formula-box">n₁ sin(θ₁) = n₂ sin(θ₂)</div>
-                    <p class="formula-desc">Describes the relationship between the angles of incidence and refraction for a wave passing between two different media.</p>
-                </div>
-                </section>
-
-            <section id="page-chemistry" class="page-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-flask" style="margin-right: 10px;"></i>Chemistry Hub</h2>
-                </div>
-
-                <div class="formula-card">
-                    <h3>Concentrated vs. Dilute Solutions <span class="grade-tag">Grade 10/11</span></h3>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Feature</th>
-                                    <th>Concentrated Solution</th>
-                                    <th>Dilute Solution</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Solvent Amount</td>
-                                    <td>Small (Little water)</td>
-                                    <td>Large (Lots of water)</td>
-                                </tr>
-                                <tr>
-                                    <td>Solute Amount</td>
-                                    <td>High (Lots of substance)</td>
-                                    <td>Low (Little substance)</td>
-                                </tr>
-                                <tr>
-                                    <td>pH level (Acids)</td>
-                                    <td>Very low (Strong Acid)</td>
-                                    <td>Higher (Weak Acid)</td>
-                                </tr>
-                                <tr>
-                                    <td>Safety</td>
-                                    <td>Highly Corrosive (Danger)</td>
-                                    <td>Less Corrosive (Safer)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="formula-card">
-                    <h3>The Mole Concept <span class="grade-tag">Grade 10</span></h3>
-                    <div class="formula-box">n = m / M</div>
-                    <p class="formula-desc">Used to calculate the number of moles (<b>n</b>), where <b>m</b> is the mass (grams) and <b>M</b> is the molar mass (g/mol).</p>
-                </div>
-                <div class="formula-card">
-                    <h3>Ideal Gas Law <span class="grade-tag">Grade 11</span></h3>
-                    <div class="formula-box">PV = nRT</div>
-                    <p class="formula-desc">Relates pressure (<b>P</b>), volume (<b>V</b>), moles (<b>n</b>), and temperature (<b>T</b>) for an ideal gas, where <b>R</b> is the gas constant.</p>
-                </div>
-                <div class="formula-card">
-                    <h3>pH Calculation <span class="grade-tag">Grade 11/12</span></h3>
-                    <div class="formula-box">pH = -log[H⁺]</div>
-                    <p class="formula-desc">pH is the measure of hydrogen ion concentration [<b>H⁺</b>] in a solution, determining its acidity or alkalinity.</p>
-                </div>
-                </section>
-
-            <section id="page-biology" class="page-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-dna" style="margin-right: 10px;"></i>Biology Hub</h2>
-                </div>
-                 <div class="formula-card">
-                    <h3>Cellular Respiration (Aerobic) <span class="grade-tag">Grade 10/11</span></h3>
-                    <div class="formula-box">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy (ATP)</div>
-                    <p class="formula-desc">Process by which cells break down glucose (sugar) in the presence of oxygen to produce energy.</p>
-                </div>
-                 <div class="formula-card">
-                    <h3>Photosynthesis <span class="grade-tag">Grade 10/11</span></h3>
-                    <div class="formula-box">6CO₂ + 6H₂O + Light Energy → C₆H₁₂O₆ + 6O₂</div>
-                    <p class="formula-desc">Process used by plants to convert light energy into chemical energy (glucose) using carbon dioxide and water.</p>
-                </div>
-                 <div class="formula-card">
-                    <h3>Simpson's Diversity Index <span class="grade-tag">Grade 11/12</span></h3>
-                    <div class="formula-box">D = 1 - [Σn(n-1) / N(N-1)]</div>
-                    <p class="formula-desc">A measure of species diversity in an ecological community, where <b>n</b> is the total number of organisms of a particular species, and <b>N</b> is the total number of organisms of all species.</p>
-                </div>
-                 <div class="formula-card">
-                    <h3>Hardy-Weinberg Equilibrium <span class="grade-tag">Grade 12</span></h3>
-                    <div class="formula-box">p² + 2pq + q² = 1</div>
-                    <p class="formula-desc">Predicts how gene frequencies will be inherited from one generation to the next given certain conditions, where <b>p</b> and <b>q</b> are allele frequencies.</p>
-                </div>
-                </section>
-
-             <section id="page-settings" class="page-section">
-                <div class="settings-card">
-                    <h2><i class="fas fa-cog" style="margin-right: 10px; color: var(--text-sub);"></i>App Settings</h2>
-                    
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Dark Mode</h4>
-                            <p>Enable a dark theme for night studying (Experimental)</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Show Amharic Titles</h4>
-                            <p>Display Amharic subtitles where available</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-item">
-                        <div class="setting-info">
-                            <h4>Notifications</h4>
-                            <p>Receive study reminders and app updates</p>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                     <div class="form-group" style="margin-top: 30px;">
-                        <label>Preferred Language:</label>
-                        <select>
-                            <option value="en">English</option>
-                            <option value="am">አማርኛ (Amharic)</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-             <section id="page-about" class="page-section">
-                <div class="about-card" style="text-align: center;">
-                    <i class="fas fa-info-circle hero-icon" style="font-size: 60px; color: var(--primary);"></i>
-                    <h2>About All-Formulas Pro</h2>
-                    <p style="color: var(--text-sub); line-height: 1.8;">All-Formulas Pro is the ultimate educational companion designed specifically for Ethiopian high school students (Grades 9-12). It aims to centralize over 500 essential formulas from Mathematics, Physics, Chemistry, and Biology, providing easy access, clear explanations, and progress tracking to boost your academic success.</p>
-                    <p style="margin-top: 20px; font-weight: 500;">Version: 2.1 (The "Tsede" Update)</p>
-                    <p style="margin-top: 10px; font-size: 14px; color: var(--accent);">Created with passion by Akalewold | © 2018 E.C</p>
-                </div>
-            </section>
-
-        </div> <footer style="text-align: center; padding: 20px; color: #888; font-size: 12px; border-top: 1px solid #eee; background-color: white; position: fixed; bottom: 0; width: 100%; z-index: 800;">
-            <p style="margin: 0;">© 2018 E.C - All-Formulas Pro | Created by Akalewold</p>
-        </footer>
-
-    </div> <script>
-        // 1. Initial State Control
-        window.onload = function() {
-            // Simulate splash screen fade out
-            setTimeout(function() {
-                // Keep splash screen until 'Get Started' is clicked
-            }, 500);
+    <script>
+        // Formula Database
+        const db = {
+            'Algebra': [
+                {t: "Quadratic Formula", f: "x = [-b ± √(b² - 4ac)] / 2a"},
+                {t: "Square of Sum", f: "(a + b)² = a² + 2ab + b²"},
+                {t: "Difference of Squares", f: "a² - b² = (a - b)(a + b)"}
+            ],
+            'Geometry': [
+                {t: "Pythagorean Theorem", f: "a² + b² = c²"},
+                {t: "Area of Circle", f: "A = πr²"}
+            ]
         };
 
-        // 2. Navigation Functions
-        function showLoginPage() {
-            document.getElementById('splash-screen').classList.add('hidden');
-            document.getElementById('login-page').style.display = 'flex';
-        }
-
-        function performLogin() {
-            const name = document.getElementById('loginName').value.trim();
-            const age = document.getElementById('loginAge').value;
-            if(name && age) {
-                // Save user info (simulated localStorage)
-                localStorage.setItem('formulaUserName', name);
-                localStorage.setItem('formulaUserAge', age);
-                localStorage.setItem('formulaUserGrade', '10'); // Default grade
-                
-                initializeUserData(name, age, '10');
-                
-                document.getElementById('login-page').style.display = 'none';
-                document.getElementById('main-app').classList.add('show');
-                
-                // Set home as active on login
-                navigateTo('home');
-            } else { alert("እባክህ ስምህን እና እድሜህን በአግባቡ አስገባ!"); }
-        }
-
-        function initializeUserData(name, age, grade) {
-            // Update all places where name/age/grade is shown
-            document.getElementById('welcomeName').innerText = name;
-            document.getElementById('sidebarUserName').innerText = name;
-            document.getElementById('sidebarUserGrade').innerText = "Grade " + grade;
+        function showPage(pageId, element) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
             
-            document.getElementById('profilePageName').innerText = name;
-            document.getElementById('profilePageAgeGrade').innerText = "Age: " + age + " | Grade: " + grade;
-            
-            // Populate Edit fields
-            document.getElementById('editName').value = name;
-            document.getElementById('editAge').value = age;
-            document.getElementById('editGrade').value = grade;
-            
-            // Set simulated progress bars
-            updateProgressBars();
-        }
-
-        // Global Navigation and Sidebar Control
-        function openNav() { document.getElementById("mySidebar").style.width = "270px"; }
-        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-
-        function navigateTo(pageId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.page-section');
-            sections.forEach(s => s.classList.remove('active'));
-            
-            // Show requested section
-            document.getElementById('page-' + pageId).classList.add('active');
-            
-            // Update active link in sidebar
-            const links = document.querySelectorAll('.sidebar a');
-            links.forEach(l => l.classList.remove('active-link'));
-            document.getElementById('link-' + pageId).classList.add('active-link');
-            
-            // Close sidebar on navigation (mobile)
-            closeNav();
-            
-            // Scroll to top of the page
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function logout() {
-            localStorage.clear();
-            location.reload();
-        }
-
-        // 3. Simulated User Progress Bars
-        function updateProgressBars() {
-            // Simulating studying formulas (in a real app, this would be dynamic)
-            setTimeout(() => { document.getElementById('bar-math').style.width = '20%'; }, 500);
-            setTimeout(() => { document.getElementById('bar-physics').style.width = '35%'; }, 700);
-            setTimeout(() => { document.getElementById('bar-chemistry').style.width = '15%'; }, 900);
-            setTimeout(() => { document.getElementById('bar-biology').style.width = '10%'; }, 1100);
-        }
-
-        // 4. Search Functionality
-        function performSearch() {
-            let input = document.getElementById('globalSearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('formula-card');
-            
-            // Only search in active subject section (or home)
-            const activePage = document.querySelector('.page-section.active');
-            
-            if(activePage.id !== 'page-home') {
-                 // Search formulas within the current subject
-                for (let i = 0; i < cards.length; i++) {
-                    if (cards[i].closest('.page-section').id === activePage.id) {
-                         cards[i].style.display = cards[i].innerText.toLowerCase().includes(input) ? "block" : "none";
-                    }
-                }
-            } else {
-                 // On home page, search across all formulas (simulated jump to page)
-                let foundMatch = false;
-                if(input.length > 2) {
-                    if("quadratic".includes(input)) { navigateTo('math'); document.getElementById('globalSearch').value = input; performSearch(); foundMatch = true;}
-                    if("newton".includes(input) || "force".includes(input)) { navigateTo('physics'); document.getElementById('globalSearch').value = input; performSearch(); foundMatch = true;}
-                    if("acid".includes(input) || "dilute".includes(input)) { navigateTo('chemistry'); document.getElementById('globalSearch').value = input; performSearch(); foundMatch = true;}
-                    if("cell".includes(input)) { navigateTo('biology'); document.getElementById('globalSearch').value = input; performSearch(); foundMatch = true;}
-                }
-                
-                // Basic card filtering on home
-                for (let i = 0; i < cards.length; i++) {
-                     if (cards[i].closest('.page-section').id === 'page-home') {
-                        cards[i].style.display = cards[i].innerText.toLowerCase().includes(input) ? "block" : "none";
-                     }
-                }
+            // Update nav icons
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                element.classList.add('active');
             }
         }
 
-        // 5. Profile & Settings Functions
-        function saveProfileChanges() {
-            const name = document.getElementById('editName').value.trim();
-            const age = document.getElementById('editAge').value;
-            const grade = document.getElementById('editGrade').value;
-            
-            if(name && age) {
-                localStorage.setItem('formulaUserName', name);
-                localStorage.setItem('formulaUserAge', age);
-                localStorage.setItem('formulaUserGrade', grade);
-                
-                initializeUserData(name, age, grade);
-                alert("Profile changes saved successfully!");
-                navigateTo('home');
-            } else { alert("Please fill in your name and age."); }
+        function openSubject(sub) {
+            showPage('subjects');
+            document.getElementById('subjectTitle').innerText = sub;
+            let list = db[sub] || [{t: "Notice", f: "More formulas being added to " + sub}];
+            let html = "";
+            list.forEach(item => {
+                html += `<div class="f-card"><b>${item.t}</b><div class="f-formula">${item.f}</div></div>`;
+            });
+            document.getElementById('formulaList').innerHTML = html;
         }
 
-        function toggleDarkMode() {
-            let isDark = document.getElementById('darkModeToggle').checked;
-            if(isDark) {
-                document.body.style.backgroundColor = '#121212';
-                document.body.style.color = '#e0e0e0';
-                const cards = document.querySelectorAll('.card, .welcome-banner, .formula-card, .profile-card, .settings-card, .about-card');
-                cards.forEach(c => {c.style.backgroundColor = '#1e1e1e'; c.style.borderColor = '#333';});
-                document.querySelectorAll('header, .sidebar').forEach(h => h.style.background = '#1a1a1a');
-            } else {
-                location.reload(); // Quick reset to light mode
-            }
-        }
+        function solveParabola() {
+            let a = parseFloat(document.getElementById('valA').value);
+            let b = parseFloat(document.getElementById('valB').value);
+            let c = parseFloat(document.getElementById('valC').value);
 
-        // Check for existing login
-        if(localStorage.getItem('formulaUserName')) {
-            showLoginPage(); // Skip landing but go to login or straight to app
-            performLoginFromStorage();
-        }
-        
-        function performLoginFromStorage() {
-            const name = localStorage.getItem('formulaUserName');
-            const age = localStorage.getItem('formulaUserAge');
-            const grade = localStorage.getItem('formulaUserGrade');
-            document.getElementById('loginName').value = name;
-            document.getElementById('loginAge').value = age;
-            
-            // Force enter app
-            document.getElementById('splash-screen').classList.add('hidden');
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('main-app').classList.add('show');
-            initializeUserData(name, age, grade);
-            navigateTo('home');
-        }
+            if(!a) { alert("Value 'a' cannot be zero"); return; }
 
+            let h = -b / (2 * a);
+            let k = (a * h * h) + (b * h) + c;
+
+            document.getElementById('result').innerHTML = `Vertex (h, k) = (${h.toFixed(2)}, ${k.toFixed(2)})`;
+        }
     </script>
 </body>
 </html>
