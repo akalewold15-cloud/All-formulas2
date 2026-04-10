@@ -21,121 +21,178 @@
             --accent: #00d4ff;
             --glass: rgba(255, 255, 255, 0.05);
             --glow: 0 0 15px rgba(0, 212, 255, 0.5);
+            --neon-text: 0 0 10px rgba(0, 212, 255, 0.8);
         }
 
-        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
 
-        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg); }
+        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg); padding-bottom: 50px;}
         .active { display: flex; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* AA 360 Spin Drop */
-        .aa-container { display: flex; justify-content: center; align-items: center; height: 100vh; background: black; position: fixed; width: 100%; z-index: 100; }
-        .aa-text {
-            font-size: 100px; font-weight: 900; color: var(--accent);
-            text-shadow: 0 0 30px var(--accent);
+        /* 1. Splash Screen (AA Spin Drop) */
+        .splash-container { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 100; flex-direction: column; }
+        .aa-spin {
+            font-size: 110px; font-weight: 900; color: var(--accent);
+            text-shadow: 0 0 40px var(--accent);
             animation: spinDrop 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         @keyframes spinDrop {
-            0% { transform: translateY(-500px) rotateY(0deg); opacity: 0; }
-            60% { transform: translateY(20px) rotateY(720deg); opacity: 1; }
-            100% { transform: translateY(0) rotateY(1080deg); }
+            0% { transform: translateY(-500px) rotateY(0deg) scale(0.5); opacity: 0; }
+            60% { transform: translateY(20px) rotateY(720deg) scale(1.1); opacity: 1; }
+            100% { transform: translateY(0) rotateY(1080deg) scale(1); }
         }
 
-        /* Dashboard Styles */
-        .header { margin-top: 40px; text-align: center; }
-        .header h1 { font-weight: 200; letter-spacing: 5px; margin: 0; text-shadow: 0 0 10px var(--accent); }
+        /* 2. Glassmorphism UI */
+        .header { margin-top: 50px; text-align: center; }
+        .header h1 { font-weight: 200; letter-spacing: 5px; margin: 0; text-shadow: var(--neon-text); }
         
         .join-btn {
-            margin-top: 15px; padding: 10px 25px; border-radius: 20px;
+            display: inline-block; margin-top: 15px; padding: 10px 25px; border-radius: 20px;
             border: 1px solid var(--accent); background: rgba(0, 212, 255, 0.1);
             color: var(--accent); text-decoration: none; font-size: 0.8rem; font-weight: bold;
-            transition: 0.3s; box-shadow: var(--glow);
+            box-shadow: var(--glow); transition: 0.3s;
         }
 
-        .search-bar {
-            width: 85%; padding: 15px; margin: 30px 0;
-            background: var(--glass); border: 1px solid #333;
-            border-radius: 12px; color: white; outline: none;
-        }
-
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; max-width: 400px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; max-width: 400px; margin-top: 20px; }
 
         .card {
             background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
             padding: 20px; border-radius: 15px; text-align: center;
-            backdrop-filter: blur(10px); transition: 0.3s;
-            font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
         }
         .card:active { transform: scale(0.95); border-color: var(--accent); box-shadow: var(--glow); }
-
+        
         .full-card { grid-column: span 2; border: 1px dashed var(--accent); }
+        .section-title { width: 90%; max-width: 400px; margin: 30px 0 5px 0; font-size: 0.75rem; letter-spacing: 3px; opacity: 0.6; text-align: left; }
 
-        .section-title { width: 90%; margin: 25px 0 10px 0; font-size: 0.7rem; letter-spacing: 3px; opacity: 0.6; }
+        /* 3. Inputs & Calculator */
+        .input-box { width: 90%; padding: 15px; margin: 10px 0; background: rgba(0,0,0,0.5); border: 1px solid #333; color: white; border-radius: 10px; font-size: 1rem; box-sizing: border-box;}
+        .input-box:focus { border-color: var(--accent); outline: none; }
+        .result-text { font-size: 1.5rem; color: var(--accent); text-shadow: var(--neon-text); margin-top: 10px; }
+
+        /* Formula Text Style */
+        .formula-list { text-align: left; width: 90%; max-width: 400px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; border-left: 3px solid var(--accent); box-sizing: border-box; }
+        .formula-list p { margin: 15px 0; font-size: 1.1rem; text-shadow: var(--neon-text); font-family: monospace; }
+        .formula-list span { font-size: 0.8rem; color: #ccc; font-family: sans-serif; display: block; text-shadow: none; margin-bottom: 5px; opacity: 0.8;}
 
     </style>
 </head>
 <body>
 
-    <div id="splash" class="aa-container">
-        <div class="aa-text">AA</div>
+    <div id="splash" class="splash-container">
+        <div class="aa-spin">AA</div>
+        <div style="margin-top: 20px; font-size: 0.8rem; letter-spacing: 5px; opacity: 0.5;">PRO X LOADING</div>
     </div>
 
     <div id="home" class="page">
         <div class="header">
             <h1>PRO X</h1>
-            <p style="font-size: 0.6rem; opacity: 0.5; letter-spacing: 2px;">AA COMPANY</p>
-            <a href="https://t.me/smart_kihilot" class="join-btn">JOIN CHANNEL</a>
+            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">JOIN CHANNEL</a>
         </div>
 
-        <input type="text" class="search-bar" placeholder="🔍 Search Formulas or Tools...">
-
-        <div class="section-title">CORE FORMULAS</div>
+        <div class="section-title">CORE LIBRARY</div>
         <div class="grid">
-            <div class="card" onclick="alert('Physics Library Loading...')">PHYSICS</div>
-            <div class="card" onclick="alert('Maths Library Loading...')">MATHS</div>
-            <div class="card">CHEMISTRY</div>
-            <div class="card">BIOLOGY</div>
+            <div class="card" onclick="showPage('physicsPage')">PHYSICS</div>
+            <div class="card" onclick="showPage('mathsPage')">MATHS</div>
+            <div class="card" onclick="alert('Chemistry Data Coming Soon!')">CHEMISTRY</div>
+            <div class="card" onclick="alert('Biology Data Coming Soon!')">BIOLOGY</div>
         </div>
 
         <div class="section-title">ADVANCED TOOLS</div>
         <div class="grid">
-            <div class="card full-card" onclick="showPage('forceCalc')">🛠 FORCE CALCULATOR (F=ma)</div>
-            <div class="card full-card">🛠 QUADRATIC EQUATION SOLVER</div>
-            <div class="card full-card">🛠 MOLAR MASS CALCULATOR</div>
+            <div class="card full-card" onclick="showPage('calcPage')">🛠 FORCE CALCULATOR (F=ma)</div>
         </div>
 
         <div class="section-title">PERSONAL SPACE</div>
-        <div class="grid" style="margin-bottom: 50px;">
-            <div class="card" style="background: rgba(0,212,255,0.05);">CREATE NOTE</div>
-            <div class="card">MY NOTES</div>
+        <div class="grid">
+            <div class="card" style="background: rgba(0,212,255,0.05);" onclick="alert('Note pad opened!')">CREATE NOTE</div>
+            <div class="card" onclick="alert('No saved notes yet.')">MY NOTES</div>
         </div>
     </div>
 
+    <div id="physicsPage" class="page">
+        <div class="header"><h2>PHYSICS</h2></div>
+        <div class="formula-list">
+            <span>1. Equation of Motion</span>
+            <p>v = u + at</p>
+            <span>2. Force (Newton's 2nd Law)</span>
+            <p>F = m × a</p>
+            <span>3. Work Done</span>
+            <p>W = F × d</p>
+            <span>4. Kinetic Energy</span>
+            <p>KE = ½mv²</p>
+            <span>5. Gravitational Force</span>
+            <p>F = G(m₁m₂ / r²)</p>
+        </div>
+        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+    </div>
+
+    <div id="mathsPage" class="page">
+        <div class="header"><h2>MATHEMATICS</h2></div>
+        <div class="formula-list">
+            <span>1. Quadratic Formula</span>
+            <p>x = (-b ± √(b² - 4ac)) / 2a</p>
+            <span>2. Logarithm Product Rule</span>
+            <p>log(xy) = log(x) + log(y)</p>
+            <span>3. Pythagorean Theorem</span>
+            <p>a² + b² = c²</p>
+        </div>
+        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+    </div>
+
+    <div id="calcPage" class="page">
+        <div class="header"><h2>FORCE CALC</h2></div>
+        <div style="width: 90%; max-width: 400px; text-align: center;">
+            <p style="opacity: 0.7; font-size: 0.9rem;">Calculate Force using F = m × a</p>
+            <input type="number" id="massInput" class="input-box" placeholder="Enter Mass (kg)">
+            <input type="number" id="accInput" class="input-box" placeholder="Enter Acceleration (m/s²)">
+            
+            <div class="card full-card" style="background: var(--accent); color: black; margin: 15px 0;" onclick="calculateForce()">CALCULATE</div>
+            
+            <div id="resultBox" class="result-text">0 N</div>
+        </div>
+        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+    </div>
+
     <script>
+        // Telegram Setup
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.headerColor = '#000000';
+        tg.backgroundColor = '#000000';
 
+        // Page Navigation
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById(id);
-            if(target) target.classList.add('active');
-            else document.getElementById('home').classList.add('active');
+            document.getElementById(id).classList.add('active');
+            tg.HapticFeedback.impactOccurred('light'); // ስልኩ ይርገበገባል
         }
 
-        // Auto transition from Splash to Home
-        setTimeout(() => {
-            document.getElementById('splash').style.display = 'none';
-            showPage('home');
-        }, 3000);
+        // Splash Screen Logic (አፑ ሲከፈት)
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                showPage('home');
+            }, 2500); // ከ 2.5 ሰከንድ በኋላ ወደ ዋናው ገጽ ይገባል
+        };
 
-        // Haptic Feedback for buttons
-        document.querySelectorAll('.card').forEach(btn => {
-            btn.addEventListener('click', () => {
-                tg.HapticFeedback.impactOccurred('light');
-            });
-        });
+        // Force Calculator Logic (ካልኩሌተሩ እንዲሰራ)
+        function calculateForce() {
+            const m = parseFloat(document.getElementById('massInput').value);
+            const a = parseFloat(document.getElementById('accInput').value);
+            
+            if (isNaN(m) || isNaN(a)) {
+                document.getElementById('resultBox').innerText = "Please enter numbers!";
+                document.getElementById('resultBox').style.color = "red";
+            } else {
+                const force = m * a;
+                document.getElementById('resultBox').innerText = force + " Newtons (N)";
+                document.getElementById('resultBox').style.color = "var(--accent)";
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
     </script>
 </body>
 </html>
