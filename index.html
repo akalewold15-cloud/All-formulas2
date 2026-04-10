@@ -10,6 +10,7 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
       gtag('config', 'G-E1P0G3VZPB');
     </script>
 
@@ -17,87 +18,75 @@
 
     <style>
         :root {
-            --bg-color: radial-gradient(circle at 50% -20%, #003366 0%, #000000 80%);
+            --bg-main: radial-gradient(circle at 50% 0%, #001f3f 0%, #000000 90%);
             --accent: #00f2ff;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glow: 0 0 20px rgba(0, 242, 255, 0.4);
-            --neon-text: 0 0 15px rgba(0, 242, 255, 1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glow: 0 0 25px rgba(0, 242, 255, 0.5);
         }
 
-        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg-color); padding-bottom: 50px; }
-        .active { display: flex; animation: slideIn 0.5s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
-
-        /* --- ADVANCED SPLASH SCREEN --- */
-        .splash { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 1000; flex-direction: column; }
-        
+        /* --- አገባብ (Splash Screen) --- */
+        .splash {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000; display: flex; justify-content: center;
+            align-items: center; z-index: 9999; flex-direction: column;
+        }
         .ring {
-            width: 200px; height: 200px; border: 2px solid transparent; border-top: 2px solid var(--accent);
-            border-radius: 50%; position: absolute; animation: ringSpin 2s linear infinite;
+            width: 230px; height: 230px; border: 4px solid transparent;
+            border-top: 4px solid var(--accent); border-radius: 50%;
+            position: absolute; animation: spin 1.2s linear infinite;
         }
-        @keyframes ringSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .aa-box {
-            position: relative; text-align: center;
-            animation: aaEntrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .aa-logo { font-size: 80px; font-weight: 900; color: var(--accent); text-shadow: var(--neon-text); margin: 0; }
-        .aa-sub { font-size: 10px; letter-spacing: 8px; opacity: 0.7; color: white; margin-top: -10px; }
-
-        @keyframes aaEntrance {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            50% { transform: scale(1.2) rotate(360deg); opacity: 1; }
-            100% { transform: scale(1) rotate(720deg); }
-        }
-
-        /* --- MAIN UI --- */
-        .header { margin-top: 60px; text-align: center; }
-        .header h1 { font-weight: 100; letter-spacing: 8px; font-size: 2.5rem; margin: 0; color: white; text-shadow: var(--neon-text); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        .join-btn {
-            display: inline-block; margin-top: 20px; padding: 12px 35px; border-radius: 50px;
-            background: linear-gradient(45deg, #001a33, #003366); border: 1px solid var(--accent);
-            color: var(--accent); text-decoration: none; font-size: 0.7rem; font-weight: bold;
-            box-shadow: var(--glow); text-transform: uppercase; letter-spacing: 2px;
+        .aa-box { text-align: center; animation: aaShow 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .aa-text { font-size: 110px; font-weight: 900; color: var(--accent); text-shadow: 0 0 35px var(--accent); margin: 0; }
+        .aa-sub { font-size: 15px; letter-spacing: 12px; opacity: 0.8; margin-top: -15px; text-transform: uppercase; }
+        
+        @keyframes aaShow {
+            0% { transform: scale(0.2) rotate(-180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(720deg); opacity: 1; }
         }
 
-        .container { width: 90%; max-width: 450px; margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        /* --- Main UI --- */
+        .view { display: none; min-height: 100vh; background: var(--bg-main); flex-direction: column; align-items: center; padding: 60px 20px; box-sizing: border-box; }
+        .active { display: flex; animation: viewFade 0.6s ease-out; }
+        @keyframes viewFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        .tech-card {
-            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 30px 15px; border-radius: 24px; text-align: center;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        .header h1 { font-weight: 100; letter-spacing: 15px; font-size: 3.2rem; margin: 0; text-shadow: var(--glow); text-align: center; }
+
+        .btn-link {
+            display: inline-block; margin: 30px 0; padding: 15px 45px; border-radius: 50px;
+            background: rgba(0, 242, 255, 0.08); border: 1.5px solid var(--accent);
+            color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: bold;
+            box-shadow: var(--glow); text-transform: uppercase; letter-spacing: 4px; transition: 0.3s;
         }
-        .tech-card:active { transform: translateY(5px); background: rgba(0, 242, 255, 0.1); border-color: var(--accent); }
-        .tech-card span { display: block; font-size: 0.75rem; letter-spacing: 3px; opacity: 0.6; margin-bottom: 10px; }
-        .tech-card h3 { margin: 0; font-size: 0.9rem; font-weight: 800; color: white; }
 
-        .full { grid-column: span 2; border: 1px solid rgba(255,255,255,0.1); }
-
-        /* --- CONTENT VIEW --- */
-        .content-view { width: 90%; max-width: 500px; margin-top: 30px; }
-        .formula-item {
-            background: rgba(255,255,255,0.02); border-left: 2px solid var(--accent);
-            padding: 20px; margin-bottom: 15px; border-radius: 0 15px 15px 0;
-            animation: fadeInItem 0.5s ease forwards;
+        .grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
+            padding: 40px 10px; border-radius: 35px; text-align: center;
+            backdrop-filter: blur(20px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer;
         }
-        @keyframes fadeInItem { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        .formula-item h4 { margin: 0; font-size: 0.7rem; color: var(--accent); opacity: 0.8; text-transform: uppercase; }
-        .formula-item p { margin: 10px 0 0 0; font-size: 1.4rem; font-family: 'Courier New', Courier, monospace; text-shadow: var(--neon-text); }
+        .card:active { transform: scale(0.9); border-color: var(--accent); box-shadow: var(--glow); }
+        .card h3 { margin: 0; font-size: 1rem; letter-spacing: 2px; font-weight: 800; }
 
-        /* --- CALCULATOR --- */
-        .calc-box { width: 90%; max-width: 400px; text-align: center; }
-        .input-tech {
-            width: 100%; padding: 20px; background: rgba(0,0,0,0.4); border: 1px solid #1a1a1a;
-            color: white; border-radius: 15px; font-size: 1.2rem; margin-bottom: 15px; outline: none; box-sizing: border-box;
+        .item-row {
+            width: 100%; max-width: 500px; background: rgba(255,255,255,0.02); 
+            border-radius: 25px; margin-bottom: 15px; border: 1px solid #111; cursor: pointer;
         }
-        .input-tech:focus { border-color: var(--accent); box-shadow: var(--glow); }
-        .btn-calc {
-            width: 100%; padding: 20px; background: var(--accent); color: black;
-            border: none; border-radius: 15px; font-weight: 900; font-size: 1rem; cursor: pointer;
+        .item-head { padding: 25px; color: var(--accent); font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .item-body { padding: 0 25px 25px; display: none; border-top: 1px solid #111; }
+        .item-body code { font-size: 2rem; color: #fff; display: block; margin: 15px 0; text-shadow: var(--glow); font-family: 'Courier New', monospace; }
+        .item-body p { font-size: 0.85rem; color: #777; margin: 0; }
+
+        input {
+            width: 100%; padding: 22px; background: #000; border: 1px solid #222;
+            color: #fff; border-radius: 20px; font-size: 1.3rem; margin-bottom: 20px; box-sizing: border-box; outline: none;
+        }
+        .solve-btn {
+            width: 100%; padding: 22px; background: var(--accent); color: #000;
+            border: none; border-radius: 20px; font-weight: 900; font-size: 1.1rem; cursor: pointer; box-shadow: var(--glow);
         }
     </style>
 </head>
@@ -106,96 +95,64 @@
     <div id="splash" class="splash">
         <div class="ring"></div>
         <div class="aa-box">
-            <h1 class="aa-logo">AA</h1>
+            <h1 class="aa-text">AA</h1>
             <p class="aa-sub">COMPANY</p>
         </div>
     </div>
 
-    <div id="home" class="page">
-        <div class="header">
-            <h1>PRO X</h1>
-            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">Join Telegram Channel</a>
-        </div>
-
-        <div class="container">
-            <div class="tech-card" onclick="loadSubject('physics')">
-                <span>MODULE 01</span>
-                <h3>PHYSICS</h3>
-            </div>
-            <div class="tech-card" onclick="loadSubject('maths')">
-                <span>MODULE 02</span>
-                <h3>MATHS</h3>
-            </div>
-            <div class="tech-card" onclick="loadSubject('chemistry')">
-                <span>MODULE 03</span>
-                <h3>CHEMISTRY</h3>
-            </div>
-            <div class="tech-card" onclick="loadSubject('astronomy')">
-                <span>MODULE 04</span>
-                <h3>ASTRONOMY</h3>
-            </div>
-            <div class="tech-card full" onclick="showPage('forcePage')">
-                <span>UTILITY</span>
-                <h3>FORCE CALCULATOR</h3>
-            </div>
+    <div id="home" class="view">
+        <div class="header"><h1>PRO X</h1></div>
+        <a href="https://t.me/smart_kihilot" class="btn-link">JOIN TELEGRAM</a>
+        <div class="grid">
+            <div class="card" onclick="openModule('physics')"><h3>PHYSICS</h3></div>
+            <div class="card" onclick="openModule('maths')"><h3>MATHS</h3></div>
+            <div class="card" onclick="openModule('chemistry')"><h3>CHEMISTRY</h3></div>
+            <div class="card" onclick="openModule('astronomy')"><h3>ASTRONOMY</h3></div>
+            <div class="card" style="grid-column: span 2; border: 1px dashed var(--accent);" onclick="toggleV('calc')"><h3>SOLVER (F=ma)</h3></div>
         </div>
     </div>
 
-    <div id="subjectPage" class="page">
-        <div class="header"><h1 id="subjectTitle">SUBJECT</h1></div>
-        <div id="formulaContainer" class="content-view"></div>
-        <div class="join-btn" onclick="showPage('home')" style="margin-top: 30px; border-color: #ff4d4d; color: #ff4d4d;">EXIT TO DASHBOARD</div>
+    <div id="modView" class="view">
+        <div class="header"><h1 id="modTitle">LIBRARY</h1></div>
+        <div id="modContent" style="width:100%; max-width:500px; margin-top:30px;"></div>
+        <div class="btn-link" onclick="toggleV('home')" style="border-color:#ff4d4d; color:#ff4d4d;">BACK</div>
     </div>
 
-    <div id="forcePage" class="page">
+    <div id="calc" class="view">
         <div class="header"><h1>SOLVER</h1></div>
-        <div class="calc-box">
-            <p style="opacity: 0.5; font-size: 0.8rem; margin-bottom: 20px;">Newton's Second Law Calculator</p>
-            <input type="number" id="mass" class="input-tech" placeholder="Mass (kg)">
-            <input type="number" id="acc" class="input-tech" placeholder="Acceleration (m/s²)">
-            <button class="btn-calc" onclick="runCalc()">RUN SIMULATION</button>
-            <h2 id="forceRes" style="margin-top: 30px; font-size: 3rem; text-shadow: var(--neon-text);">0 N</h2>
+        <div style="width:100%; max-width:400px; margin-top:30px;">
+            <input type="number" id="mass" placeholder="Mass (kg)">
+            <input type="number" id="acc" placeholder="Acceleration (m/s²)">
+            <button class="solve-btn" onclick="runCalc()">CALCULATE</button>
+            <h1 id="res" style="text-align:center; font-size:4.5rem; text-shadow:var(--glow); margin-top:20px;">0 N</h1>
         </div>
-        <div class="join-btn" onclick="showPage('home')" style="margin-top: 30px;">BACK</div>
+        <div class="btn-link" onclick="toggleV('home')">BACK</div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.headerColor = '#000000';
 
-        const LIBRARY = {
+        const DATA_BANK = {
             physics: [
-                {h: "Equation of Motion", f: "v = u + at"},
-                {h: "Displacement", f: "s = ut + ½at²"},
-                {h: "Newton's 2nd Law", f: "F = m × a"},
-                {h: "Momentum", f: "p = m × v"},
-                {h: "Work Done", f: "W = F × d"},
-                {h: "Kinetic Energy", f: "KE = ½mv²"},
-                {h: "Heat Energy", f: "Q = mc∆T"},
-                {h: "Ohm's Law", f: "V = I × R"}
+                {t:"Motion Equation", f:"v = u + at", d:"v: final, u: initial, a: acc, t: time"},
+                {t:"Force Law", f:"F = m × a", d:"Force = Mass * Acceleration"},
+                {t:"Work Done", f:"W = F × d", d:"Work = Force * Distance"}
             ],
             maths: [
-                {h: "Quadratic Formula", f: "x = [-b ± √(b²-4ac)]/2a"},
-                {h: "Logarithm Product", f: "log(xy) = log x + log y"},
-                {h: "Circle Area", f: "A = πr²"},
-                {h: "Trig Identity", f: "sin²θ + cos²θ = 1"},
-                {h: "Cylinder Volume", f: "V = πr²h"}
+                {t:"Quadratic", f:"x = [-b±√(b²-4ac)]/2a", d:"Roots of x"},
+                {t:"Logarithm", f:"log(xy) = log x + log y", d:"Product rule"}
             ],
             chemistry: [
-                {h: "Mole Formula", f: "n = m / M"},
-                {h: "Ideal Gas Law", f: "PV = nRT"},
-                {h: "Density", f: "ρ = m / V"},
-                {h: "Boyle's Law", f: "P₁V₁ = P₂V₂"}
+                {t:"Mole Concept", f:"n = m / M", d:"Moles = mass / molar mass"}
             ],
             astronomy: [
-                {h: "Universal Gravity", f: "F = G(m₁m₂/r²)"},
-                {h: "Kepler's 3rd Law", f: "T² ∝ r³"}
+                {t:"Gravity", f:"F = G(m1m2/r²)", d:"Universal Law of Gravitation"}
             ]
         };
 
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        function toggleV(id) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             tg.HapticFeedback.impactOccurred('medium');
         }
@@ -203,30 +160,29 @@
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
-                showPage('home');
+                toggleV('home');
             }, 3000);
         };
 
-        function loadSubject(sub) {
-            document.getElementById('subjectTitle').innerText = sub.toUpperCase();
-            const container = document.getElementById('formulaContainer');
-            container.innerHTML = "";
-            LIBRARY[sub].forEach(item => {
-                container.innerHTML += `
-                    <div class="formula-item">
-                        <h4>${item.h}</h4>
-                        <p>${item.f}</p>
-                    </div>
-                `;
+        function openModule(s) {
+            document.getElementById('modTitle').innerText = s.toUpperCase();
+            const cont = document.getElementById('modContent');
+            cont.innerHTML = "";
+            DATA_BANK[s].forEach(x => {
+                cont.innerHTML += `
+                    <div class="item-row" onclick="const b=this.children[1]; b.style.display=b.style.display==='block'?'none':'block';">
+                        <div class="item-head">${x.t}</div>
+                        <div class="item-body"><code>${x.f}</code><p>${x.d}</p></div>
+                    </div>`;
             });
-            showPage('subjectPage');
+            toggleV('modView');
         }
 
         function runCalc() {
             const m = document.getElementById('mass').value;
             const a = document.getElementById('acc').value;
             if(m && a) {
-                document.getElementById('forceRes').innerText = (m * a).toFixed(1) + " N";
+                document.getElementById('res').innerText = (m * a).toFixed(1) + " N";
                 tg.HapticFeedback.notificationOccurred('success');
             }
         }
