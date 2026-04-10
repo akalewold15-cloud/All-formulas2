@@ -3,223 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro X - Professional Study Tool</title>
+    <title>Pro X - AA Company</title>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1P0G3VZPB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-E1P0G3VZPB');
+    </script>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
         :root {
-            --bg-grad: radial-gradient(circle at center, #003366 0%, #050505 70%, #000000 100%);
-            --accent-blue: #007bff;
-            --border-glow: 0 0 10px rgba(0, 123, 255, 0.5);
+            --bg: radial-gradient(circle at top, #001a33 0%, #000000 80%);
+            --accent: #00d4ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glow: 0 0 15px rgba(0, 212, 255, 0.5);
         }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background: black; color: white;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
 
-        .page {
-            display: none; height: 100vh; width: 100vw;
-            position: absolute; top: 0; left: 0;
-            flex-direction: column; align-items: center;
-            justify-content: center; background: var(--bg-grad);
-        }
-
-        .active { display: flex; animation: fadeIn 0.5s ease-in; }
-
+        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg); }
+        .active { display: flex; animation: fadeIn 0.6s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Splash Animation (AA ዱብ ሲል) */
-        .aa-drop {
-            font-size: 80px; font-weight: bold; color: var(--accent-blue);
-            text-shadow: 0 0 20px var(--accent-blue);
-            animation: bounceIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* AA 360 Spin Drop */
+        .aa-container { display: flex; justify-content: center; align-items: center; height: 100vh; background: black; position: fixed; width: 100%; z-index: 100; }
+        .aa-text {
+            font-size: 100px; font-weight: 900; color: var(--accent);
+            text-shadow: 0 0 30px var(--accent);
+            animation: spinDrop 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes spinDrop {
+            0% { transform: translateY(-500px) rotateY(0deg); opacity: 0; }
+            60% { transform: translateY(20px) rotateY(720deg); opacity: 1; }
+            100% { transform: translateY(0) rotateY(1080deg); }
         }
 
-        @keyframes bounceIn {
-            0% { transform: translateY(-500px); opacity: 0; }
-            60% { transform: translateY(30px); opacity: 1; }
-            80% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
+        /* Dashboard Styles */
+        .header { margin-top: 40px; text-align: center; }
+        .header h1 { font-weight: 200; letter-spacing: 5px; margin: 0; text-shadow: 0 0 10px var(--accent); }
+        
+        .join-btn {
+            margin-top: 15px; padding: 10px 25px; border-radius: 20px;
+            border: 1px solid var(--accent); background: rgba(0, 212, 255, 0.1);
+            color: var(--accent); text-decoration: none; font-size: 0.8rem; font-weight: bold;
+            transition: 0.3s; box-shadow: var(--glow);
         }
 
-        /* Dashboard Styling */
-        .main-container {
-            border: 2px solid black; padding: 30px;
-            width: 85%; max-width: 450px;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px; box-shadow: var(--border-glow);
-            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+        .search-bar {
+            width: 85%; padding: 15px; margin: 30px 0;
+            background: var(--glass); border: 1px solid #333;
+            border-radius: 12px; color: white; outline: none;
         }
 
-        .menu-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #333; color: white;
-            padding: 20px; border-radius: 12px;
-            cursor: pointer; transition: 0.3s;
-            font-weight: bold; text-transform: uppercase;
-        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; max-width: 400px; }
 
-        .menu-btn:active { background: var(--accent-blue); transform: scale(0.95); }
-
-        /* Tools & Calculations */
-        .tool-card {
-            background: #111; width: 90%; margin: 10px;
-            padding: 15px; border-radius: 10px; border-left: 4px solid var(--accent-blue);
+        .card {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px; border-radius: 15px; text-align: center;
+            backdrop-filter: blur(10px); transition: 0.3s;
+            font-size: 0.8rem; font-weight: bold; letter-spacing: 1px;
         }
+        .card:active { transform: scale(0.95); border-color: var(--accent); box-shadow: var(--glow); }
 
-        input, select, textarea {
-            width: 90%; padding: 12px; margin: 8px 0;
-            background: #222; border: 1px solid #444;
-            color: white; border-radius: 5px;
-        }
+        .full-card { grid-column: span 2; border: 1px dashed var(--accent); }
 
-        .bottom-nav {
-            position: absolute; bottom: 20px; width: 100%;
-            display: flex; justify-content: center;
-        }
+        .section-title { width: 90%; margin: 25px 0 10px 0; font-size: 0.7rem; letter-spacing: 3px; opacity: 0.6; }
 
-        .tools-trigger {
-            background: black; border: 1px solid #007bff;
-            color: white; padding: 15px 50px; border-radius: 30px;
-            box-shadow: 0 0 15px rgba(0,123,255,0.3);
-        }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="page active">
-        <h1 style="letter-spacing: 10px; font-size: 40px;">AA COMPANY</h1>
-        <div style="width: 250px; height: 4px; background: #222; margin: 20px; border-radius: 10px;">
-            <div id="loader" style="width: 0%; height: 100%; background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue);"></div>
-        </div>
-        <div id="status">Loading 0%</div>
-        <div style="position: absolute; bottom: 40px; opacity: 0.5;">Created by Akalewold</div>
-    </div>
-
-    <div id="langPage" class="page">
-        <h2>ቋንቋ ይምረጡ / Select Language</h2>
-        <button class="menu-btn" style="width: 200px; margin: 10px;" onclick="setLang('am')">አማርኛ</button>
-        <button class="menu-btn" style="width: 200px; margin: 10px;" onclick="setLang('or')">Afaan Oromoo</button>
-        <button class="menu-btn" style="width: 200px; margin: 10px;" onclick="setLang('en')">English</button>
-    </div>
-
-    <div id="tgPage" class="page">
-        <h3 id="tgMsg">በመረጡት ቋንቋ ይህን ይቀላቀሉ</h3>
-        <a href="https://t.me/smart_kihilot" target="_blank" class="menu-btn" style="text-decoration: none; color: #00d4ff;">JOIN TELEGRAM CHANNEL</a>
-        <button class="menu-btn" style="margin-top: 30px;" onclick="showPage('home')">ቀጥል / Continue</button>
+    <div id="splash" class="aa-container">
+        <div class="aa-text">AA</div>
     </div>
 
     <div id="home" class="page">
-        <div class="main-container">
-            <button class="menu-btn" onclick="showFormulaSplash()">FORMULAS</button>
-            <button class="menu-btn" onclick="showPage('searchPage')">SEARCH</button>
-            <button class="menu-btn" onclick="showPage('createNote')">CREATE NOTE</button>
-            <button class="menu-btn" onclick="showPage('myNotes')">MY NOTES</button>
-            <button class="menu-btn" style="grid-column: span 2;">PRO X SETTINGS</button>
+        <div class="header">
+            <h1>PRO X</h1>
+            <p style="font-size: 0.6rem; opacity: 0.5; letter-spacing: 2px;">AA COMPANY</p>
+            <a href="https://t.me/smart_kihilot" class="join-btn">JOIN CHANNEL</a>
         </div>
-        <div class="bottom-nav">
-            <button class="tools-trigger" onclick="showPage('toolsPage')">🛠 TOOLS & CALCULATORS</button>
-        </div>
-    </div>
 
-    <div id="formulaSplash" class="page" style="background: black;">
-        <div class="aa-drop">AA</div>
-    </div>
+        <input type="text" class="search-bar" placeholder="🔍 Search Formulas or Tools...">
 
-    <div id="formulaMenu" class="page">
-        <h2>FORMULAS</h2>
-        <div class="main-container">
-            <button class="menu-btn">PHYSICS</button>
-            <button class="menu-btn">MATHS</button>
-            <button class="menu-btn">CHEMISTRY</button>
-            <button class="menu-btn">BIOLOGY</button>
+        <div class="section-title">CORE FORMULAS</div>
+        <div class="grid">
+            <div class="card" onclick="alert('Physics Library Loading...')">PHYSICS</div>
+            <div class="card" onclick="alert('Maths Library Loading...')">MATHS</div>
+            <div class="card">CHEMISTRY</div>
+            <div class="card">BIOLOGY</div>
         </div>
-        <button onclick="showPage('home')" style="margin-top: 20px; background: none; color: white; border: 1px solid #444; padding: 10px 30px;">BACK</button>
-    </div>
 
-    <div id="toolsPage" class="page" style="justify-content: flex-start; padding-top: 50px; overflow-y: auto;">
-        <h2>TOOLS</h2>
-        <div class="tool-card">
-            <h4>Physics: Force (F=ma)</h4>
-            <input type="number" id="m" placeholder="Mass (kg)">
-            <input type="number" id="a" placeholder="Acceleration">
-            <button class="menu-btn" onclick="calc('force')">Calculate</button>
-            <p id="resF"></p>
+        <div class="section-title">ADVANCED TOOLS</div>
+        <div class="grid">
+            <div class="card full-card" onclick="showPage('forceCalc')">🛠 FORCE CALCULATOR (F=ma)</div>
+            <div class="card full-card">🛠 QUADRATIC EQUATION SOLVER</div>
+            <div class="card full-card">🛠 MOLAR MASS CALCULATOR</div>
         </div>
-        <div class="tool-card">
-            <h4>Math: Quadratic Solver</h4>
-            <input type="number" id="valA" placeholder="a">
-            <input type="number" id="valB" placeholder="b">
-            <input type="number" id="valC" placeholder="c">
-            <button class="menu-btn" onclick="calc('quad')">Solve</button>
-            <p id="resQ"></p>
-        </div>
-        <button onclick="showPage('home')" class="menu-btn">BACK TO HOME</button>
-    </div>
 
-    <div id="createNote" class="page">
-        <h2>NEW NOTE</h2>
-        <input type="text" id="noteTitle" placeholder="Title of the note">
-        <select id="noteColor">
-            <option value="white">White Text</option>
-            <option value="cyan">Cyan Text</option>
-            <option value="yellow">Yellow Text</option>
-            <option value="red">Red Text</option>
-        </select>
-        <textarea id="noteContent" placeholder="Write your content here..."></textarea>
-        <button class="menu-btn" onclick="saveNote()">SAVE NOTE</button>
-        <button onclick="showPage('home')" class="menu-btn" style="background: none;">BACK</button>
+        <div class="section-title">PERSONAL SPACE</div>
+        <div class="grid" style="margin-bottom: 50px;">
+            <div class="card" style="background: rgba(0,212,255,0.05);">CREATE NOTE</div>
+            <div class="card">MY NOTES</div>
+        </div>
     </div>
 
     <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.headerColor = '#000000';
+
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
+            else document.getElementById('home').classList.add('active');
         }
 
-        // 1. Splash Loader
-        let p = 0;
-        let loader = setInterval(() => {
-            p++;
-            document.getElementById('loader').style.width = p + "%";
-            document.getElementById('status').innerText = "Loading " + p + "%";
-            if(p >= 100) { clearInterval(loader); setTimeout(() => showPage('langPage'), 500); }
-        }, 40);
-
-        // 2. Language Set
-        function setLang(l) {
-            const msg = { 'am': 'በመረጡት ቋንቋ ይህን ይቀላቀሉ', 'en': 'Join this in your selected language', 'or': 'Afaan filattaniin miseensa ta\'aa' };
-            document.getElementById('tgMsg').innerText = msg[l];
-            showPage('tgPage');
-        }
-
-        // 3. Formula Animation (AA Drop)
-        function showFormulaSplash() {
-            showPage('formulaSplash');
-            setTimeout(() => { showPage('formulaMenu'); }, 1500);
-        }
-
-        // 4. Calculations
-        function calc(type) {
-            if(type === 'force') {
-                let m = document.getElementById('m').value;
-                let a = document.getElementById('a').value;
-                document.getElementById('resF').innerText = "Result: " + (m*a) + " Newtons";
-            }
-        }
-
-        // 5. Notes Logic
-        let notes = [];
-        function saveNote() {
-            const title = document.getElementById('noteTitle').value;
-            const content = document.getElementById('noteContent').value;
-            const color = document.getElementById('noteColor').value;
-            if(!title || !content) return alert("Please fill everything!");
-            notes.push({ title, content, color });
-            alert("Note Saved Successfully!");
+        // Auto transition from Splash to Home
+        setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
             showPage('home');
-        }
+        }, 3000);
+
+        // Haptic Feedback for buttons
+        document.querySelectorAll('.card').forEach(btn => {
+            btn.addEventListener('click', () => {
+                tg.HapticFeedback.impactOccurred('light');
+            });
+        });
     </script>
 </body>
 </html>
