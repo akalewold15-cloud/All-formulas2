@@ -17,179 +17,224 @@
 
     <style>
         :root {
-            --bg: radial-gradient(circle at top, #001a33 0%, #000000 80%);
+            --bg-color: radial-gradient(circle at top, #001f3f 0%, #000000 85%);
             --accent: #00d4ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glow: 0 0 15px rgba(0, 212, 255, 0.5);
-            --neon-text: 0 0 10px rgba(0, 212, 255, 0.8);
+            --glass: rgba(255, 255, 255, 0.04);
+            --glow: 0 0 15px rgba(0, 212, 255, 0.6);
+            --neon-text: 0 0 12px rgba(0, 212, 255, 0.9);
         }
 
-        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
 
-        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg); padding-bottom: 50px;}
-        .active { display: flex; animation: fadeIn 0.6s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg-color); padding-bottom: 60px; box-sizing: border-box; }
+        .active { display: flex; animation: fadeIn 0.7s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 1. Splash Screen (AA Spin Drop) */
-        .splash-container { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 100; flex-direction: column; }
+        /* --- 1. SPLASH SCREEN (3D SPIN) --- */
+        .splash-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 999; }
         .aa-spin {
             font-size: 110px; font-weight: 900; color: var(--accent);
             text-shadow: 0 0 40px var(--accent);
-            animation: spinDrop 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: spinDrop 2.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         @keyframes spinDrop {
-            0% { transform: translateY(-500px) rotateY(0deg) scale(0.5); opacity: 0; }
-            60% { transform: translateY(20px) rotateY(720deg) scale(1.1); opacity: 1; }
-            100% { transform: translateY(0) rotateY(1080deg) scale(1); }
+            0% { transform: translateY(-600px) rotateY(0deg) scale(0.4); opacity: 0; }
+            60% { transform: translateY(30px) rotateY(1080deg) scale(1.1); opacity: 1; }
+            100% { transform: translateY(0) rotateY(1800deg) scale(1); }
         }
 
-        /* 2. Glassmorphism UI */
-        .header { margin-top: 50px; text-align: center; }
-        .header h1 { font-weight: 200; letter-spacing: 5px; margin: 0; text-shadow: var(--neon-text); }
+        /* --- 2. HEADER & NAVIGATION --- */
+        .header { margin-top: 50px; text-align: center; width: 100%; }
+        .header h1 { font-weight: 200; letter-spacing: 6px; margin: 0; text-shadow: var(--neon-text); font-size: 2.2rem; }
+        .company-tag { font-size: 0.65rem; letter-spacing: 4px; opacity: 0.5; margin-bottom: 15px; }
         
         .join-btn {
-            display: inline-block; margin-top: 15px; padding: 10px 25px; border-radius: 20px;
+            display: inline-block; padding: 12px 30px; border-radius: 30px;
             border: 1px solid var(--accent); background: rgba(0, 212, 255, 0.1);
-            color: var(--accent); text-decoration: none; font-size: 0.8rem; font-weight: bold;
-            box-shadow: var(--glow); transition: 0.3s;
+            color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: bold;
+            box-shadow: var(--glow); transition: 0.3s; margin-bottom: 20px;
         }
+        .join-btn:hover { background: var(--accent); color: black; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; max-width: 400px; margin-top: 20px; }
-
-        .card {
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px; border-radius: 15px; text-align: center;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            font-size: 0.85rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; transition: 0.3s;
-        }
-        .card:active { transform: scale(0.95); border-color: var(--accent); box-shadow: var(--glow); }
+        /* --- 3. DASHBOARD GRID --- */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 92%; max-width: 450px; margin-top: 10px; }
         
-        .full-card { grid-column: span 2; border: 1px dashed var(--accent); }
-        .section-title { width: 90%; max-width: 400px; margin: 30px 0 5px 0; font-size: 0.75rem; letter-spacing: 3px; opacity: 0.6; text-align: left; }
+        .card {
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
+            padding: 25px 15px; border-radius: 20px; text-align: center;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            font-size: 0.9rem; font-weight: 600; letter-spacing: 1.5px; cursor: pointer; transition: 0.4s;
+        }
+        .card:active { transform: scale(0.92); border-color: var(--accent); box-shadow: var(--glow); }
+        .full-card { grid-column: span 2; border: 1px dashed rgba(0, 212, 255, 0.4); }
 
-        /* 3. Inputs & Calculator */
-        .input-box { width: 90%; padding: 15px; margin: 10px 0; background: rgba(0,0,0,0.5); border: 1px solid #333; color: white; border-radius: 10px; font-size: 1rem; box-sizing: border-box;}
-        .input-box:focus { border-color: var(--accent); outline: none; }
-        .result-text { font-size: 1.5rem; color: var(--accent); text-shadow: var(--neon-text); margin-top: 10px; }
+        .section-label { width: 90%; max-width: 450px; margin: 35px 0 8px 0; font-size: 0.75rem; letter-spacing: 4px; opacity: 0.4; text-align: left; text-transform: uppercase; }
 
-        /* Formula Text Style */
-        .formula-list { text-align: left; width: 90%; max-width: 400px; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 15px; border-left: 3px solid var(--accent); box-sizing: border-box; }
-        .formula-list p { margin: 15px 0; font-size: 1.1rem; text-shadow: var(--neon-text); font-family: monospace; }
-        .formula-list span { font-size: 0.8rem; color: #ccc; font-family: sans-serif; display: block; text-shadow: none; margin-bottom: 5px; opacity: 0.8;}
+        /* --- 4. FORMULA LIBRARY STYLE --- */
+        .content-container { width: 92%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
+        .formula-box {
+            background: rgba(0,0,0,0.3); border-left: 4px solid var(--accent);
+            padding: 20px; border-radius: 12px; animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .formula-box h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        .formula-item { margin-bottom: 12px; }
+        .formula-item code { display: block; font-size: 1.3rem; color: white; text-shadow: var(--neon-text); margin: 5px 0; font-family: 'Courier New', Courier, monospace; }
+        .formula-item small { color: #aaa; font-size: 0.8rem; }
 
+        /* --- 5. CALCULATOR --- */
+        .input-group { width: 100%; margin: 15px 0; }
+        .input-field {
+            width: 100%; padding: 18px; background: rgba(255,255,255,0.05);
+            border: 1px solid #333; color: white; border-radius: 15px; font-size: 1.1rem;
+            margin-bottom: 10px; box-sizing: border-box; outline: none;
+        }
+        .input-field:focus { border-color: var(--accent); }
+        .calc-btn {
+            width: 100%; padding: 18px; border-radius: 15px; background: var(--accent);
+            color: black; font-weight: 800; border: none; font-size: 1.1rem; cursor: pointer; box-shadow: var(--glow);
+        }
+        .res-display { font-size: 2rem; margin-top: 20px; color: var(--accent); text-shadow: var(--neon-text); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="splash-container">
+    <div id="splash" class="splash-screen">
         <div class="aa-spin">AA</div>
-        <div style="margin-top: 20px; font-size: 0.8rem; letter-spacing: 5px; opacity: 0.5;">PRO X LOADING</div>
     </div>
 
     <div id="home" class="page">
         <div class="header">
             <h1>PRO X</h1>
-            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">JOIN CHANNEL</a>
+            <div class="company-tag">AA COMPANY - INNOVATION</div>
+            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">JOIN CHANNEL (ተቀላቀሉ)</a>
         </div>
 
-        <div class="section-title">CORE LIBRARY</div>
+        <div class="section-label">Subjects (የትምህርት ዘርፎች)</div>
         <div class="grid">
-            <div class="card" onclick="showPage('physicsPage')">PHYSICS</div>
-            <div class="card" onclick="showPage('mathsPage')">MATHS</div>
-            <div class="card" onclick="alert('Chemistry Data Coming Soon!')">CHEMISTRY</div>
-            <div class="card" onclick="alert('Biology Data Coming Soon!')">BIOLOGY</div>
+            <div class="card" onclick="openSubject('physics')">PHYSICS</div>
+            <div class="card" onclick="openSubject('maths')">MATHS</div>
+            <div class="card" onclick="openSubject('chemistry')">CHEMISTRY</div>
+            <div class="card" onclick="openSubject('astronomy')">ASTRONOMY</div>
         </div>
 
-        <div class="section-title">ADVANCED TOOLS</div>
+        <div class="section-label">Smart Tools (መሳሪያዎች)</div>
         <div class="grid">
-            <div class="card full-card" onclick="showPage('calcPage')">🛠 FORCE CALCULATOR (F=ma)</div>
-        </div>
-
-        <div class="section-title">PERSONAL SPACE</div>
-        <div class="grid">
-            <div class="card" style="background: rgba(0,212,255,0.05);" onclick="alert('Note pad opened!')">CREATE NOTE</div>
-            <div class="card" onclick="alert('No saved notes yet.')">MY NOTES</div>
+            <div class="card full-card" onclick="showPage('forceCalcPage')">🛠 FORCE CALCULATOR</div>
+            <div class="card full-card" onclick="showPage('unitCalcPage')">🛠 UNIT CONVERTER</div>
         </div>
     </div>
 
     <div id="physicsPage" class="page">
-        <div class="header"><h2>PHYSICS</h2></div>
-        <div class="formula-list">
-            <span>1. Equation of Motion</span>
-            <p>v = u + at</p>
-            <span>2. Force (Newton's 2nd Law)</span>
-            <p>F = m × a</p>
-            <span>3. Work Done</span>
-            <p>W = F × d</p>
-            <span>4. Kinetic Energy</span>
-            <p>KE = ½mv²</p>
-            <span>5. Gravitational Force</span>
-            <p>F = G(m₁m₂ / r²)</p>
-        </div>
-        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+        <div class="header"><h1>PHYSICS</h1></div>
+        <div class="content-container" id="physicsList"></div>
+        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
     </div>
 
     <div id="mathsPage" class="page">
-        <div class="header"><h2>MATHEMATICS</h2></div>
-        <div class="formula-list">
-            <span>1. Quadratic Formula</span>
-            <p>x = (-b ± √(b² - 4ac)) / 2a</p>
-            <span>2. Logarithm Product Rule</span>
-            <p>log(xy) = log(x) + log(y)</p>
-            <span>3. Pythagorean Theorem</span>
-            <p>a² + b² = c²</p>
-        </div>
-        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+        <div class="header"><h1>MATHS</h1></div>
+        <div class="content-container" id="mathsList"></div>
+        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
     </div>
 
-    <div id="calcPage" class="page">
-        <div class="header"><h2>FORCE CALC</h2></div>
-        <div style="width: 90%; max-width: 400px; text-align: center;">
-            <p style="opacity: 0.7; font-size: 0.9rem;">Calculate Force using F = m × a</p>
-            <input type="number" id="massInput" class="input-box" placeholder="Enter Mass (kg)">
-            <input type="number" id="accInput" class="input-box" placeholder="Enter Acceleration (m/s²)">
-            
-            <div class="card full-card" style="background: var(--accent); color: black; margin: 15px 0;" onclick="calculateForce()">CALCULATE</div>
-            
-            <div id="resultBox" class="result-text">0 N</div>
+    <div id="chemistryPage" class="page">
+        <div class="header"><h1>CHEMISTRY</h1></div>
+        <div class="content-container" id="chemistryList"></div>
+        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
+    </div>
+
+    <div id="forceCalcPage" class="page">
+        <div class="header"><h1>FORCE CALC</h1></div>
+        <div class="content-container">
+            <div class="input-group">
+                <input type="number" id="mass" class="input-field" placeholder="Mass (kg)">
+                <input type="number" id="acc" class="input-field" placeholder="Acceleration (m/s²)">
+                <button class="calc-btn" onclick="runForceCalc()">CALCULATE</button>
+            </div>
+            <div id="forceResult" class="res-display">0 N</div>
         </div>
-        <div class="card" style="width: 80%; max-width: 350px; margin-top: 30px;" onclick="showPage('home')">BACK TO HOME</div>
+        <div class="card" style="width: 80%; margin-top: 20px;" onclick="showPage('home')">BACK</div>
     </div>
 
     <script>
-        // Telegram Setup
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.headerColor = '#000000';
-        tg.backgroundColor = '#000000';
 
-        // Page Navigation
+        const DATA = {
+            physics: [
+                {t: "Motion (ዩኒት 1)", f: "v = u + at", d: "Final Velocity Calculation"},
+                {t: "Motion (ዩኒት 1)", f: "s = ut + ½at²", d: "Displacement"},
+                {t: "Newton's 2nd Law", f: "F = m × a", d: "Force = Mass × Acceleration"},
+                {t: "Momentum", f: "p = m × v", d: "Momentum = Mass × Velocity"},
+                {t: "Work Done", f: "W = F × d", d: "Work = Force × Distance"},
+                {t: "Power", f: "P = W / t", d: "Power = Work / Time"},
+                {t: "Kinetic Energy", f: "KE = ½mv²", d: "Energy of Motion"},
+                {t: "Potential Energy", f: "PE = mgh", d: "Stored Energy"},
+                {t: "Heat Energy", f: "Q = mc∆T", d: "Heat Transfer"},
+                {t: "Electricity", f: "V = I × R", d: "Ohm's Law"},
+                {t: "Electrical Power", f: "P = V × I", d: "Power in Watts"},
+                {t: "Transformers", f: "Vp/Vs = Np/Ns", d: "Voltage/Turns Ratio"}
+            ],
+            maths: [
+                {t: "Polynomials", f: "P(x) = anxⁿ + ... + a₀", d: "General Form"},
+                {t: "Quadratic Formula", f: "x = [-b ± √(b²-4ac)] / 2a", d: "Finding Roots"},
+                {t: "Logarithms", f: "log(xy) = log x + log y", d: "Product Rule"},
+                {t: "Logarithms", f: "log(x/y) = log x - log y", d: "Quotient Rule"},
+                {t: "Trigonometry", f: "sin²θ + cos²θ = 1", d: "Identity Rule"},
+                {t: "Circles", f: "A = πr²", d: "Area of a Circle"},
+                {t: "Circles", f: "C = 2πr", d: "Circumference"},
+                {t: "Cylinder Volume", f: "V = πr²h", d: "Volume Calculation"}
+            ],
+            chemistry: [
+                {t: "Mole Concept", f: "n = m / M", d: "Mole = mass / molar mass"},
+                {t: "Density", f: "ρ = m / V", d: "Density = Mass / Volume"},
+                {t: "Ideal Gas Law", f: "PV = nRT", d: "Pressure, Volume, Temp relation"},
+                {t: "Boyle's Law", f: "P₁V₁ = P₂V₂", d: "Constant Temperature"},
+                {t: "Charles's Law", f: "V₁/T₁ = V₂/T₂", d: "Constant Pressure"}
+            ],
+            astronomy: [
+                {t: "Universal Gravity", f: "F = G(m₁m₂/r²)", d: "Newton's Gravitational Law"},
+                {t: "Kepler's 3rd Law", f: "T² ∝ r³", d: "Orbital Period Relation"}
+            ]
+        };
+
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            tg.HapticFeedback.impactOccurred('light'); // ስልኩ ይርገበገባል
+            tg.HapticFeedback.impactOccurred('medium');
         }
 
-        // Splash Screen Logic (አፑ ሲከፈት)
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 showPage('home');
-            }, 2500); // ከ 2.5 ሰከንድ በኋላ ወደ ዋናው ገጽ ይገባል
+            }, 2500);
         };
 
-        // Force Calculator Logic (ካልኩሌተሩ እንዲሰራ)
-        function calculateForce() {
-            const m = parseFloat(document.getElementById('massInput').value);
-            const a = parseFloat(document.getElementById('accInput').value);
-            
-            if (isNaN(m) || isNaN(a)) {
-                document.getElementById('resultBox').innerText = "Please enter numbers!";
-                document.getElementById('resultBox').style.color = "red";
-            } else {
-                const force = m * a;
-                document.getElementById('resultBox').innerText = force + " Newtons (N)";
-                document.getElementById('resultBox').style.color = "var(--accent)";
+        function openSubject(sub) {
+            const container = document.getElementById(sub + 'List');
+            container.innerHTML = "";
+            DATA[sub].forEach(item => {
+                container.innerHTML += `
+                    <div class="formula-box">
+                        <h3>${item.t}</h3>
+                        <div class="formula-item">
+                            <small>${item.d}</small>
+                            <code>${item.f}</code>
+                        </div>
+                    </div>
+                `;
+            });
+            showPage(sub + 'Page');
+        }
+
+        function runForceCalc() {
+            const m = document.getElementById('mass').value;
+            const a = document.getElementById('acc').value;
+            if(m && a) {
+                document.getElementById('forceResult').innerText = (m * a).toFixed(2) + " N";
                 tg.HapticFeedback.notificationOccurred('success');
             }
         }
