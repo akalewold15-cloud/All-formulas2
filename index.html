@@ -17,144 +17,146 @@
 
     <style>
         :root {
-            --bg-color: radial-gradient(circle at top, #001f3f 0%, #000000 85%);
-            --accent: #00d4ff;
-            --glass: rgba(255, 255, 255, 0.04);
-            --glow: 0 0 15px rgba(0, 212, 255, 0.6);
-            --neon-text: 0 0 12px rgba(0, 212, 255, 0.9);
+            --bg-color: radial-gradient(circle at 50% -20%, #003366 0%, #000000 80%);
+            --accent: #00f2ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glow: 0 0 20px rgba(0, 242, 255, 0.4);
+            --neon-text: 0 0 15px rgba(0, 242, 255, 1);
         }
 
-        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Inter', system-ui, sans-serif; overflow-x: hidden; }
 
-        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg-color); padding-bottom: 60px; box-sizing: border-box; }
-        .active { display: flex; animation: fadeIn 0.7s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .page { display: none; min-height: 100vh; width: 100vw; flex-direction: column; align-items: center; background: var(--bg-color); padding-bottom: 50px; }
+        .active { display: flex; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
 
-        /* --- 1. SPLASH SCREEN (3D SPIN) --- */
-        .splash-screen { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 999; }
-        .aa-spin {
-            font-size: 110px; font-weight: 900; color: var(--accent);
-            text-shadow: 0 0 40px var(--accent);
-            animation: spinDrop 2.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        /* --- ADVANCED SPLASH SCREEN --- */
+        .splash { display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw; background: black; position: fixed; z-index: 1000; flex-direction: column; }
+        
+        .ring {
+            width: 200px; height: 200px; border: 2px solid transparent; border-top: 2px solid var(--accent);
+            border-radius: 50%; position: absolute; animation: ringSpin 2s linear infinite;
         }
-        @keyframes spinDrop {
-            0% { transform: translateY(-600px) rotateY(0deg) scale(0.4); opacity: 0; }
-            60% { transform: translateY(30px) rotateY(1080deg) scale(1.1); opacity: 1; }
-            100% { transform: translateY(0) rotateY(1800deg) scale(1); }
+        @keyframes ringSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .aa-box {
+            position: relative; text-align: center;
+            animation: aaEntrance 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .aa-logo { font-size: 80px; font-weight: 900; color: var(--accent); text-shadow: var(--neon-text); margin: 0; }
+        .aa-sub { font-size: 10px; letter-spacing: 8px; opacity: 0.7; color: white; margin-top: -10px; }
+
+        @keyframes aaEntrance {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(360deg); opacity: 1; }
+            100% { transform: scale(1) rotate(720deg); }
         }
 
-        /* --- 2. HEADER & NAVIGATION --- */
-        .header { margin-top: 50px; text-align: center; width: 100%; }
-        .header h1 { font-weight: 200; letter-spacing: 6px; margin: 0; text-shadow: var(--neon-text); font-size: 2.2rem; }
-        .company-tag { font-size: 0.65rem; letter-spacing: 4px; opacity: 0.5; margin-bottom: 15px; }
+        /* --- MAIN UI --- */
+        .header { margin-top: 60px; text-align: center; }
+        .header h1 { font-weight: 100; letter-spacing: 8px; font-size: 2.5rem; margin: 0; color: white; text-shadow: var(--neon-text); }
         
         .join-btn {
-            display: inline-block; padding: 12px 30px; border-radius: 30px;
-            border: 1px solid var(--accent); background: rgba(0, 212, 255, 0.1);
-            color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: bold;
-            box-shadow: var(--glow); transition: 0.3s; margin-bottom: 20px;
+            display: inline-block; margin-top: 20px; padding: 12px 35px; border-radius: 50px;
+            background: linear-gradient(45deg, #001a33, #003366); border: 1px solid var(--accent);
+            color: var(--accent); text-decoration: none; font-size: 0.7rem; font-weight: bold;
+            box-shadow: var(--glow); text-transform: uppercase; letter-spacing: 2px;
         }
-        .join-btn:hover { background: var(--accent); color: black; }
 
-        /* --- 3. DASHBOARD GRID --- */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 92%; max-width: 450px; margin-top: 10px; }
-        
-        .card {
-            background: var(--glass); border: 1px solid rgba(255,255,255,0.08);
-            padding: 25px 15px; border-radius: 20px; text-align: center;
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            font-size: 0.9rem; font-weight: 600; letter-spacing: 1.5px; cursor: pointer; transition: 0.4s;
-        }
-        .card:active { transform: scale(0.92); border-color: var(--accent); box-shadow: var(--glow); }
-        .full-card { grid-column: span 2; border: 1px dashed rgba(0, 212, 255, 0.4); }
+        .container { width: 90%; max-width: 450px; margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
-        .section-label { width: 90%; max-width: 450px; margin: 35px 0 8px 0; font-size: 0.75rem; letter-spacing: 4px; opacity: 0.4; text-align: left; text-transform: uppercase; }
+        .tech-card {
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.1);
+            padding: 30px 15px; border-radius: 24px; text-align: center;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        }
+        .tech-card:active { transform: translateY(5px); background: rgba(0, 242, 255, 0.1); border-color: var(--accent); }
+        .tech-card span { display: block; font-size: 0.75rem; letter-spacing: 3px; opacity: 0.6; margin-bottom: 10px; }
+        .tech-card h3 { margin: 0; font-size: 0.9rem; font-weight: 800; color: white; }
 
-        /* --- 4. FORMULA LIBRARY STYLE --- */
-        .content-container { width: 92%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
-        .formula-box {
-            background: rgba(0,0,0,0.3); border-left: 4px solid var(--accent);
-            padding: 20px; border-radius: 12px; animation: slideUp 0.5s ease;
-        }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .formula-box h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        .formula-item { margin-bottom: 12px; }
-        .formula-item code { display: block; font-size: 1.3rem; color: white; text-shadow: var(--neon-text); margin: 5px 0; font-family: 'Courier New', Courier, monospace; }
-        .formula-item small { color: #aaa; font-size: 0.8rem; }
+        .full { grid-column: span 2; border: 1px solid rgba(255,255,255,0.1); }
 
-        /* --- 5. CALCULATOR --- */
-        .input-group { width: 100%; margin: 15px 0; }
-        .input-field {
-            width: 100%; padding: 18px; background: rgba(255,255,255,0.05);
-            border: 1px solid #333; color: white; border-radius: 15px; font-size: 1.1rem;
-            margin-bottom: 10px; box-sizing: border-box; outline: none;
+        /* --- CONTENT VIEW --- */
+        .content-view { width: 90%; max-width: 500px; margin-top: 30px; }
+        .formula-item {
+            background: rgba(255,255,255,0.02); border-left: 2px solid var(--accent);
+            padding: 20px; margin-bottom: 15px; border-radius: 0 15px 15px 0;
+            animation: fadeInItem 0.5s ease forwards;
         }
-        .input-field:focus { border-color: var(--accent); }
-        .calc-btn {
-            width: 100%; padding: 18px; border-radius: 15px; background: var(--accent);
-            color: black; font-weight: 800; border: none; font-size: 1.1rem; cursor: pointer; box-shadow: var(--glow);
+        @keyframes fadeInItem { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .formula-item h4 { margin: 0; font-size: 0.7rem; color: var(--accent); opacity: 0.8; text-transform: uppercase; }
+        .formula-item p { margin: 10px 0 0 0; font-size: 1.4rem; font-family: 'Courier New', Courier, monospace; text-shadow: var(--neon-text); }
+
+        /* --- CALCULATOR --- */
+        .calc-box { width: 90%; max-width: 400px; text-align: center; }
+        .input-tech {
+            width: 100%; padding: 20px; background: rgba(0,0,0,0.4); border: 1px solid #1a1a1a;
+            color: white; border-radius: 15px; font-size: 1.2rem; margin-bottom: 15px; outline: none; box-sizing: border-box;
         }
-        .res-display { font-size: 2rem; margin-top: 20px; color: var(--accent); text-shadow: var(--neon-text); font-weight: bold; }
+        .input-tech:focus { border-color: var(--accent); box-shadow: var(--glow); }
+        .btn-calc {
+            width: 100%; padding: 20px; background: var(--accent); color: black;
+            border: none; border-radius: 15px; font-weight: 900; font-size: 1rem; cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <div class="aa-spin">AA</div>
+    <div id="splash" class="splash">
+        <div class="ring"></div>
+        <div class="aa-box">
+            <h1 class="aa-logo">AA</h1>
+            <p class="aa-sub">COMPANY</p>
+        </div>
     </div>
 
     <div id="home" class="page">
         <div class="header">
             <h1>PRO X</h1>
-            <div class="company-tag">AA COMPANY - INNOVATION</div>
-            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">JOIN CHANNEL (ተቀላቀሉ)</a>
+            <a href="https://t.me/smart_kihilot" target="_blank" class="join-btn">Join Telegram Channel</a>
         </div>
 
-        <div class="section-label">Subjects (የትምህርት ዘርፎች)</div>
-        <div class="grid">
-            <div class="card" onclick="openSubject('physics')">PHYSICS</div>
-            <div class="card" onclick="openSubject('maths')">MATHS</div>
-            <div class="card" onclick="openSubject('chemistry')">CHEMISTRY</div>
-            <div class="card" onclick="openSubject('astronomy')">ASTRONOMY</div>
-        </div>
-
-        <div class="section-label">Smart Tools (መሳሪያዎች)</div>
-        <div class="grid">
-            <div class="card full-card" onclick="showPage('forceCalcPage')">🛠 FORCE CALCULATOR</div>
-            <div class="card full-card" onclick="showPage('unitCalcPage')">🛠 UNIT CONVERTER</div>
-        </div>
-    </div>
-
-    <div id="physicsPage" class="page">
-        <div class="header"><h1>PHYSICS</h1></div>
-        <div class="content-container" id="physicsList"></div>
-        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
-    </div>
-
-    <div id="mathsPage" class="page">
-        <div class="header"><h1>MATHS</h1></div>
-        <div class="content-container" id="mathsList"></div>
-        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
-    </div>
-
-    <div id="chemistryPage" class="page">
-        <div class="header"><h1>CHEMISTRY</h1></div>
-        <div class="content-container" id="chemistryList"></div>
-        <div class="card" style="width: 80%; margin-top: 40px; border-color: red;" onclick="showPage('home')">BACK</div>
-    </div>
-
-    <div id="forceCalcPage" class="page">
-        <div class="header"><h1>FORCE CALC</h1></div>
-        <div class="content-container">
-            <div class="input-group">
-                <input type="number" id="mass" class="input-field" placeholder="Mass (kg)">
-                <input type="number" id="acc" class="input-field" placeholder="Acceleration (m/s²)">
-                <button class="calc-btn" onclick="runForceCalc()">CALCULATE</button>
+        <div class="container">
+            <div class="tech-card" onclick="loadSubject('physics')">
+                <span>MODULE 01</span>
+                <h3>PHYSICS</h3>
             </div>
-            <div id="forceResult" class="res-display">0 N</div>
+            <div class="tech-card" onclick="loadSubject('maths')">
+                <span>MODULE 02</span>
+                <h3>MATHS</h3>
+            </div>
+            <div class="tech-card" onclick="loadSubject('chemistry')">
+                <span>MODULE 03</span>
+                <h3>CHEMISTRY</h3>
+            </div>
+            <div class="tech-card" onclick="loadSubject('astronomy')">
+                <span>MODULE 04</span>
+                <h3>ASTRONOMY</h3>
+            </div>
+            <div class="tech-card full" onclick="showPage('forcePage')">
+                <span>UTILITY</span>
+                <h3>FORCE CALCULATOR</h3>
+            </div>
         </div>
-        <div class="card" style="width: 80%; margin-top: 20px;" onclick="showPage('home')">BACK</div>
+    </div>
+
+    <div id="subjectPage" class="page">
+        <div class="header"><h1 id="subjectTitle">SUBJECT</h1></div>
+        <div id="formulaContainer" class="content-view"></div>
+        <div class="join-btn" onclick="showPage('home')" style="margin-top: 30px; border-color: #ff4d4d; color: #ff4d4d;">EXIT TO DASHBOARD</div>
+    </div>
+
+    <div id="forcePage" class="page">
+        <div class="header"><h1>SOLVER</h1></div>
+        <div class="calc-box">
+            <p style="opacity: 0.5; font-size: 0.8rem; margin-bottom: 20px;">Newton's Second Law Calculator</p>
+            <input type="number" id="mass" class="input-tech" placeholder="Mass (kg)">
+            <input type="number" id="acc" class="input-tech" placeholder="Acceleration (m/s²)">
+            <button class="btn-calc" onclick="runCalc()">RUN SIMULATION</button>
+            <h2 id="forceRes" style="margin-top: 30px; font-size: 3rem; text-shadow: var(--neon-text);">0 N</h2>
+        </div>
+        <div class="join-btn" onclick="showPage('home')" style="margin-top: 30px;">BACK</div>
     </div>
 
     <script>
@@ -162,41 +164,33 @@
         tg.expand();
         tg.headerColor = '#000000';
 
-        const DATA = {
+        const LIBRARY = {
             physics: [
-                {t: "Motion (ዩኒት 1)", f: "v = u + at", d: "Final Velocity Calculation"},
-                {t: "Motion (ዩኒት 1)", f: "s = ut + ½at²", d: "Displacement"},
-                {t: "Newton's 2nd Law", f: "F = m × a", d: "Force = Mass × Acceleration"},
-                {t: "Momentum", f: "p = m × v", d: "Momentum = Mass × Velocity"},
-                {t: "Work Done", f: "W = F × d", d: "Work = Force × Distance"},
-                {t: "Power", f: "P = W / t", d: "Power = Work / Time"},
-                {t: "Kinetic Energy", f: "KE = ½mv²", d: "Energy of Motion"},
-                {t: "Potential Energy", f: "PE = mgh", d: "Stored Energy"},
-                {t: "Heat Energy", f: "Q = mc∆T", d: "Heat Transfer"},
-                {t: "Electricity", f: "V = I × R", d: "Ohm's Law"},
-                {t: "Electrical Power", f: "P = V × I", d: "Power in Watts"},
-                {t: "Transformers", f: "Vp/Vs = Np/Ns", d: "Voltage/Turns Ratio"}
+                {h: "Equation of Motion", f: "v = u + at"},
+                {h: "Displacement", f: "s = ut + ½at²"},
+                {h: "Newton's 2nd Law", f: "F = m × a"},
+                {h: "Momentum", f: "p = m × v"},
+                {h: "Work Done", f: "W = F × d"},
+                {h: "Kinetic Energy", f: "KE = ½mv²"},
+                {h: "Heat Energy", f: "Q = mc∆T"},
+                {h: "Ohm's Law", f: "V = I × R"}
             ],
             maths: [
-                {t: "Polynomials", f: "P(x) = anxⁿ + ... + a₀", d: "General Form"},
-                {t: "Quadratic Formula", f: "x = [-b ± √(b²-4ac)] / 2a", d: "Finding Roots"},
-                {t: "Logarithms", f: "log(xy) = log x + log y", d: "Product Rule"},
-                {t: "Logarithms", f: "log(x/y) = log x - log y", d: "Quotient Rule"},
-                {t: "Trigonometry", f: "sin²θ + cos²θ = 1", d: "Identity Rule"},
-                {t: "Circles", f: "A = πr²", d: "Area of a Circle"},
-                {t: "Circles", f: "C = 2πr", d: "Circumference"},
-                {t: "Cylinder Volume", f: "V = πr²h", d: "Volume Calculation"}
+                {h: "Quadratic Formula", f: "x = [-b ± √(b²-4ac)]/2a"},
+                {h: "Logarithm Product", f: "log(xy) = log x + log y"},
+                {h: "Circle Area", f: "A = πr²"},
+                {h: "Trig Identity", f: "sin²θ + cos²θ = 1"},
+                {h: "Cylinder Volume", f: "V = πr²h"}
             ],
             chemistry: [
-                {t: "Mole Concept", f: "n = m / M", d: "Mole = mass / molar mass"},
-                {t: "Density", f: "ρ = m / V", d: "Density = Mass / Volume"},
-                {t: "Ideal Gas Law", f: "PV = nRT", d: "Pressure, Volume, Temp relation"},
-                {t: "Boyle's Law", f: "P₁V₁ = P₂V₂", d: "Constant Temperature"},
-                {t: "Charles's Law", f: "V₁/T₁ = V₂/T₂", d: "Constant Pressure"}
+                {h: "Mole Formula", f: "n = m / M"},
+                {h: "Ideal Gas Law", f: "PV = nRT"},
+                {h: "Density", f: "ρ = m / V"},
+                {h: "Boyle's Law", f: "P₁V₁ = P₂V₂"}
             ],
             astronomy: [
-                {t: "Universal Gravity", f: "F = G(m₁m₂/r²)", d: "Newton's Gravitational Law"},
-                {t: "Kepler's 3rd Law", f: "T² ∝ r³", d: "Orbital Period Relation"}
+                {h: "Universal Gravity", f: "F = G(m₁m₂/r²)"},
+                {h: "Kepler's 3rd Law", f: "T² ∝ r³"}
             ]
         };
 
@@ -210,31 +204,29 @@
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 showPage('home');
-            }, 2500);
+            }, 3000);
         };
 
-        function openSubject(sub) {
-            const container = document.getElementById(sub + 'List');
+        function loadSubject(sub) {
+            document.getElementById('subjectTitle').innerText = sub.toUpperCase();
+            const container = document.getElementById('formulaContainer');
             container.innerHTML = "";
-            DATA[sub].forEach(item => {
+            LIBRARY[sub].forEach(item => {
                 container.innerHTML += `
-                    <div class="formula-box">
-                        <h3>${item.t}</h3>
-                        <div class="formula-item">
-                            <small>${item.d}</small>
-                            <code>${item.f}</code>
-                        </div>
+                    <div class="formula-item">
+                        <h4>${item.h}</h4>
+                        <p>${item.f}</p>
                     </div>
                 `;
             });
-            showPage(sub + 'Page');
+            showPage('subjectPage');
         }
 
-        function runForceCalc() {
+        function runCalc() {
             const m = document.getElementById('mass').value;
             const a = document.getElementById('acc').value;
             if(m && a) {
-                document.getElementById('forceResult').innerText = (m * a).toFixed(2) + " N";
+                document.getElementById('forceRes').innerText = (m * a).toFixed(1) + " N";
                 tg.HapticFeedback.notificationOccurred('success');
             }
         }
