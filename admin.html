@@ -1,59 +1,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pro X - Admin Control</title>
+    <title>Pro X - Master Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <style>
-        body { background: #000; color: #00f2ff; font-family: sans-serif; padding: 20px; text-align: center; }
-        input, textarea { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: 1px solid #00f2ff; background: #111; color: #fff; }
-        button { background: #00f2ff; color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; }
+        body { background: #0a0a0a; color: #fff; font-family: sans-serif; padding: 20px; }
+        .box { background: #1a1a1a; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #333; }
+        h2 { color: #00f2ff; font-size: 1.2rem; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box;}
+        button { width: 100%; background: #00f2ff; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .color-group { display: flex; align-items: center; gap: 10px; }
+        label { font-size: 0.8rem; opacity: 0.7; }
     </style>
 </head>
 <body>
-    <h2>ADMIN CONTROL PANEL</h2>
-    <p>ዋናው አፕ ላይ የሚታየውን ጽሁፍ እዚህ ቀይር</p>
-    
-    <input type="text" id="subject" placeholder="Subject (physics, maths...)">
-    <input type="text" id="title" placeholder="Formula Title">
-    <textarea id="formula" placeholder="The Formula (e.g. F = ma)"></textarea>
-    <textarea id="desc" placeholder="Description"></textarea>
-    
-    <br>
-    <button onclick="saveData()">Update App Now 🚀</button>
+
+    <div class="box">
+        <h2>🎨 Design & Colors</h2>
+        <label>Accent Color (የአፑ ዋና ቀለም)</label>
+        <div class="color-group">
+            <input type="color" id="accentColor" value="#00f2ff" style="width: 50px; height: 50px; padding: 0;">
+            <input type="text" id="accentHex" value="#00f2ff">
+        </div>
+        
+        <label>Splash Screen Text</label>
+        <input type="text" id="sTitle" placeholder="Splash Title (e.g. AA)">
+        <input type="text" id="sSub" placeholder="Splash Subtitle (e.g. COMPANY)">
+        
+        <button onclick="updateDesign()">Update Design Now 🚀</button>
+    </div>
+
+    <div class="box">
+        <h2>📚 Add New Formula</h2>
+        <input type="text" id="subject" placeholder="Subject (physics, maths...)">
+        <input type="text" id="title" placeholder="Formula Title">
+        <input type="text" id="formula" placeholder="Formula (F = ma)">
+        <input type="text" id="desc" placeholder="Description">
+        <button onclick="addFormula()" style="background: #2ecc71;">Add Content +</button>
+    </div>
 
     <script>
-        // አንተ በላክኸው ምስል መሰረት የተሞላ
         const firebaseConfig = {
             apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
-            authDomain: "pro-x-66e62.firebaseapp.com",
-            projectId: "pro-x-66e62",
-            storageBucket: "pro-x-66e62.firebasestorage.app",
-            messagingSenderId: "280141521415",
-            appId: "1:280141521415:web:b2b76e..."
+            databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
+            projectId: "pro-x-66e62"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function saveData() {
+        // ዲዛይን ለመቀየር
+        function updateDesign() {
+            const color = document.getElementById('accentColor').value;
+            const title = document.getElementById('sTitle').value;
+            const sub = document.getElementById('sSub').value;
+
+            db.ref('config').set({
+                accent: color,
+                splashTitle: title || "AA",
+                splashSub: sub || "COMPANY"
+            }).then(() => alert("ዲዛይኑ ተቀይሯል!"));
+        }
+
+        // መረጃ ለመጨመር
+        function addFormula() {
             const sub = document.getElementById('subject').value.toLowerCase();
             const title = document.getElementById('title').value;
-            const formula = document.getElementById('formula').value;
-            const desc = document.getElementById('desc').value;
+            const f = document.getElementById('formula').value;
+            const d = document.getElementById('desc').value;
 
             if(sub && title) {
-                db.ref('data/' + sub).push({
-                    t: title,
-                    f: formula,
-                    d: desc
-                }).then(() => {
-                    alert("በስኬት ተቀይሯል! አፑን ከፍተህ እየው።");
-                });
-            } else {
-                alert("እባክህ Subject እና Title ሙላ!");
+                db.ref('data/' + sub).push({ t: title, f: f, d: d })
+                .then(() => alert("መረጃው ተጨምሯል!"));
             }
         }
     </script>
