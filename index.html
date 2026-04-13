@@ -3,62 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro X - AA Company</title>
+    <title>PRO X | AA COMMAND</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
-        :root { --accent: #00f2ff; --bg: #000; }
-        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; height: 100%; }
-        
-        /* Splash Screen - Dynamic Animation */
-        .splash { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #000; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; z-index: 9999;
+        :root {
+            --accent: #00f2ff;
+            --bg: #020406;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
-        .aa-title { font-family: 'Orbitron', sans-serif; font-size: clamp(60px, 20vw, 120px); margin: 0; color: var(--accent); text-shadow: 0 0 30px var(--accent); animation: pulse 2s infinite; }
-        .aa-sub { letter-spacing: 8px; font-size: 0.8rem; opacity: 0.7; margin-top: 10px; }
-        @keyframes pulse { 0% { opacity: 0.8; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(0.98); } }
 
-        /* Main View */
-        .view { display: none; padding: 20px; text-align: center; min-height: 100vh; background: radial-gradient(circle at top, #111 0%, #000 100%); }
-        .active { display: block; animation: fadeIn 0.8s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            background: var(--bg); color: #fff;
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
+            background: radial-gradient(circle at 50% -20%, #1a1a1a 0%, #020406 100%);
+        }
 
-        .header h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 5px; font-size: 1.5rem; margin-bottom: 30px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 500px; margin: 0 auto; }
-        .card { background: #111; border: 1px solid #222; padding: 25px 10px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
-        .card:active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
+        /* --- AA Branding Splash --- */
+        .splash {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #000; z-index: 9999; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            transition: 0.8s ease-in-out;
+        }
+        
+        .aa-glow-circle {
+            position: absolute; width: 250px; height: 250px;
+            border: 1px solid var(--accent); border-radius: 50%;
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
+            animation: pulse 2s infinite;
+        }
 
-        .item-box { background: #0a0a0a; border: 1px solid #111; margin: 10px 0; border-radius: 15px; text-align: left; padding: 15px; }
-        .item-box code { color: var(--accent); font-size: 1.4rem; display: block; margin: 10px 0; font-family: monospace; }
-        .back-btn { margin-top: 20px; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 10px 30px; border-radius: 50px; display: inline-block; cursor: pointer; }
+        .aa-main-logo {
+            font-family: 'Orbitron', sans-serif; font-size: 110px;
+            color: var(--accent); text-shadow: 0 0 40px var(--accent);
+            margin: 0; z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        /* --- Dashboard UI --- */
+        .main-ui { display: none; padding: 25px; opacity: 0; }
+        .show { display: block; animation: slideUp 1s forwards; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .aa-mini-logo { font-family: 'Orbitron', sans-serif; color: var(--accent); font-weight: 900; font-size: 1.5rem; }
+
+        .hero-card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 35px; padding: 40px 20px; text-align: center;
+            backdrop-filter: blur(30px); margin-bottom: 25px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+        }
+
+        .user-tag { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; letter-spacing: 2px; margin-top: 10px; }
+
+        /* --- Action Cards --- */
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .action-card {
+            background: var(--glass); border: 1px solid var(--border);
+            border-radius: 25px; padding: 25px; backdrop-filter: blur(10px);
+            transition: 0.4s; position: relative; overflow: hidden;
+        }
+        .action-card:hover { 
+            border-color: var(--accent); transform: translateY(-5px);
+            background: rgba(0, 242, 255, 0.03);
+        }
+
+        .card-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
+        .card-label { font-size: 0.7rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
+        .card-name { font-weight: 600; font-size: 1rem; margin-top: 5px; }
+
+        /* --- Footer Info --- */
+        .footer-info {
+            background: rgba(255,255,255,0.02); border-radius: 20px;
+            padding: 20px; margin-top: 25px; font-size: 0.8rem;
+            border: 1px dashed rgba(255,255,255,0.1);
+            line-height: 1.6; color: #888;
+        }
+
     </style>
 </head>
 <body>
 
 <div id="splash" class="splash">
-    <h1 id="sTitle" class="aa-title">AA</h1>
-    <p id="sSub" class="aa-sub">COMPANY</p>
+    <div class="aa-glow-circle"></div>
+    <h1 class="aa-main-logo">AA</h1>
+    <p style="margin-top: 80px; letter-spacing: 15px; font-size: 12px; opacity: 0.6;">SYSTEMS v2.0</p>
 </div>
 
-<div id="home" class="view">
-    <div class="header"><h1>PRO X</h1></div>
-    <div class="grid">
-        <div class="card" onclick="showCat('physics')">PHYSICS</div>
-        <div class="card" onclick="showCat('maths')">MATHS</div>
-        <div class="card" onclick="showCat('chemistry')">CHEMISTRY</div>
+<div id="app" class="main-ui">
+    <div class="top-nav">
+        <div class="aa-mini-logo">AA</div>
+        <div style="font-size: 12px; opacity: 0.5;">MON 14 APR</div>
+    </div>
+
+    <div class="hero-card">
+        <div style="font-size: 10px; opacity: 0.4; letter-spacing: 4px;">OPERATOR STATUS</div>
+        <h2 class="user-tag">USER PRO X</h2>
+        <div style="margin-top: 15px; font-size: 11px; color: var(--accent);">
+            <span style="animation: blink 1s infinite;">●</span> CONNECTION SECURE
+        </div>
+    </div>
+
+    <div class="action-grid">
+        <div class="action-card">
+            <span class="card-label">Module 01</span>
+            <div class="card-name">KNOWLEDGE</div>
+        </div>
+        <div class="action-card">
+            <span class="card-label">Module 02</span>
+            <div class="card-name">SCIENCE</div>
+        </div>
+        <div class="action-card">
+            <span class="card-label">Module 03</span>
+            <div class="card-name">HEALTH</div>
+        </div>
+        <div class="action-card">
+            <span class="card-label">Module 04</span>
+            <div class="card-name">DATABASE</div>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        <strong>SYSTEM NOTE:</strong> AA Company አፕሊኬሽን እጅግ ዘመናዊ መረጃዎችን ለማቅረብ የተዘጋጀ ነው። በቅርቡ አዳዲስ የትምህርት ክፍሎች እና የ AI አገልግሎቶች ይካተታሉ።
     </div>
 </div>
 
-<div id="detail" class="view">
-    <h1 id="catTitle" style="color:var(--accent)">SUBJECT</h1>
-    <div id="contentList"></div>
-    <div class="back-btn" onclick="goHome()">BACK</div>
-</div>
-
 <script>
+    // Firebase Setup
     const firebaseConfig = {
         apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
         databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
@@ -67,41 +153,31 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Config Update
+    // Live Config Update
     db.ref('config').on('value', snap => {
         const v = snap.val();
         if(v) {
             document.documentElement.style.setProperty('--accent', v.accent);
-            document.getElementById('sTitle').innerText = v.title;
-            document.getElementById('sSub').innerText = v.sub;
+            // AA branding stays as requested
         }
     });
 
-    function showCat(cat) {
-        document.getElementById('catTitle').innerText = cat.toUpperCase();
-        const list = document.getElementById('contentList');
-        list.innerHTML = "Loading...";
-        db.ref('data/' + cat).on('value', snap => {
-            list.innerHTML = "";
-            snap.forEach(child => {
-                const item = child.val();
-                list.innerHTML += `<div class="item-box"><strong>${item.t}</strong><code>${item.f}</code></div>`;
-            });
-        });
-        switchView('detail');
-    }
+    // Launch App
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('app').classList.add('show');
+            }, 800);
+        }, 3000);
+    };
 
-    function switchView(id) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function goHome() { switchView('home'); }
-
-    setTimeout(() => {
-        document.getElementById('splash').style.display = 'none';
-        switchView('home');
-    }, 3000);
 </script>
+
+<style>
+    @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+</style>
+
 </body>
 </html>
