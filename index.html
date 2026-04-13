@@ -15,100 +15,73 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         :root {
-            --bg-main: radial-gradient(circle at 50% 0%, #001f3f 0%, #000000 90%);
-            --accent: #00f2ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glow: 0 0 25px rgba(0, 242, 255, 0.5);
+            --accent: #00f2ff; /* ይህ በ Firebase ይቀየራል */
+            --bg: radial-gradient(circle at 50% 0%, #001f3f 0%, #000000 90%);
         }
-        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: sans-serif; overflow-x: hidden; }
+        
+        /* Splash Screen */
         .splash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
-        .ring { width: 230px; height: 230px; border: 4px solid transparent; border-top: 4px solid var(--accent); border-radius: 50%; position: absolute; animation: spin 1.2s linear infinite; }
+        .ring { width: 200px; height: 200px; border: 4px solid transparent; border-top: 4px solid var(--accent); border-radius: 50%; position: absolute; animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .aa-box { text-align: center; animation: aaShow 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .aa-text { font-size: 110px; font-weight: 900; color: var(--accent); text-shadow: 0 0 35px var(--accent); margin: 0; }
-        .aa-sub { font-size: 15px; letter-spacing: 12px; opacity: 0.8; margin-top: -15px; text-transform: uppercase; }
-        @keyframes aaShow { 0% { transform: scale(0.2) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(720deg); opacity: 1; } }
-        .view { display: none; min-height: 100vh; background: var(--bg-main); flex-direction: column; align-items: center; padding: 60px 20px; box-sizing: border-box; }
-        .active { display: flex; animation: viewFade 0.6s ease-out; }
-        @keyframes viewFade { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        .header h1 { font-weight: 100; letter-spacing: 15px; font-size: 3.2rem; margin: 0; text-shadow: var(--glow); text-align: center; }
-        .grid { width: 100%; max-width: 480px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;}
-        .card { background: var(--glass); border: 1px solid rgba(255,255,255,0.08); padding: 40px 10px; border-radius: 35px; text-align: center; backdrop-filter: blur(20px); cursor: pointer; }
-        .card:active { transform: scale(0.9); border-color: var(--accent); }
-        .item-row { width: 100%; max-width: 500px; background: rgba(255,255,255,0.02); border-radius: 25px; margin-bottom: 15px; border: 1px solid #111; }
-        .item-head { padding: 25px; color: var(--accent); font-weight: 900; text-transform: uppercase; }
-        .item-body { padding: 0 25px 25px; display: none; border-top: 1px solid #111; }
-        .item-body code { font-size: 1.8rem; color: #fff; display: block; margin: 15px 0; font-family: monospace; }
-        .btn-link { display: inline-block; margin: 30px 0; padding: 15px 45px; border-radius: 50px; background: rgba(0, 242, 255, 0.08); border: 1.5px solid var(--accent); color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: bold; box-shadow: var(--glow); text-transform: uppercase; letter-spacing: 4px; }
+        .aa-text { font-size: 100px; font-weight: 900; color: var(--accent); text-shadow: 0 0 30px var(--accent); margin: 0; }
+        .aa-sub { font-size: 14px; letter-spacing: 10px; opacity: 0.8; text-transform: uppercase; }
+
+        /* Main UI */
+        .view { display: none; min-height: 100vh; background: var(--bg); flex-direction: column; align-items: center; padding: 40px 20px; box-sizing: border-box; }
+        .active { display: flex; }
+        .header h1 { letter-spacing: 10px; color: #fff; text-shadow: 0 0 10px var(--accent); }
+        .grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 30px 10px; border-radius: 25px; text-align: center; cursor: pointer; }
+        .card:active { border-color: var(--accent); transform: scale(0.95); }
     </style>
 </head>
 <body>
 
     <div id="splash" class="splash">
         <div class="ring"></div>
-        <div class="aa-box"><h1 class="aa-text">AA</h1><p class="aa-sub">COMPANY</p></div>
+        <h1 class="aa-text" id="dispTitle">AA</h1>
+        <p class="aa-sub" id="dispSub">COMPANY</p>
     </div>
 
     <div id="home" class="view">
         <div class="header"><h1>PRO X</h1></div>
         <div class="grid">
-            <div class="card" onclick="openModule('physics')"><h3>PHYSICS</h3></div>
-            <div class="card" onclick="openModule('maths')"><h3>MATHS</h3></div>
-            <div class="card" onclick="openModule('chemistry')"><h3>CHEMISTRY</h3></div>
-            <div class="card" onclick="openModule('astronomy')"><h3>ASTRONOMY</h3></div>
+            <div class="card" onclick="alert('Module Clicked')"><h3>PHYSICS</h3></div>
+            <div class="card" onclick="alert('Module Clicked')"><h3>MATHS</h3></div>
         </div>
-    </div>
-
-    <div id="modView" class="view">
-        <div class="header"><h1 id="modTitle">LIBRARY</h1></div>
-        <div id="modContent" style="width:100%; max-width:500px; margin-top:30px;"></div>
-        <div class="btn-link" onclick="toggleV('home')" style="border-color:#ff4d4d; color:#ff4d4d;">BACK</div>
     </div>
 
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
             databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
-            projectId: "pro-x-66e62",
-            appId: "1:280141521415:web:b2b76e36d4088a8519119c"
+            projectId: "pro-x-66e62"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function toggleV(id) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
+        // ዲዛይኑን ከ Firebase ላይ መሳብ
+        db.ref('config').on('value', (snap) => {
+            const cfg = snap.val();
+            if(cfg) {
+                // ቀለሙን መቀየር
+                document.documentElement.style.setProperty('--accent', cfg.accent);
+                // የSplash ጽሁፍ መቀየር
+                document.getElementById('dispTitle').innerText = cfg.splashTitle;
+                document.getElementById('dispSub').innerText = cfg.splashSub;
+            }
+        });
 
-        window.onload = () => { setTimeout(() => { document.getElementById('splash').style.display='none'; toggleV('home'); }, 2500); };
-
-        function openModule(s) {
-            document.getElementById('modTitle').innerText = s.toUpperCase();
-            const cont = document.getElementById('modContent');
-            cont.innerHTML = "<p style='text-align:center;'>Loading Data...</p>";
-            
-            // መረጃውን ከ Firebase በቀጥታ መሳብ
-            db.ref('data/' + s).on('value', (snap) => {
-                cont.innerHTML = "";
-                const data = snap.val();
-                if(data) {
-                    Object.values(data).forEach(x => {
-                        cont.innerHTML += `
-                            <div class="item-row" onclick="const b=this.children[1]; b.style.display=b.style.display==='block'?'none':'block';">
-                                <div class="item-head">${x.t}</div>
-                                <div class="item-body"><code>${x.f}</code><p>${x.d}</p></div>
-                            </div>`;
-                    });
-                } else {
-                    cont.innerHTML = "<p style='text-align:center; opacity:0.5;'>No data yet. Use Admin App to add formulas!</p>";
-                }
-            });
-            toggleV('modView');
-        }
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('home').classList.add('active');
+            }, 3000);
+        };
     </script>
 </body>
 </html>
