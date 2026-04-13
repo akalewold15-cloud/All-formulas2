@@ -1,80 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="am">
 <head>
-    <title>Pro X - Master Admin</title>
+    <meta charset="UTF-8">
+    <title>Pro X - Master Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #0a0a0a; color: #fff; font-family: sans-serif; padding: 20px; }
-        .box { background: #1a1a1a; padding: 20px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #333; }
-        h2 { color: #00f2ff; font-size: 1.2rem; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; box-sizing: border-box;}
-        button { width: 100%; background: #00f2ff; color: #000; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .color-group { display: flex; align-items: center; gap: 10px; }
-        label { font-size: 0.8rem; opacity: 0.7; }
+        :root { --p: #00f2ff; --bg: #050505; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 800px) { .container { grid-template-columns: 1fr; } }
+        
+        .card { background: #111; border: 1px solid #222; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: var(--p); font-weight: 900; margin-top: 0; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        
+        label { display: block; margin: 15px 0 5px; font-size: 0.8rem; opacity: 0.7; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 12px; border-radius: 10px; outline: none; transition: 0.3s; box-sizing: border-box; }
+        input:focus { border-color: var(--p); }
+        
+        .btn { background: var(--p); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 242, 255, 0.4); }
+
+        /* Preview Window */
+        .preview-phone { background: #000; border: 8px solid #222; border-radius: 40px; height: 500px; position: sticky; top: 20px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pre-splash { text-align: center; }
+        .pre-title { font-size: 50px; font-weight: 900; margin: 0; }
+        
+        .list-item { background: #1a1a1a; padding: 10px; margin-top: 10px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--p); }
+        .del-btn { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="box">
-        <h2>🎨 Design & Colors</h2>
-        <label>Accent Color (የአፑ ዋና ቀለም)</label>
-        <div class="color-group">
-            <input type="color" id="accentColor" value="#00f2ff" style="width: 50px; height: 50px; padding: 0;">
-            <input type="text" id="accentHex" value="#00f2ff">
+<div class="container">
+    <div class="card">
+        <h2>🎨 Visual Branding</h2>
+        <label>Theme Accent Color</label>
+        <input type="color" id="accent" oninput="updateLive()" value="#00f2ff">
+        
+        <label>Splash Main Title</label>
+        <input type="text" id="sTitle" oninput="updateLive()" placeholder="e.g. AA">
+        
+        <label>Splash Subtitle</label>
+        <input type="text" id="sSub" oninput="updateLive()" placeholder="e.g. COMPANY">
+
+        <button class="btn" onclick="saveConfig()">Save Theme Changes 🚀</button>
+
+        <h2 style="margin-top:40px;">📝 Content Manager</h2>
+        <select id="subSelect">
+            <option value="physics">Physics</option>
+            <option value="maths">Maths</option>
+            <option value="chemistry">Chemistry</option>
+        </select>
+        <input type="text" id="fTitle" placeholder="Formula Name">
+        <textarea id="fBody" placeholder="Formula (e.g. a² + b² = c²)"></textarea>
+        <button class="btn" style="background:#2ecc71" onclick="addFormula()">Add New Formula +</button>
+
+        <div id="dataList">
+            </div>
+    </div>
+
+    <div class="preview-phone" id="phoneBody">
+        <div class="pre-splash">
+            <h1 class="pre-title" id="pTitle" style="color:#00f2ff; text-shadow: 0 0 20px #00f2ff;">AA</h1>
+            <p id="pSub" style="letter-spacing: 5px; font-size: 10px;">COMPANY</p>
         </div>
-        
-        <label>Splash Screen Text</label>
-        <input type="text" id="sTitle" placeholder="Splash Title (e.g. AA)">
-        <input type="text" id="sSub" placeholder="Splash Subtitle (e.g. COMPANY)">
-        
-        <button onclick="updateDesign()">Update Design Now 🚀</button>
+        <p style="font-size: 8px; margin-top: 20px; opacity: 0.5;">LIVE PREVIEW</p>
     </div>
+</div>
 
-    <div class="box">
-        <h2>📚 Add New Formula</h2>
-        <input type="text" id="subject" placeholder="Subject (physics, maths...)">
-        <input type="text" id="title" placeholder="Formula Title">
-        <input type="text" id="formula" placeholder="Formula (F = ma)">
-        <input type="text" id="desc" placeholder="Description">
-        <button onclick="addFormula()" style="background: #2ecc71;">Add Content +</button>
-    </div>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
+        databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
+        projectId: "pro-x-66e62"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
-            databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
-            projectId: "pro-x-66e62"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    // 1. Live Preview ማስተካከያ
+    function updateLive() {
+        const color = document.getElementById('accent').value;
+        const title = document.getElementById('sTitle').value || "AA";
+        const sub = document.getElementById('sSub').value || "COMPANY";
+        
+        document.getElementById('pTitle').style.color = color;
+        document.getElementById('pTitle').style.textShadow = `0 0 20px ${color}`;
+        document.getElementById('pTitle').innerText = title;
+        document.getElementById('pSub').innerText = sub;
+    }
 
-        // ዲዛይን ለመቀየር
-        function updateDesign() {
-            const color = document.getElementById('accentColor').value;
-            const title = document.getElementById('sTitle').value;
-            const sub = document.getElementById('sSub').value;
+    // 2. ዲዛይን ሴቭ ማድረግ
+    function saveConfig() {
+        db.ref('config').set({
+            accent: document.getElementById('accent').value,
+            splashTitle: document.getElementById('sTitle').value,
+            splashSub: document.getElementById('sSub').value
+        }).then(() => alert("አፑ በቅጽበት ተቀይሯል!"));
+    }
 
-            db.ref('config').set({
-                accent: color,
-                splashTitle: title || "AA",
-                splashSub: sub || "COMPANY"
-            }).then(() => alert("ዲዛይኑ ተቀይሯል!"));
-        }
+    // 3. ፎርሙላ መጨመር
+    function addFormula() {
+        const sub = document.getElementById('subSelect').value;
+        db.ref('data/' + sub).push({
+            t: document.getElementById('fTitle').value,
+            f: document.getElementById('fBody').value,
+            d: "Added via Master Dashboard"
+        }).then(() => {
+            alert("ዳታ ተጨምሯል!");
+            loadData();
+        });
+    }
 
-        // መረጃ ለመጨመር
-        function addFormula() {
-            const sub = document.getElementById('subject').value.toLowerCase();
-            const title = document.getElementById('title').value;
-            const f = document.getElementById('formula').value;
-            const d = document.getElementById('desc').value;
-
-            if(sub && title) {
-                db.ref('data/' + sub).push({ t: title, f: f, d: d })
-                .then(() => alert("መረጃው ተጨምሯል!"));
+    // 4. የነበረን ዳታ ማጥፋት (Delete)
+    function loadData() {
+        const sub = document.getElementById('subSelect').value;
+        db.ref('data/' + sub).on('value', (snap) => {
+            const list = document.getElementById('dataList');
+            list.innerHTML = "<h3>Current Items:</h3>";
+            const val = snap.val();
+            for(let id in val) {
+                list.innerHTML += `
+                    <div class="list-item">
+                        <span>${val[id].t}</span>
+                        <button class="del-btn" onclick="deleteItem('${sub}', '${id}')">Delete</button>
+                    </div>`;
             }
+        });
+    }
+    
+    function deleteItem(path, id) {
+        if(confirm("እርግጠኛ ነህ ይጥፋ?")) {
+            db.ref(`data/${path}/${id}`).remove();
         }
-    </script>
+    }
+
+    window.onload = loadData;
+    document.getElementById('subSelect').onchange = loadData;
+</script>
+
 </body>
 </html>
