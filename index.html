@@ -4,84 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro X - AA Company</title>
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1P0G3VZPB"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-E1P0G3VZPB');
-    </script>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #00f2ff; /* ይህ በ Firebase ይቀየራል */
-            --bg: radial-gradient(circle at 50% 0%, #001f3f 0%, #000000 90%);
-        }
-        body, html { margin: 0; padding: 0; min-height: 100vh; background: #000; color: white; font-family: sans-serif; overflow-x: hidden; }
+        :root { --accent: #00f2ff; --bg: #000; }
+        body, html { margin: 0; padding: 0; background: #000; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; height: 100%; }
         
-        /* Splash Screen */
-        .splash { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; }
-        .ring { width: 200px; height: 200px; border: 4px solid transparent; border-top: 4px solid var(--accent); border-radius: 50%; position: absolute; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .aa-text { font-size: 100px; font-weight: 900; color: var(--accent); text-shadow: 0 0 30px var(--accent); margin: 0; }
-        .aa-sub { font-size: 14px; letter-spacing: 10px; opacity: 0.8; text-transform: uppercase; }
+        /* Splash Screen - Dynamic Animation */
+        .splash { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; z-index: 9999;
+        }
+        .aa-title { font-family: 'Orbitron', sans-serif; font-size: clamp(60px, 20vw, 120px); margin: 0; color: var(--accent); text-shadow: 0 0 30px var(--accent); animation: pulse 2s infinite; }
+        .aa-sub { letter-spacing: 8px; font-size: 0.8rem; opacity: 0.7; margin-top: 10px; }
+        @keyframes pulse { 0% { opacity: 0.8; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(0.98); } }
 
-        /* Main UI */
-        .view { display: none; min-height: 100vh; background: var(--bg); flex-direction: column; align-items: center; padding: 40px 20px; box-sizing: border-box; }
-        .active { display: flex; }
-        .header h1 { letter-spacing: 10px; color: #fff; text-shadow: 0 0 10px var(--accent); }
-        .grid { width: 100%; max-width: 400px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-        .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 30px 10px; border-radius: 25px; text-align: center; cursor: pointer; }
-        .card:active { border-color: var(--accent); transform: scale(0.95); }
+        /* Main View */
+        .view { display: none; padding: 20px; text-align: center; min-height: 100vh; background: radial-gradient(circle at top, #111 0%, #000 100%); }
+        .active { display: block; animation: fadeIn 0.8s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .header h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 5px; font-size: 1.5rem; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 500px; margin: 0 auto; }
+        .card { background: #111; border: 1px solid #222; padding: 25px 10px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+        .card:active { border-color: var(--accent); background: rgba(0, 242, 255, 0.05); }
+
+        .item-box { background: #0a0a0a; border: 1px solid #111; margin: 10px 0; border-radius: 15px; text-align: left; padding: 15px; }
+        .item-box code { color: var(--accent); font-size: 1.4rem; display: block; margin: 10px 0; font-family: monospace; }
+        .back-btn { margin-top: 20px; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 10px 30px; border-radius: 50px; display: inline-block; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="splash" class="splash">
-        <div class="ring"></div>
-        <h1 class="aa-text" id="dispTitle">AA</h1>
-        <p class="aa-sub" id="dispSub">COMPANY</p>
+<div id="splash" class="splash">
+    <h1 id="sTitle" class="aa-title">AA</h1>
+    <p id="sSub" class="aa-sub">COMPANY</p>
+</div>
+
+<div id="home" class="view">
+    <div class="header"><h1>PRO X</h1></div>
+    <div class="grid">
+        <div class="card" onclick="showCat('physics')">PHYSICS</div>
+        <div class="card" onclick="showCat('maths')">MATHS</div>
+        <div class="card" onclick="showCat('chemistry')">CHEMISTRY</div>
     </div>
+</div>
 
-    <div id="home" class="view">
-        <div class="header"><h1>PRO X</h1></div>
-        <div class="grid">
-            <div class="card" onclick="alert('Module Clicked')"><h3>PHYSICS</h3></div>
-            <div class="card" onclick="alert('Module Clicked')"><h3>MATHS</h3></div>
-        </div>
-    </div>
+<div id="detail" class="view">
+    <h1 id="catTitle" style="color:var(--accent)">SUBJECT</h1>
+    <div id="contentList"></div>
+    <div class="back-btn" onclick="goHome()">BACK</div>
+</div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
-            databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
-            projectId: "pro-x-66e62"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBH-JYi-1nm0rLP4KpB",
+        databaseURL: "https://pro-x-66e62-default-rtdb.firebaseio.com/",
+        projectId: "pro-x-66e62"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        // ዲዛይኑን ከ Firebase ላይ መሳብ
-        db.ref('config').on('value', (snap) => {
-            const cfg = snap.val();
-            if(cfg) {
-                // ቀለሙን መቀየር
-                document.documentElement.style.setProperty('--accent', cfg.accent);
-                // የSplash ጽሁፍ መቀየር
-                document.getElementById('dispTitle').innerText = cfg.splashTitle;
-                document.getElementById('dispSub').innerText = cfg.splashSub;
-            }
+    // Config Update
+    db.ref('config').on('value', snap => {
+        const v = snap.val();
+        if(v) {
+            document.documentElement.style.setProperty('--accent', v.accent);
+            document.getElementById('sTitle').innerText = v.title;
+            document.getElementById('sSub').innerText = v.sub;
+        }
+    });
+
+    function showCat(cat) {
+        document.getElementById('catTitle').innerText = cat.toUpperCase();
+        const list = document.getElementById('contentList');
+        list.innerHTML = "Loading...";
+        db.ref('data/' + cat).on('value', snap => {
+            list.innerHTML = "";
+            snap.forEach(child => {
+                const item = child.val();
+                list.innerHTML += `<div class="item-box"><strong>${item.t}</strong><code>${item.f}</code></div>`;
+            });
         });
+        switchView('detail');
+    }
 
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('home').classList.add('active');
-            }, 3000);
-        };
-    </script>
+    function switchView(id) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function goHome() { switchView('home'); }
+
+    setTimeout(() => {
+        document.getElementById('splash').style.display = 'none';
+        switchView('home');
+    }, 3000);
+</script>
 </body>
 </html>
