@@ -1,40 +1,41 @@
 import telebot
-import time
+from telebot import types
 
-# ያንተ ቦት Token (በቀጥታ ገብቷል)
 TOKEN = '8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8'
 bot = telebot.TeleBot(TOKEN)
 
-# ቦቱ ሲጀመር የሚላክ ሰላምታ
+# ዋናው ሜኑ (Inline Buttons)
+def get_main_menu():
+    markup = types.InlineKeyboardMarkup()
+    markup.row(types.InlineKeyboardButton("የ AA COMPANY አላማ", callback_data="about_aa"))
+    markup.row(types.InlineKeyboardButton("የትምህርት ፎርሙላዎች", callback_data="formulas"))
+    markup.row(types.InlineKeyboardButton("እርዳታ/ጥያቄ", callback_data="help"))
+    return markup
+
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.reply_to(message, "ሰላም! 🚀 እንኳን ወደ AA COMPANY መጡ። እኔ የእርስዎ ብልህ የዲጂታል ረዳት ነኝ። ምን ልርዳዎት?")
+    bot.send_message(message.chat.id, 
+                     "እንኳን ወደ AA COMPANY Smart Bot በደህና መጡ! 🚀\nለማገዝ ዝግጁ ነኝ። ከታች ካሉት አማራጮች አንዱን ይምረጡ፡", 
+                     reply_markup=get_main_menu())
 
-# ለጥያቄዎች በቁምነገር እንዲመልስ
-@bot.message_handler(func=lambda message: True)
-def handle_all_messages(message):
-    chat_id = message.chat.id
-    user_text = message.text.lower()
+# የአዝራሮች ስራ (Callback Query Handler)
+@bot.callback_query_handler(func=lambda call: True)
+def callback_query(call):
+    if call.data == "about_aa":
+        bot.answer_callback_query(call.id)
+        bot.send_message(call.message.chat.id, "AA COMPANY የተመሰረተው የቴክኖሎጂ እና የትምህርት ጥራትን ለማሳደግ ነው። የእኛ ግብ መረጃን ወደ እውቀት መቀየር ነው።")
+    
+    elif call.data == "formulas":
+        bot.answer_callback_query(call.id)
+        bot.send_message(call.message.chat.id, "ሒሳብ የአጽናፈ ዓለሙ ቋንቋ ነው። የትኛውን ፎርሙላ ይፈልጋሉ? (ለምሳሌ፦ የፊዚክስ፣ የሒሳብ፣ ወዘተ)")
+    
+    elif call.data == "help":
+        bot.answer_callback_query(call.id)
+        bot.send_message(call.message.chat.id, "ለበለጠ መረጃ እባክዎ ጥያቄዎን ይጻፉልኝ፣ የ AA COMPANY ባለሙያዎች በቅርቡ ይረዱዎታል።")
 
-    # የማሰብ ምልክት (Processing)
-    bot.send_chat_action(chat_id, 'typing')
-    time.sleep(1.5) # ቦቱ እያሰበ እንዲመስል
+    # ከጨረሰ በኋላ ወደ ሜኑ እንዲመለስ
+    bot.send_message(call.message.chat.id, "ሌላ ማገልገል እችላለሁ?", reply_markup=get_main_menu())
 
-    if "ፎርሙላ" in user_text or "math" in user_text:
-        response = ("የሂሳብ እና የፊዚክስ ፎርሙላዎች የአጽናፈ ዓለሙ መግለጫዎች ናቸው። "
-                    "ለጥያቄዎ ትክክለኛውን ፎርሙላ በዝርዝር ለማቅረብ ዝግጁ ነኝ።")
-    elif "ስለ aa" in user_text:
-        response = ("AA COMPANY የተመሰረተው የቴክኖሎጂ እና የትምህርት ጥራትን ለማሳደግ ነው። "
-                    "የእኛ ግብ መረጃን ወደ እውቀት መቀየር ነው።")
-    elif "አመሰግናለሁ" in user_text:
-        response = "ምንም አይደል! የ AA COMPANY ስኬት የኔም ስኬት ነው። በሌላ በምን ላግዝህ?"
-    else:
-        response = ("ጥያቄዎ ትኩረቴን ስቧል። ይህንን ጉዳይ በባለሙያ ደረጃ ለመተንተን "
-                    "እባክዎ ጥያቄዎን በግልጽ ያስቀምጡልኝ።")
-
-    bot.send_message(chat_id, response)
-
-# ቦቱ ያለማቋረጥ እንዲሰራ
 if __name__ == "__main__":
-    print("AA Smart Bot ስራ ጀምሯል...")
+    print("AA Smart Bot (Modern Edition) ስራ ጀምሯል...")
     bot.infinity_polling()
