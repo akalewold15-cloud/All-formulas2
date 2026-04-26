@@ -17,7 +17,7 @@ def get_main_menu():
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     welcome_text = (
-        "✨ *እንኳን ወደ AA COMPANY Smart Bot በደህና መጡ!* ✨\n\n"
+        "✨❤ *እንኳን ወደ AA COMPANY Smart Bot በደህና መጡ!* ✨\n\n"
         "እኛ እውቀትን እና ቴክኖሎጂን እናገናኛለን። ከታች ካሉት አማራጮች ውስጥ ይምረጡ፡"
     )
     bot.send_message(message.chat.id, welcome_text, reply_markup=get_main_menu(), parse_mode="Markdown")
