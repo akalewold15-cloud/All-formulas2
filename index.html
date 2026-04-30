@@ -1,438 +1,222 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ቀመር መፈለጊያ - Formula Finder</title>
-    <style>
-        /* CSS ቅንብሮች */
-        :root {
-            /* ነባሪ ቀለሞች */
-            --tg-theme-bg-color: #f0f0f0;
-            --tg-theme-text-color: #000000;
-            --tg-theme-link-color: #007aff;
-            --tg-theme-hint-color: #888888;
-            --tg-theme-secondary-bg-color: #e6e6e6;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ሁሉአቀፍ ቀመሮች - All Formulas</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --text-light: #ecf0f1;
+            --bg-body: #f4f7f6;
+        }
 
-        /* Dark Theme (በ JS ይተገበራል) */
-        .dark-theme {
-            --tg-theme-bg-color: #17212b;
-            --tg-theme-text-color: #ffffff;
-            --tg-theme-link-color: #66b4ff;
-            --tg-theme-hint-color: #a0a0a0;
-            --tg-theme-secondary-bg-color: #213040;
-        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
 
-        body {
-            background-color: var(--tg-theme-bg-color);
-            color: var(--tg-theme-text-color);
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-        /* የላይኛው ራስጌ ቅጦች */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px 0;
-        }
+        .search-box {
+            margin: -20px 20px 20px 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50px;
+            display: flex;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-        .settings-icon {
-            font-size: 1.5em;
-            cursor: pointer;
-            color: var(--tg-theme-hint-color);
-            transition: color 0.2s;
-        }
+        .search-box input {
+            border: none;
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 16px;
+            outline: none;
+            border-radius: 50px;
+        }
 
-        /* ... የተቀሩት CSS ቅጦች (spinner, buttons, containers) እንደበፊቱ ይቀጥላሉ ... */
-        .full-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 10;
-            background-color: var(--tg-theme-bg-color);
-            transition: opacity 0.5s ease;
-        }
-        
-        .spinner {
-            border: 4px solid var(--tg-theme-hint-color);
-            border-top: 4px solid var(--tg-theme-link-color);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        #mainContent, #formulaListScreen, #settingsScreen {
-            padding: 20px;
-        }
+        /* Filter Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 0 10px;
+        }
 
-        .category-button, .setting-option {
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            background-color: var(--tg-theme-secondary-bg-color);
-            color: var(--tg-theme-text-color);
-            border: none;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: left;
-            font-size: 1.1em;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .tab {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+        }
 
-        .formula-container {
-            display: block;
-            background-color: var(--tg-theme-secondary-bg-color);
-            border: 1px solid var(--tg-theme-hint-color);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-        }
-        
-        .formula-container h4 {
-            margin-top: 0;
-            color: var(--tg-theme-link-color);
-        }
-        
-        .back-button {
-            background: none;
-            border: none;
-            color: var(--tg-theme-link-color);
-            font-size: 1.1em;
-            padding: 10px 0;
-            cursor: pointer;
-        }
-    </style>
+        .tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Formula Cards */
+        .container {
+            padding: 10px 20px;
+        }
+
+        .formula-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .formula-card:active {
+            transform: scale(0.98);
+        }
+
+        .formula-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .math-text {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            display: block;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+
+        .category-tag {
+            font-size: 12px;
+            background: #eee;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="welcomeScreen" class="full-screen">
-        <h1 data-key="welcome_title">እንኳን ደህና መጡ!</h1>
-        <p data-key="welcome_subtitle">ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን</p>
-        <p style="position: absolute; bottom: 20px; font-size: 0.9em; color: var(--tg-theme-hint-color);" data-key="created_by">
-            Created by Akalewold
-        </p>
-    </div>
+    <div class="header">
+        <h2 style="margin:0;">ቀመር መፈለጊያ (All Formulas)</h2>
+        <p style="font-size: 14px; opacity: 0.8;">የሂሳብ፣ የፊዚክስ እና የኬሚስትሪ ቀመሮች</p>
+    </div>
 
-    <div id="loadingScreen" class="full-screen" style="opacity: 0; visibility: hidden;">
-        <div class="spinner"></div>
-        <p data-key="loading_text">መረጃዎች እየተጫኑ ነው...</p>
-    </div>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="ቀመር ይፈልጉ (ለምሳሌ፦ Area, Force...)" onkeyup="filterFormulas()">
+    </div>
 
-    <div id="mainContent" style="display: none;">
-        <div class="header">
-            <h2 data-key="main_title">ምድብ ይምረጡ</h2>
-            <span class="settings-icon" onclick="showSettingsScreen()">⚙️</span>
-        </div>
-        
-        <input type="text" id="globalSearchInput" placeholder="ቀመር በየትኛውም ምድብ ፈልግ..." style="width: 95%; padding: 10px; margin-bottom: 15px;">
+    <div class="tabs">
+        <div class="tab active" onclick="filterTab('all')">ሁሉንም</div>
+        <div class="tab" onclick="filterTab('maths')">ሂሳብ</div>
+        <div class="tab" onclick="filterTab('physics')">ፊዚክስ</div>
+        <div class="tab" onclick="filterTab('chemistry')">ኬሚስትሪ</div>
+    </div>
 
-        <div id="categoryList">
-            </div>
-    </div>
-    
-    <div id="formulaListScreen" style="display: none;">
-        <button class="back-button" onclick="showMainContent()">← <span data-key="back_to_categories">ወደ ምድቦች ተመለስ</span></button>
-        <h2 id="currentCategoryTitle"></h2>
-        <div id="formulasInCategory">
-            </div>
-    </div>
-    
-    <div id="settingsScreen" style="display: none;">
-        <button class="back-button" onclick="showMainContent()">← <span data-key="back_to_main">ወደ ዋናው ገጽ ተመለስ</span></button>
-        <h2 data-key="settings_title">ቅንብሮች</h2>
-        
-        <h3><span data-key="settings_language">ቋንቋ</span>: <span id="currentLanguage"></span></h3>
-        <div class="setting-option" onclick="setLanguage('am')">
-            <span>Amharic</span>
-            <span id="checkAmharic"></span>
-        </div>
-        <div class="setting-option" onclick="setLanguage('en')">
-            <span>English</span>
-            <span id="checkEnglish"></span>
-        </div>
+    <div class="container" id="formulaList">
+        <!-- Math Formulas -->
+        <div class="formula-card" data-category="maths">
+            <span class="category-tag">Mathematics</span>
+            <h3>የክብ ስፋት (Area of Circle)</h3>
+            <div class="math-text">A = π × r²</div>
+            <p style="font-size:13px; color:#666;">r ማለት የክቡ ራዲየስ (Radius) ነው።</p>
+        </div>
 
-        <h3><span data-key="settings_theme">ቴም</span>: <span id="currentTheme"></span></h3>
-        <div class="setting-option" onclick="setTheme('light')">
-            <span data-key="theme_light">ብርሃናማ (Light)</span>
-            <span id="checkLight"></span>
-        </div>
-        <div class="setting-option" onclick="setTheme('dark')">
-            <span data-key="theme_dark">ጥቁር (Dark)</span>
-            <span id="checkDark"></span>
-        </div>
-    </div>
+        <div class="formula-card" data-category="maths">
+            <span class="category-tag">Mathematics</span>
+            <h3>ኳድራቲክ ፎርሙላ (Quadratic)</h3>
+            <div class="math-text">x = [-b ± √(b² - 4ac)] / 2a</div>
+            <p style="font-size:13px; color:#666;">ለ ax² + bx + c = 0 መፍትሔ ለማግኘት።</p>
+        </div>
 
+        <!-- Physics Formulas -->
+        <div class="formula-card" data-category="physics">
+            <span class="category-tag">Physics</span>
+            <h3>ኒውተን ሁለተኛ ህግ (Newton's 2nd Law)</h3>
+            <div class="math-text">F = m × a</div>
+            <p style="font-size:13px; color:#666;">ጉልበት = የጅምላ × ፍጥንጥነት</p>
+        </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script>
-        // --- 2. የቋንቋ መረጃ (Translation Data) ---
-        const translations = {
-            'am': {
-                welcome_title: "እንኳን ደህና መጡ!",
-                welcome_subtitle: "ወደ ዓለም አቀፍ ቀመር መፈለጊያ አፕሊኬሽን",
-                created_by: "Created by Akalewold",
-                loading_text: "መረጃዎች እየተጫኑ ነው...",
-                main_title: "ምድብ ይምረጡ",
-                back_to_categories: "ወደ ምድቦች ተመለስ",
-                back_to_main: "ወደ ዋናው ገጽ ተመለስ",
-                settings_title: "ቅንብሮች",
-                settings_language: "ቋንቋ",
-                settings_theme: "ቴም",
-                theme_light: "ብርሃናማ (Light)",
-                theme_dark: "ጥቁር (Dark)",
-                search_placeholder: "ቀመር በየትኛውም ምድብ ፈልግ...",
-                language_name: { 'am': "አማርኛ", 'en': "እንግሊዝኛ" },
-                theme_name: { 'light': "ብርሃናማ", 'dark': "ጥቁር" }
-            },
-            'en': {
-                welcome_title: "Welcome!",
-                welcome_subtitle: "To the Universal Formula Finder Application",
-                created_by: "Created by Akalewold",
-                loading_text: "Loading data...",
-                main_title: "Select Category",
-                back_to_categories: "Back to Categories",
-                back_to_main: "Back to Main",
-                settings_title: "Settings",
-                settings_language: "Language",
-                settings_theme: "Theme",
-                theme_light: "Light",
-                theme_dark: "Dark",
-                search_placeholder: "Search formula across all categories...",
-                language_name: { 'am': "Amharic", 'en': "English" },
-                theme_name: { 'light': "Light", 'dark': "Dark" }
-            }
-        };
+        <div class="formula-card" data-category="physics">
+            <span class="category-tag">Physics</span>
+            <h3>ኦምስ ሎው (Ohm's Law)</h3>
+            <div class="math-text">V = I × R</div>
+            <p style="font-size:13px; color:#666;">Voltage = Current × Resistance</p>
+        </div>
 
-        // --- 3. የ ቀመር ዝርዝር (በሁለቱም ቋንቋ) ---
-        const formulas = [
-            // ቀመር ስትጽፍ በሁለቱም ቋንቋ መጻፍ አለብህ!
-            // ለምሳሌ:
-            { 
-                name: { am: "ኳድራቲክ ፎርሙላ", en: "Quadratic Formula" }, 
-                subject: { am: "ሒሳብ/አልጀብራ", en: "Maths/Algebra" }, 
-                formula: "x = [-b ± sqrt(b² - 4ac)] / 2a", 
-                description: { am: "ለ ax² + bx + c = 0 መፍትሔ ለማግኘት", en: "To find solutions for ax² + bx + c = 0" }
-            },
-            { 
-                name: { am: "ጉልበት (Force)", en: "Force" }, 
-                subject: { am: "ፊዚክስ/ኒውተን", en: "Physics/Newton" }, 
-                formula: "F = m * a", 
-                description: { am: "ጉልበት = የጅምላ × ፍጥንጥነት", en: "Force = mass × acceleration" }
-            },
-            // ... እዚህ የቀሩትን 100+ ቀመሮችህን በ 'am' እና 'en' ቋንቋዎች አስገባ ...
-        ];
+        <!-- Chemistry Formulas -->
+        <div class="formula-card" data-category="chemistry">
+            <span class="category-tag">Chemistry</span>
+            <h3>ዴንሲቲ (Density)</h3>
+            <div class="math-text">ρ = m / V</div>
+            <p style="font-size:13px; color:#666;">Density = Mass / Volume</p>
+        </div>
+    </div>
 
-        // --- 4. ግሎባል ተለዋዋጮች እና ተግባራት ---
-        let currentLang = localStorage.getItem('appLang') || 'am';
-        let currentTheme = localStorage.getItem('appTheme') || 'light';
-        let categories = []; 
-        let categorizedFormulas = {}; 
+    <script>
+        // ቴሌግራም መሆኑን ማረጋገጥ
+        if (window.Telegram && window.Telegram.WebApp) {
+            Telegram.WebApp.ready();
+            Telegram.WebApp.setHeaderColor('#2c3e50');
+        }
 
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const loadingScreen = document.getElementById('loadingScreen');
-        const mainContent = document.getElementById('mainContent');
-        const formulaListScreen = document.getElementById('formulaListScreen');
-        const settingsScreen = document.getElementById('settingsScreen');
-        const categoryList = document.getElementById('categoryList');
-        const formulasInCategory = document.getElementById('formulasInCategory');
-        const currentCategoryTitle = document.getElementById('currentCategoryTitle');
-        const globalSearchInput = document.getElementById('globalSearchInput');
-        
-        // ... (የቀሩት JS ተግባራት) ...
+        // በፍለጋ ሳጥን መፈለጊያ
+        function filterFormulas() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('formula-card');
 
-        // የቋንቋ ለውጥ ተግባር
-        function applyTranslations() {
-            const t = translations[currentLang];
-            document.querySelectorAll('[data-key]').forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (t[key]) el.textContent = t[key];
-            });
-            globalSearchInput.placeholder = t.search_placeholder;
-            document.getElementById('currentLanguage').textContent = t.language_name[currentLang];
-            document.getElementById('currentTheme').textContent = t.theme_name[currentTheme];
-            // ፍተሻ ምልክቶቹን ማዘመን
-            updateSettingsChecks();
-            // ምድቦቹን በአዲስ ቋንቋ እንደገና ማስገባት
-            renderCategories();
-        }
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+                if (title.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('appLang', lang);
-            applyTranslations();
-            // የመመለሻ ገጹን በትክክል ለማሳየት
-            if (formulaListScreen.style.display !== 'none') {
-                showMainContent(); 
-            }
-        }
-        
-        // የቴም ለውጥ ተግባር
-        function setTheme(theme) {
-            currentTheme = theme;
-            localStorage.setItem('appTheme', theme);
-            document.body.classList.remove('dark-theme');
-            if (theme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-            applyTranslations();
-        }
-        
-        function updateSettingsChecks() {
-            document.getElementById('checkAmharic').textContent = currentLang === 'am' ? '✅' : '';
-            document.getElementById('checkEnglish').textContent = currentLang === 'en' ? '✅' : '';
-            document.getElementById('checkLight').textContent = currentTheme === 'light' ? '✅' : '';
-            document.getElementById('checkDark').textContent = currentTheme === 'dark' ? '✅' : '';
-        }
+        // በዘርፍ መለያ (Tab Filter)
+        function filterTab(category) {
+            let cards = document.getElementsByClassName('formula-card');
+            let tabs = document.getElementsByClassName('tab');
 
-        // የሴቲንግ ገጽ ማሳያ
-        function showSettingsScreen() {
-            mainContent.style.display = 'none';
-            formulaListScreen.style.display = 'none';
-            settingsScreen.style.display = 'block';
-            updateSettingsChecks();
-        }
+            // Tab active class መቀየር
+            for (let t of tabs) t.classList.remove('active');
+            event.currentTarget.classList.add('active');
 
-        // ... የተቀሩት ተግባራት እንደበፊቱ ይሰራሉ (initializeApp, loadContent, showMainContent, renderCategories, showFormulas, handleGlobalSearch) ...
-        
-        
-        function initializeApp() {
-            setTheme(currentTheme); // ገጹን በነባሪ ቴም ይጀምራል
-            applyTranslations(); // ገጹን በነባሪ ቋንቋ ይጀምራል
-
-            if (window.Telegram && window.Telegram.WebApp) {
-                Telegram.WebApp.ready();
-                // የቴሌግራም ገጽታ ቀለሞችን ይጠቀማል
-                // ... (የቀለም ቅንብር ኮድ እዚህ ይመጣል - ከላይ በ CSS ተሸፍኗል)
-            }
-
-            // ከ2 ሰከንድ በኋላ ወደ መጫኛ ገጽ ይለፍ
-            setTimeout(() => {
-                welcomeScreen.style.opacity = 0;
-                loadingScreen.style.visibility = 'visible';
-                loadingScreen.style.opacity = 1;
-                
-                setTimeout(loadContent, 1000); 
-            }, 2000);
-
-            globalSearchInput.addEventListener('input', handleGlobalSearch);
-        }
-
-        function loadContent() {
-            formulas.forEach(item => {
-                // ለምድብ ስም የአማርኛውን እንጠቀም
-                const primarySubject = item.subject.am.split('/')[0]; 
-                if (!categorizedFormulas[primarySubject]) {
-                    categorizedFormulas[primarySubject] = [];
-                    categories.push(primarySubject);
-                }
-                categorizedFormulas[primarySubject].push(item);
-            });
-            categories.sort(); 
-            renderCategories();
-            showMainContent();
-        }
-
-        function renderCategories() {
-            categoryList.innerHTML = '';
-            categories.forEach(categoryAmharic => {
-                const count = categorizedFormulas[categoryAmharic].length;
-                const button = document.createElement('button');
-                button.className = 'category-button';
-                // የምድቡን ስም በቋንቋ ይቀይራል
-                const translatedName = translations[currentLang][categoryAmharic] || categoryAmharic;
-                button.innerHTML = `${translatedName} <span>(${count}) →</span>`;
-                button.onclick = () => showFormulas(categoryAmharic); // ተግባሩ ሁልጊዜ የአማርኛውን ቁልፍ ይጠቀማል
-                categoryList.appendChild(button);
-            });
-        }
-        
-        function showMainContent() {
-            settingsScreen.style.display = 'none'; // አዲስ መስመር
-            mainContent.style.display = 'block';
-            formulaListScreen.style.display = 'none';
-            loadingScreen.style.visibility = 'hidden';
-            welcomeScreen.style.display = 'none';
-            globalSearchInput.value = '';
-            // የመመለሻ ገጹን ርዕስ በአዲሱ ቋንቋ እንደገና ያስገባል
-            document.getElementById('currentCategoryTitle').textContent = translations[currentLang].main_title;
-            renderCategories(); 
-        }
-
-        function showFormulas(categoryAmharic) {
-            const categoryName = translations[currentLang][categoryAmharic] || categoryAmharic;
-            currentCategoryTitle.textContent = `${categoryName} ${translations[currentLang].category_formulas || 'ቀመሮች'}`;
-            mainContent.style.display = 'none';
-            formulaListScreen.style.display = 'block';
-            
-            renderFormulaList(categorizedFormulas[categoryAmharic]);
-        }
-
-        function renderFormulaList(formulaData) {
-            formulasInCategory.innerHTML = '';
-            if (formulaData.length === 0) {
-                 formulasInCategory.innerHTML = `<p style="text-align: center;">${translations[currentLang].no_formula_found || 'ምንም ቀመር አልተገኘም'}</p>`;
-                 return;
-            }
-
-            formulaData.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'formula-container';
-                div.innerHTML = `
-                    <h4>${item.name[currentLang] || item.name.am}</h4>
-                    <p style="font-size: 0.9em; color: var(--tg-theme-hint-color);">(${item.subject[currentLang] || item.subject.am})</p>
-                    <strong>${translations[currentLang].formula_word || 'ቀመር'}:</strong> <code>${item.formula}</code><br>
-                    <p>${item.description[currentLang] || item.description.am}</p>
-                `;
-                formulasInCategory.appendChild(div);
-            });
-        }
-        
-        function handleGlobalSearch(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            if (searchTerm.length > 0) {
-                const filtered = formulas.filter(item => 
-                    item.name.am.toLowerCase().includes(searchTerm) || 
-                    item.name.en.toLowerCase().includes(searchTerm) || 
-                    item.subject.am.toLowerCase().includes(searchTerm) ||
-                    item.subject.en.toLowerCase().includes(searchTerm) ||
-                    item.description.am.toLowerCase().includes(searchTerm) ||
-                    item.description.en.toLowerCase().includes(searchTerm)
-                );
-                currentCategoryTitle.textContent = `${translations[currentLang].search_result || 'የፍለጋ ውጤት'} (${filtered.length})`;
-                mainContent.style.display = 'none';
-                formulaListScreen.style.display = 'block';
-                renderFormulaList(filtered);
-            } else {
-                showMainContent(); 
-            }
-        }
-
-
-        initializeApp();
-
-    </script>
+            for (let i = 0; i < cards.length; i++) {
+                if (category === 'all' || cards[i].getAttribute('data-category') === category) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>
-ይህን ዘመናዊ ኮድ አስቲ ከአሁኑ ጋር ያሉትን api,token,admin ጨምረህ አስተካክለህ ላክልኝ
