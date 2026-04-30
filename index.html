@@ -3,219 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ሁሉአቀፍ ቀመሮች - All Formulas</title>
+    <title>AA - All Formulas</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* ቀለሞች */
         :root {
-            --primary: #2c3e50;
-            --secondary: #34495e;
-            --accent: #3498db;
-            --text-light: #ecf0f1;
-            --bg-body: #f4f7f6;
+            --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --math-color: #ff4757;
+            --phys-color: #1e90ff;
+            --chem-color: #2ed573;
+            --bg-light: #f1f2f6;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-body);
-            margin: 0;
-            padding: 0;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            margin: 0; padding: 0;
+            overflow-x: hidden;
         }
 
-        /* Header Section */
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 25px 15px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .search-box {
-            margin: -20px 20px 20px 20px;
-            background: white;
-            padding: 10px;
-            border-radius: 50px;
-            display: flex;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .search-box input {
-            border: none;
+        /* 1. Splash Screen */
+        #splash-screen {
+            position: fixed;
             width: 100%;
-            padding: 10px 15px;
-            font-size: 16px;
-            outline: none;
-            border-radius: 50px;
+            height: 100vh;
+            background: var(--primary-grad);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease-out;
         }
 
-        /* Filter Tabs */
-        .tabs {
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .logo-text {
+            font-size: 50px;
+            font-weight: bold;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* 2. Main Content */
+        .header {
+            background: var(--primary-grad);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+        }
+
+        .search-container {
+            margin: -25px 20px 20px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        /* Category Tabs */
+        .tabs {
+            display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            padding: 0 20px;
             overflow-x: auto;
-            padding: 0 10px;
         }
 
         .tab {
-            background: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            white-space: nowrap;
-        }
-
-        .tab.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* Formula Cards */
-        .container {
             padding: 10px 20px;
-        }
-
-        .formula-card {
+            border-radius: 15px;
             background: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-        }
-
-        .formula-card:active {
-            transform: scale(0.98);
-        }
-
-        .formula-card h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        .math-text {
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 6px;
-            display: block;
-            font-family: "Courier New", Courier, monospace;
+            white-space: nowrap;
             font-weight: bold;
-            color: #e74c3c;
-            margin: 10px 0;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
         }
 
-        .category-tag {
-            font-size: 12px;
-            background: #eee;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: #777;
+        .tab.active { background: #764ba2; color: white; }
+
+        /* Colorful Cards */
+        .container { padding: 20px; }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 6px; height: 100%;
+        }
+
+        .card.math::before { background: var(--math-color); }
+        .card.phys::before { background: var(--phys-color); }
+        .card.chem::before { background: var(--chem-color); }
+
+        .formula-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h2 style="margin:0;">ቀመር መፈለጊያ (All Formulas)</h2>
-        <p style="font-size: 14px; opacity: 0.8;">የሂሳብ፣ የፊዚክስ እና የኬሚስትሪ ቀመሮች</p>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="logo-circle">
+            <span class="logo-text">AA</span>
+        </div>
+        <p style="color: white; margin-top: 20px; font-weight: 300;">Formula Finder v2.0</p>
     </div>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ቀመር ይፈልጉ (ለምሳሌ፦ Area, Force...)" onkeyup="filterFormulas()">
+    <!-- Main App -->
+    <div class="header">
+        <h1>All Formulas</h1>
+        <p>በቀላሉ ቀመሮችን ያግኙ</p>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="ቀመር ይፈልጉ..." onkeyup="search()">
     </div>
 
     <div class="tabs">
-        <div class="tab active" onclick="filterTab('all')">ሁሉንም</div>
-        <div class="tab" onclick="filterTab('maths')">ሂሳብ</div>
-        <div class="tab" onclick="filterTab('physics')">ፊዚክስ</div>
-        <div class="tab" onclick="filterTab('chemistry')">ኬሚስትሪ</div>
+        <div class="tab active" onclick="filter('all')">ሁሉንም</div>
+        <div class="tab" style="color:var(--math-color)" onclick="filter('math')">ሒሳብ</div>
+        <div class="tab" style="color:var(--phys-color)" onclick="filter('phys')">ፊዚክስ</div>
+        <div class="tab" style="color:var(--chem-color)" onclick="filter('chem')">ኬሚስትሪ</div>
     </div>
 
-    <div class="container" id="formulaList">
-        <!-- Math Formulas -->
-        <div class="formula-card" data-category="maths">
-            <span class="category-tag">Mathematics</span>
-            <h3>የክብ ስፋት (Area of Circle)</h3>
-            <div class="math-text">A = π × r²</div>
-            <p style="font-size:13px; color:#666;">r ማለት የክቡ ራዲየስ (Radius) ነው።</p>
+    <div class="container" id="list">
+        <!-- Math -->
+        <div class="card math" data-cat="math">
+            <h3 style="color:var(--math-color)">Triangle Area</h3>
+            <div class="formula-box">A = ½ × b × h</div>
+            <p>የሶስት ማዕዘን ስፋት መፈለጊያ</p>
         </div>
 
-        <div class="formula-card" data-category="maths">
-            <span class="category-tag">Mathematics</span>
-            <h3>ኳድራቲክ ፎርሙላ (Quadratic)</h3>
-            <div class="math-text">x = [-b ± √(b² - 4ac)] / 2a</div>
-            <p style="font-size:13px; color:#666;">ለ ax² + bx + c = 0 መፍትሔ ለማግኘት።</p>
+        <!-- Physics -->
+        <div class="card phys" data-cat="phys">
+            <h3 style="color:var(--phys-color)">Work Done</h3>
+            <div class="formula-box">W = F × d</div>
+            <p>ስራ = ጉልበት × ርቀት</p>
         </div>
 
-        <!-- Physics Formulas -->
-        <div class="formula-card" data-category="physics">
-            <span class="category-tag">Physics</span>
-            <h3>ኒውተን ሁለተኛ ህግ (Newton's 2nd Law)</h3>
-            <div class="math-text">F = m × a</div>
-            <p style="font-size:13px; color:#666;">ጉልበት = የጅምላ × ፍጥንጥነት</p>
-        </div>
-
-        <div class="formula-card" data-category="physics">
-            <span class="category-tag">Physics</span>
-            <h3>ኦምስ ሎው (Ohm's Law)</h3>
-            <div class="math-text">V = I × R</div>
-            <p style="font-size:13px; color:#666;">Voltage = Current × Resistance</p>
-        </div>
-
-        <!-- Chemistry Formulas -->
-        <div class="formula-card" data-category="chemistry">
-            <span class="category-tag">Chemistry</span>
-            <h3>ዴንሲቲ (Density)</h3>
-            <div class="math-text">ρ = m / V</div>
-            <p style="font-size:13px; color:#666;">Density = Mass / Volume</p>
+        <!-- Chemistry -->
+        <div class="card chem" data-cat="chem">
+            <h3 style="color:var(--chem-color)">Molarity</h3>
+            <div class="formula-box">M = n / V</div>
+            <p>ሞላሪቲ = የሞል መጠን / ይዘት</p>
         </div>
     </div>
 
     <script>
-        // ቴሌግራም መሆኑን ማረጋገጥ
+        // Splash Screen መጥፊያ (ከ 2 ሰከንድ በኋላ)
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 800);
+        }, 2500);
+
+        // የቴሌግራም WebApp ዝግጁነት
         if (window.Telegram && window.Telegram.WebApp) {
             Telegram.WebApp.ready();
-            Telegram.WebApp.setHeaderColor('#2c3e50');
+            Telegram.WebApp.expand();
         }
 
-        // በፍለጋ ሳጥን መፈለጊያ
-        function filterFormulas() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.getElementsByClassName('formula-card');
+        // ፍለጋ
+        function search() {
+            let val = document.getElementById('search').value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(c => {
+                let txt = c.innerText.toLowerCase();
+                c.style.display = txt.includes(val) ? "block" : "none";
+            });
+        }
 
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
-                if (title.includes(input)) {
-                    cards[i].style.display = "";
+        // ማጣሪያ (Tabs)
+        function filter(cat) {
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(c => {
+                if(cat === 'all' || c.getAttribute('data-cat') === cat) {
+                    c.style.display = "block";
                 } else {
-                    cards[i].style.display = "none";
+                    c.style.display = "none";
                 }
-            }
-        }
-
-        // በዘርፍ መለያ (Tab Filter)
-        function filterTab(category) {
-            let cards = document.getElementsByClassName('formula-card');
-            let tabs = document.getElementsByClassName('tab');
-
-            // Tab active class መቀየር
-            for (let t of tabs) t.classList.remove('active');
+            });
+            // Tab style መቀየር
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             event.currentTarget.classList.add('active');
-
-            for (let i = 0; i < cards.length; i++) {
-                if (category === 'all' || cards[i].getAttribute('data-category') === category) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
         }
     </script>
 </body>
