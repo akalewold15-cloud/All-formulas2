@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 import google.generativeai as genai
 
-# መረጃዎች
+# መረጃዎች 2
 TOKEN = '8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8'
 API_KEY = 'AIzaSyBRFThyLfz94J__xxzoWJ6qJcaKYF9pCtc'
 ADMIN_ID = '7266453062'
