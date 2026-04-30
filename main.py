@@ -9,7 +9,7 @@ ADMIN_ID = '7266453062'
 
 # Gemini Setup
 try:
-    genai.configure(api_key=API_KEY)
+    genai.configure(AIzaSyBRFThyLfz94J__xxzoWJ6qJcaKYF9pCtc)
     model = genai.GenerativeModel('gemini-1.5-flash')
 except Exception as e:
     print(f"AI Setup Error: {e}")
