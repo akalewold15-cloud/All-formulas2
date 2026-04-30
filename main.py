@@ -5,26 +5,26 @@ import os
 from flask import Flask
 from threading import Thread
 
-# --- Flask Server (For Render Port) ---
+# --- Flask Server (Render ላይ ቦቱ እንዳይዘጋ ለመርዳት) ---
 server = Flask(__name__)
 
 @server.route("/")
 def home():
-    return "AA Smart Bot is Online!"
+    return "AA Smart Bot is Online and Ready!"
 
-# --- configuration ---
+# --- Configuration ---
 TOKEN = '8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8'
-API_KEY = 'AIzaSyBRFThyLfz94J__xxzoWJ6qJcaKYF9pCtc'
+# አዲሱን API Key እዚህ ጋር አስገብቼልሃለሁ
+API_KEY = 'AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU'
 ADMIN_ID = '7266453062'
 
-# --- Gemini AI Setup (አሁን ተስተካክሏል) ---
+# --- Gemini AI Setup ---
 genai.configure(api_key=API_KEY)
-# እዚህ ጋር 'gemini-1.5-flash' የሚለው የግድ ያስፈልጋል
 model = genai.GenerativeModel('gemini-1.5-flash') 
 
 bot = telebot.TeleBot(TOKEN)
 
-# --- የሜኑ አዝራሮች ---
+# --- የዋና ሜኑ አዝራሮች ---
 def get_main_menu():
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
@@ -39,62 +39,79 @@ def get_main_menu():
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    bot.send_message(message.chat.id, "ሰላም! የ AA COMPANY ረዳት ቦት ነው። ምን ላግዝዎት?", 
-                     reply_markup=get_main_menu())
+    welcome_text = (
+        "✨ **እንኳን ወደ AA COMPANY Smart Bot በደህና መጡ!** ✨\n\n"
+        "እኔ በ Gemini AI የታገዝኩ ረዳት ነኝ። በ AI ጥያቄ ለመጠየቅ '🤖 በ AI ጠይቅ' የሚለውን ይጫኑ።"
+    )
+    bot.send_message(message.chat.id, welcome_text, reply_markup=get_main_menu(), parse_mode="Markdown")
 
-# --- አዝራሮች ሲነኩ ---
+# --- Button Handlers ---
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    if call.data == "ai_mode":
-        msg = bot.send_message(call.message.chat.id, "🤖 AI ሞድ በርቷል። ጥያቄዎን ይጻፉ (ለመውጣት 'exit' ይበሉ)፦")
-        bot.register_next_step_handler(msg, handle_ai_chat)
-    elif call.data == "about_aa":
-        # እዚህ ጋር ስለ ኩባንያው የምትጽፈው ባዶ ስለነበር ነው የማይሰራው
-        about_text = "🏢 **ስለ AA COMPANY**፦\n\n(እዚህ ጋር የኩባንያህን መረጃ ማስገባት ትችላለህ። ለምሳሌ፦ አድራሻ፣ ስራዎች...)"
-        bot.send_message(call.message.chat.id, about_text, parse_mode="Markdown")
-    elif call.data == "ask_question":
-        msg = bot.send_message(call.message.chat.id, "❓ ጥያቄዎን ይጻፉ፣ ለአስተዳዳሪው ይደርሳል።")
-        bot.register_next_step_handler(msg, forward_to_admin)
-    elif call.data == "formulas":
-        bot.send_message(call.message.chat.id, "📐 **ፎርሙላዎች**፦\n\n• $F = ma$\n• $E = mc^2$", parse_mode="Markdown")
-    elif call.data == "passive_income":
-        bot.send_message(call.message.chat.id, "💰 **ተገቢ ገቢ**፦\n\n(እዚህ ጋር መረጃህን ጨምር)")
+    chat_id = call.message.chat.id
     
+    if call.data == "ai_mode":
+        msg = bot.send_message(chat_id, "🤖 **የ AI ሞድ በርቷል!**\n\nአሁን ማንኛውንም ጥያቄ መጻፍ ይችላሉ። (ለመውጣት 'ወጣ' ወይም 'exit' ይበሉ)፦")
+        bot.register_next_step_handler(msg, handle_ai_chat)
+        
+    elif call.data == "about_aa":
+        about_text = (
+            "🏢 **ስለ AA COMPANY**\n\n"
+            "AA COMPANY የቴክኖሎጂ ፈጠራዎችን፣ የዲጂታል ክህሎቶችን እና "
+            "ዘመናዊ የትምህርት መርጃዎችን ለተጠቃሚዎች የሚያቀርብ ተቋም ነው።"
+        )
+        bot.send_message(chat_id, about_text, parse_mode="Markdown")
+        
+    elif call.data == "formulas":
+        formula_text = (
+            "📐 **ጠቃሚ ፎርሙላዎች**\n\n"
+            "• **Physics:** $F = m \cdot a$\n"
+            "• **Math:** $A = \pi r^2$\n"
+            "• **Einstein:** $E = mc^2$"
+        )
+        bot.send_message(chat_id, formula_text, parse_mode="Markdown")
+
+    elif call.data == "passive_income":
+        income_text = "💰 **ተገቢ ገቢ (Passive Income)**\n\nበመስመር ላይ ገቢ ማግኘት የሚቻልባቸውን መንገዶች እና የተለያዩ ዲጂታል ክህሎቶችን እዚህ እናሳውቃለን።"
+        bot.send_message(chat_id, income_text, parse_mode="Markdown")
+
+    elif call.data == "ask_question":
+        msg = bot.send_message(chat_id, "❓ ጥያቄዎን እዚህ ይጻፉልኝ። በቀጥታ ለአስተዳዳሪው ይደርሳል።")
+        bot.register_next_step_handler(msg, forward_to_admin)
+
     bot.answer_callback_query(call.id)
 
-# --- AI Chat ---
+# --- AI Chat Logic ---
 def handle_ai_chat(message):
-    if message.text.lower() in ['exit', 'ወጣ', '/start']:
+    if message.text.lower() in ['exit', 'ወጣ', '/start', 'back']:
         bot.send_message(message.chat.id, "ከ AI ሞድ ወጥተዋል።", reply_markup=get_main_menu())
         return
-    
+
     bot.send_chat_action(message.chat.id, 'typing')
     try:
-        # AI-ው መልስ እንዲሰጥ ማዘዝ
         response = model.generate_content(message.text)
         bot.reply_to(message, response.text)
-    except:
-        bot.reply_to(message, "⚠️ AIው መልስ ለመስጠት ተቸግሯል። API Key-ህን ወይም ኢንተርኔትህን አረጋግጥ።")
+    except Exception as e:
+        bot.reply_to(message, "⚠️ AIው መልስ ለመስጠት ተቸግሯል። እባክዎ ትንሽ ቆይተው ይሞክሩ።")
     
-    # ተከታታይ ጥያቄ እንዲቀበል
-    msg = bot.send_message(message.chat.id, "ሌላ ጥያቄ? (ወይም 'exit' ይበሉ)")
+    msg = bot.send_message(message.chat.id, "ሌላ ጥያቄ ካለዎት ይቀጥሉ (ወይም 'ወጣ' ይበሉ)፦")
     bot.register_next_step_handler(msg, handle_ai_chat)
 
 # --- Admin Forwarding ---
 def forward_to_admin(message):
-    user_info = f"🆔 ID: {message.from_user.id}"
-    bot.send_message(ADMIN_ID, f"📩 **ጥያቄ**፦\n{message.text}\n\n{user_info}")
+    user_info = f"👤 {message.from_user.first_name}\n🆔 ID: {message.from_user.id}"
+    bot.send_message(ADMIN_ID, f"📩 **አዲስ ጥያቄ**፦\n\n{message.text}\n\n{user_info}")
     bot.send_message(message.chat.id, "✅ መልእክትዎ ደርሷል!", reply_markup=get_main_menu())
 
-# --- Admin Reply ---
+# --- Admin Reply Logic ---
 @bot.message_handler(func=lambda message: message.reply_to_message is not None and str(message.chat.id) == ADMIN_ID)
 def reply_to_user(message):
     try:
         target_id = message.reply_to_message.text.split("ID: ")[1].strip()
-        bot.send_message(target_id, f"📩 **ከ AA COMPANY**፦\n\n{message.text}")
-        bot.reply_to(message, "✅ ተልኳል።")
+        bot.send_message(target_id, f"📩 **ከ AA COMPANY የተላከ መልስ**፦\n\n{message.text}")
+        bot.reply_to(message, "✅ መልስዎ ተልኳል።")
     except:
-        bot.reply_to(message, "❌ መላክ አልተቻለም።")
+        bot.reply_to(message, "❌ ስህተት፡ መልሱን መላክ አልተቻለም።")
 
 # --- ማስነሻ ---
 if __name__ == "__main__":
