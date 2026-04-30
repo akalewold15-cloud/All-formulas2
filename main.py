@@ -15,8 +15,8 @@ TOKEN = '8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8'
 API_KEY = 'AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU'
 
 # --- Gemini API Client Setup (አዲሱ መንገድ) ---
-client = genai.Client(api_key=API_KEY)
-bot = telebot.TeleBot(TOKEN)
+client = genai.Client(AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU)
+bot = telebot.TeleBot(8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8)
 
 # --- AI Chat Logic ---
 def handle_ai_chat(message):
