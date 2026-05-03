@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AA - All Formulas</title>
+    <title>AA - All Formulas Mega App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ቀለሞች */
+        /* === የከለር እና የዲዛይን ቅንብሮች === */
         :root {
-            --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-grad: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             --math-color: #ff4757;
             --phys-color: #1e90ff;
             --chem-color: #2ed573;
-            --bg-light: #f1f2f6;
+            --bio-color: #ffa502;
+            --econ-color: #9b59b6;
+            --bg-light: #f4f7f6;
+            --text-dark: #2c3e50;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
             background-color: var(--bg-light);
+            color: var(--text-dark);
             margin: 0; padding: 0;
             overflow-x: hidden;
         }
 
-        /* 1. Splash Screen */
+        /* === 1. Splash Screen (AA ዘመናዊ መግቢያ) === */
         #splash-screen {
             position: fixed;
             width: 100%;
@@ -33,203 +43,481 @@
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            transition: opacity 0.8s ease-out;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
         .logo-circle {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             background: white;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 30px rgba(255,255,255,0.6);
+            animation: pulse 1.5s infinite alternate;
         }
 
         .logo-text {
-            font-size: 50px;
-            font-weight: bold;
+            font-size: 60px;
+            font-weight: 800;
             background: var(--primary-grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .splash-subtitle {
+            color: white;
+            margin-top: 20px;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            animation: fadeIn 2s;
         }
 
-        /* 2. Main Content */
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+            100% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255,255,255,0.8); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* === 2. ዋናው ገጽ (Header) === */
         .header {
             background: var(--primary-grad);
             color: white;
-            padding: 40px 20px;
+            padding: 50px 20px 30px;
             text-align: center;
-            border-radius: 0 0 30px 30px;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* === 3. ፍለጋ (Search Bar) === */
         .search-container {
             margin: -25px 20px 20px;
+            position: relative;
         }
 
         .search-container input {
             width: 100%;
-            padding: 15px 25px;
+            padding: 16px 25px;
             border-radius: 50px;
             border: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             font-size: 16px;
-            box-sizing: border-box;
             outline: none;
+            transition: all 0.3s;
         }
 
-        /* Category Tabs */
-        .tabs {
+        .search-container input:focus {
+            box-shadow: 0 8px 30px rgba(79, 172, 254, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* === 4. መምረጫዎች (Category Tabs) === */
+        .tabs-container {
             display: flex;
-            gap: 10px;
-            padding: 0 20px;
+            gap: 12px;
+            padding: 10px 20px;
             overflow-x: auto;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .tabs-container::-webkit-scrollbar {
+            display: none; /* Chrome */
         }
 
         .tab {
-            padding: 10px 20px;
-            border-radius: 15px;
-            background: white;
+            padding: 10px 22px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            color: #555;
             white-space: nowrap;
-            font-weight: bold;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
 
-        .tab.active { background: #764ba2; color: white; }
+        .tab.active {
+            background: #4facfe;
+            color: white;
+            box-shadow: 0 6px 15px rgba(79, 172, 254, 0.4);
+        }
 
-        /* Colorful Cards */
-        .container { padding: 20px; }
+        /* === 5. የቀመር ካርዶች (Formula Cards) === */
+        .formulas-list {
+            padding: 20px;
+            padding-bottom: 50px;
+        }
 
         .card {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
         }
 
         .card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 6px; height: 100%;
+            top: 0; left: 0; width: 8px; height: 100%;
         }
 
+        /* የየትምህርቶቹ ቀለማት */
         .card.math::before { background: var(--math-color); }
         .card.phys::before { background: var(--phys-color); }
         .card.chem::before { background: var(--chem-color); }
+        .card.bio::before { background: var(--bio-color); }
+        .card.econ::before { background: var(--econ-color); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        .subject-tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .math-tag { background: var(--math-color); }
+        .phys-tag { background: var(--phys-color); }
+        .chem-tag { background: var(--chem-color); }
+        .bio-tag { background: var(--bio-color); }
+        .econ-tag { background: var(--econ-color); }
 
         .formula-box {
             background: #f8f9fa;
             padding: 15px;
             border-radius: 12px;
             font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 1.2em;
+            font-weight: 700;
+            font-size: 1.3rem;
             text-align: center;
-            margin: 10px 0;
-            color: #2c3e50;
+            color: #333;
+            border: 1px dashed #ccc;
+            margin-bottom: 10px;
+            overflow-x: auto;
         }
 
-        .hidden { display: none; }
+        .desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #888;
+            padding: 40px 20px;
+            font-size: 1.1rem;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
 
-    <!-- Splash Screen -->
+    <!-- ================= SPLASH SCREEN ================= -->
     <div id="splash-screen">
         <div class="logo-circle">
             <span class="logo-text">AA</span>
         </div>
-        <p style="color: white; margin-top: 20px; font-weight: 300;">Formula Finder v2.0</p>
+        <div class="splash-subtitle">Mega Formula App</div>
     </div>
 
-    <!-- Main App -->
+    <!-- ================= HEADER ================= -->
     <div class="header">
         <h1>All Formulas</h1>
-        <p>በቀላሉ ቀመሮችን ያግኙ</p>
+        <p>ለተማሪዎች የተዘጋጀ አጠቃላይ የቀመር ማውጫ</p>
     </div>
 
+    <!-- ================= SEARCH ================= -->
     <div class="search-container">
-        <input type="text" id="search" placeholder="ቀመር ይፈልጉ..." onkeyup="search()">
+        <input type="text" id="searchInput" placeholder="ቀመር ይፈልጉ... (ለምሳሌ: Area, Force)" onkeyup="searchFormulas()">
     </div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="filter('all')">ሁሉንም</div>
-        <div class="tab" style="color:var(--math-color)" onclick="filter('math')">ሒሳብ</div>
-        <div class="tab" style="color:var(--phys-color)" onclick="filter('phys')">ፊዚክስ</div>
-        <div class="tab" style="color:var(--chem-color)" onclick="filter('chem')">ኬሚስትሪ</div>
+    <!-- ================= TABS ================= -->
+    <div class="tabs-container">
+        <div class="tab active" onclick="filterCategory('all', this)">ሁሉንም</div>
+        <div class="tab" onclick="filterCategory('math', this)">ሒሳብ</div>
+        <div class="tab" onclick="filterCategory('phys', this)">ፊዚክስ</div>
+        <div class="tab" onclick="filterCategory('chem', this)">ኬሚስትሪ</div>
+        <div class="tab" onclick="filterCategory('bio', this)">ባዮሎጂ</div>
+        <div class="tab" onclick="filterCategory('econ', this)">ኢኮኖሚክስ</div>
     </div>
 
-    <div class="container" id="list">
-        <!-- Math -->
+    <!-- ================= FORMULA LIST ================= -->
+    <div class="formulas-list" id="formulasList">
+        
+        <!-- === ሒሳብ (Mathematics) === -->
         <div class="card math" data-cat="math">
-            <h3 style="color:var(--math-color)">Triangle Area</h3>
-            <div class="formula-box">A = ½ × b × h</div>
-            <p>የሶስት ማዕዘን ስፋት መፈለጊያ</p>
+            <div class="card-header">
+                <h3>Quadratic Formula</h3>
+                <span class="subject-tag math-tag">Math</span>
+            </div>
+            <div class="formula-box">x = (-b ± √(b² - 4ac)) / 2a</div>
+            <p class="desc">የሁለተኛ ዲግሪ (Quadratic) እኩልዮሽ መፍትሄ መፈለጊያ።</p>
         </div>
 
-        <!-- Physics -->
+        <div class="card math" data-cat="math">
+            <div class="card-header">
+                <h3>Pythagorean Theorem</h3>
+                <span class="subject-tag math-tag">Math</span>
+            </div>
+            <div class="formula-box">a² + b² = c²</div>
+            <p class="desc">የRight-angled ትሪያንግል ጎኖችን ርዝመት ለማስላት። c ማለት ሃይፖተነስ (Hypotenuse) ነው።</p>
+        </div>
+
+        <div class="card math" data-cat="math">
+            <div class="card-header">
+                <h3>Area of a Circle</h3>
+                <span class="subject-tag math-tag">Math</span>
+            </div>
+            <div class="formula-box">A = πr²</div>
+            <p class="desc">የክብ ስፋት መፈለጊያ። r ራዲየስ ሲሆን π ደግሞ 3.14 ነው።</p>
+        </div>
+
+        <div class="card math" data-cat="math">
+            <div class="card-header">
+                <h3>Trigonometry (SOH CAH TOA)</h3>
+                <span class="subject-tag math-tag">Math</span>
+            </div>
+            <div class="formula-box">sin(θ) = Opp/Hyp</div>
+            <p class="desc">የሳይን (Sine) ቀመር። ፊትለፊት ያለ ጎን ሲካፈል ለሃይፖተነስ።</p>
+        </div>
+
+        <!-- === ፊዚክስ (Physics) === -->
         <div class="card phys" data-cat="phys">
-            <h3 style="color:var(--phys-color)">Work Done</h3>
-            <div class="formula-box">W = F × d</div>
-            <p>ስራ = ጉልበት × ርቀት</p>
+            <div class="card-header">
+                <h3>Newton's 2nd Law</h3>
+                <span class="subject-tag phys-tag">Physics</span>
+            </div>
+            <div class="formula-box">F = m × a</div>
+            <p class="desc">ጉልበት (Force) = ክብደት (Mass) × ፍጥንጥነት (Acceleration)</p>
         </div>
 
-        <!-- Chemistry -->
-        <div class="card chem" data-cat="chem">
-            <h3 style="color:var(--chem-color)">Molarity</h3>
-            <div class="formula-box">M = n / V</div>
-            <p>ሞላሪቲ = የሞል መጠን / ይዘት</p>
+        <div class="card phys" data-cat="phys">
+            <div class="card-header">
+                <h3>Work Done</h3>
+                <span class="subject-tag phys-tag">Physics</span>
+            </div>
+            <div class="formula-box">W = F × d × cos(θ)</div>
+            <p class="desc">ስራ (Work) = ጉልበት × ርቀት።</p>
         </div>
+
+        <div class="card phys" data-cat="phys">
+            <div class="card-header">
+                <h3>Kinetic Energy</h3>
+                <span class="subject-tag phys-tag">Physics</span>
+            </div>
+            <div class="formula-box">KE = ½ m v²</div>
+            <p class="desc">የእንቅስቃሴ ሀይል (Kinetic Energy) ቀመር። m = mass, v = velocity.</p>
+        </div>
+
+        <div class="card phys" data-cat="phys">
+            <div class="card-header">
+                <h3>Ohm's Law</h3>
+                <span class="subject-tag phys-tag">Physics</span>
+            </div>
+            <div class="formula-box">V = I × R</div>
+            <p class="desc">ቮልቴጅ (Voltage) = ከረንት (Current) × ሬዚስታንስ (Resistance)</p>
+        </div>
+
+        <!-- === ኬሚስትሪ (Chemistry) === -->
+        <div class="card chem" data-cat="chem">
+            <div class="card-header">
+                <h3>Density</h3>
+                <span class="subject-tag chem-tag">Chemistry</span>
+            </div>
+            <div class="formula-box">ρ = m / V</div>
+            <p class="desc">ዴንሲቲ (Density) = ክብደት (Mass) ሲካፈል ለይዘት (Volume)።</p>
+        </div>
+
+        <div class="card chem" data-cat="chem">
+            <div class="card-header">
+                <h3>Ideal Gas Law</h3>
+                <span class="subject-tag chem-tag">Chemistry</span>
+            </div>
+            <div class="formula-box">PV = nRT</div>
+            <p class="desc">P=Pressure, V=Volume, n=moles, R=Gas constant, T=Temperature.</p>
+        </div>
+
+        <div class="card chem" data-cat="chem">
+            <div class="card-header">
+                <h3>Number of Moles</h3>
+                <span class="subject-tag chem-tag">Chemistry</span>
+            </div>
+            <div class="formula-box">n = m / M</div>
+            <p class="desc">moles = የተሰጠ ክብደት (m) / ሞላር ማስ (M)</p>
+        </div>
+
+        <!-- === ባዮሎጂ (Biology) === -->
+        <div class="card bio" data-cat="bio">
+            <div class="card-header">
+                <h3>Photosynthesis</h3>
+                <span class="subject-tag bio-tag">Biology</span>
+            </div>
+            <div class="formula-box">6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</div>
+            <p class="desc">ተክሎች የፀሀይ ብርሀንን ተጠቅመው ምግብ የሚያዘጋጁበት ኬሚካላዊ ሂደት።</p>
+        </div>
+
+        <div class="card bio" data-cat="bio">
+            <div class="card-header">
+                <h3>Cellular Respiration</h3>
+                <span class="subject-tag bio-tag">Biology</span>
+            </div>
+            <div class="formula-box">C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy</div>
+            <p class="desc">ህይወት ያላቸው ነገሮች ከምግብ ሀይል የሚያገኙበት ሂደት።</p>
+        </div>
+
+        <!-- === ኢኮኖሚክስ (Economics) === -->
+        <div class="card econ" data-cat="econ">
+            <div class="card-header">
+                <h3>Profit Equation</h3>
+                <span class="subject-tag econ-tag">Economics</span>
+            </div>
+            <div class="formula-box">π = TR - TC</div>
+            <p class="desc">ትርፍ (Profit) = አጠቃላይ ገቢ (Total Revenue) - አጠቃላይ ወጪ (Total Cost)።</p>
+        </div>
+
+        <div class="card econ" data-cat="econ">
+            <div class="card-header">
+                <h3>GDP (Expenditure Approach)</h3>
+                <span class="subject-tag econ-tag">Economics</span>
+            </div>
+            <div class="formula-box">Y = C + I + G + (X - M)</div>
+            <p class="desc">የአንድ ሀገር አጠቃላይ ምርት (GDP) ማስያ። (C=Consumption, I=Investment, G=Govt, X=Exports, M=Imports)</p>
+        </div>
+
+        <!-- ምንም ውጤት ከሌለ የሚታይ ጽሁፍ -->
+        <div id="noResult" class="no-result">
+            <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
+            ያስገቡት ቀመር አልተገኘም!
+        </div>
+
     </div>
 
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
-        // Splash Screen መጥፊያ (ከ 2 ሰከንድ በኋላ)
-        setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-            splash.style.opacity = '0';
-            setTimeout(() => splash.style.display = 'none', 800);
-        }, 2500);
+        // 1. Splash Screen Logic (የ AA መግቢያ)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+                
+                // ለቴሌግራም አጭር ንዝረት (Haptic Feedback) መስጠት
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+                    Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                }
+            }, 2500); // ከ 2.5 ሰከንድ በኋላ ይጠፋል
+        });
 
-        // የቴሌግራም WebApp ዝግጁነት
+        // 2. Telegram WebApp Setup
         if (window.Telegram && window.Telegram.WebApp) {
             Telegram.WebApp.ready();
             Telegram.WebApp.expand();
+            // ከላይ ያለውን የቴሌግራም ሄደር ቀለም መቀየር
+            Telegram.WebApp.setHeaderColor('#4facfe'); 
         }
 
-        // ፍለጋ
-        function search() {
-            let val = document.getElementById('search').value.toLowerCase();
+        // 3. Search Logic (መፈለጊያ)
+        function searchFormulas() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.querySelectorAll('.card');
-            cards.forEach(c => {
-                let txt = c.innerText.toLowerCase();
-                c.style.display = txt.includes(val) ? "block" : "none";
-            });
-        }
+            let hasResult = false;
 
-        // ማጣሪያ (Tabs)
-        function filter(cat) {
-            let cards = document.querySelectorAll('.card');
-            cards.forEach(c => {
-                if(cat === 'all' || c.getAttribute('data-cat') === cat) {
-                    c.style.display = "block";
+            // አሁን የተመረጠውን Tab ለማወቅ
+            let activeTab = document.querySelector('.tab.active').innerText.toLowerCase();
+            let activeCategory = 'all';
+            
+            if(activeTab === 'ሒሳብ') activeCategory = 'math';
+            else if(activeTab === 'ፊዚክስ') activeCategory = 'phys';
+            else if(activeTab === 'ኬሚስትሪ') activeCategory = 'chem';
+            else if(activeTab === 'ባዮሎጂ') activeCategory = 'bio';
+            else if(activeTab === 'ኢኮኖሚክስ') activeCategory = 'econ';
+
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                let category = card.getAttribute('data-cat');
+                
+                // ጽሁፉ ከተገኘ እና በ ትክክለኛው ካታጎሪ ውስጥ ካለ
+                if (text.includes(input) && (activeCategory === 'all' || category === activeCategory)) {
+                    card.style.display = "block";
+                    hasResult = true;
                 } else {
-                    c.style.display = "none";
+                    card.style.display = "none";
                 }
             });
-            // Tab style መቀየር
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+
+            // ምንም ውጤት ከሌለ
+            document.getElementById('noResult').style.display = hasResult ? "none" : "block";
+        }
+
+        // 4. Tab Filtering Logic (መምረጫዎች)
+        function filterCategory(category, element) {
+            // Tab ስታይል መቀየር
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            element.classList.add('active');
+
+            // ፍለጋ ሳጥኑን ባዶ ማድረግ
+            document.getElementById('searchInput').value = '';
+            document.getElementById('noResult').style.display = "none";
+
+            // ካርዶቹን ማሳየት ወይም መደበቅ
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-cat') === category) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            // Haptic Feedback
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+                Telegram.WebApp.HapticFeedback.selectionChanged();
+            }
         }
     </script>
 </body>
