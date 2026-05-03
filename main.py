@@ -1,60 +1,120 @@
 import telebot
-from google import genai
+import google.generativeai as genai
+import sqlite3
+import math
+import datetime
+import logging
 
-# --- 1. የራስህን መረጃዎች እዚህ አዘጋጅቻለሁ ---
-BOT_TOKEN = "የአንተ_ቴሌግራም_ቦት_ቶክን_እዚህ_ይግባ" # ከ BotFather ያገኘኸው ቶክን
-GEMINI_API_KEY = "AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU" # የሰጠኸኝ API Key
-ADMIN_ID = 123456789  # የአንተ ቴሌግራም ID (አማራጭ)
+# --- 1. CONFIGURATION ---
+BOT_TOKEN =8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8
+GEMINI_API_KEY = "AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU"
+ADMIN_ID = 7266453062 # Replace with your Telegram ID
 
-# የቦት እና የ AI ደንበኛ (Client) ማስጀመሪያ
+# Setup Logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
+# Gemini Setup
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# Database Setup
+def init_db():
+    conn = sqlite3.connect('users_data.db')
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users 
+                      (id INTEGER PRIMARY KEY, username TEXT, join_date TEXT, last_query TEXT)''')
+    cursor.execute('''CREATE TABLE IF NOT EXISTS history 
+                      (user_id INTEGER, query TEXT, response TEXT, timestamp TEXT)''')
+    conn.commit()
+    conn.close()
+
+init_db()
+
 bot = telebot.TeleBot(BOT_TOKEN)
-client = genai.Client(api_key=GEMINI_API_KEY)
 
-# --- 2. ቦቱ ሲጀመር (/start) የሚላክ መልዕክት ---
+# --- 2. ADVANCED SCIENTIFIC ENGINE ---
+class ScienceEngine:
+    @staticmethod
+    def solve_quadratic(a, b, c):
+        d = (b**2) - (4*a*c)
+        if d < 0: return "No real roots"
+        sol1 = (-b-math.sqrt(d))/(2*a)
+        sol2 = (-b+math.sqrt(d))/(2*a)
+        return f"x1: {sol1}, x2: {sol2}"
+
+    @staticmethod
+    def star_distance(parallax):
+        # Astronomy calculation for distance in parsecs
+        if parallax <= 0: return "Invalid parallax"
+        return 1 / parallax
+
+# --- 3. BOT HANDLERS ---
 @bot.message_handler(commands=['start'])
-def send_welcome(message):
-    # የሚኒ አፑ ሊንክ (ቀደም ብለን የሰራነው Colorful HTML ሊንክ)
-    markup = telebot.types.InlineKeyboardMarkup()
-    # ማሳሰቢያ፡ የ 'WEB_APP_URL' ቦታ ላይ የ HTML ፋይልህን የጫንክበትን ሊንክ ተካው
-    web_app = telebot.types.WebAppInfo("https://የአንተ_ሊንክ.github.io/") 
-    button = telebot.types.InlineKeyboardButton(text="AA Formula Finder ክፈት 🚀", web_app=web_app)
-    markup.add(button)
-    
-    welcome_text = (
-        "ሰላም! እንኳን ወደ AA All Formulas ቦት በሰላም መጡ።\n\n"
-        "• ማንኛውንም የትምህርት ጥያቄ እዚህ መፃፍ ይችላሉ።\n"
-        "• ወይም ከታች ያለውን ቁልፍ ተጭነው 'Mini App' መክፈት ይችላሉ።"
-    )
-    bot.reply_to(message, welcome_text, reply_markup=markup)
+def welcome(message):
+    user_id = message.from_user.id
+    username = message.from_user.username
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# --- 3. የ AI መልስ አሰጣጥ ሎጂክ ---
+    # Save to DB
+    conn = sqlite3.connect('users_data.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT OR IGNORE INTO users (id, username, join_date) VALUES (?, ?, ?)", (user_id, username, now))
+    conn.commit()
+    conn.close()
+
+    markup = telebot.types.InlineKeyboardMarkup(row_width=2)
+    web_app = telebot.types.WebAppInfo("https://your-github-link.github.io/allformulas.html") #
+    
+    btn1 = telebot.types.InlineKeyboardButton("AA Formula App 🚀", web_app=web_app)
+    btn2 = telebot.types.InlineKeyboardButton("Help ❓", callback_data="help")
+    markup.add(btn1, btn2)
+
+    bot.send_message(user_id, f"እንኳን ደህና መጡ {message.from_user.first_name}! ይህ 'AA' የተባለው ግዙፍ የቀመር እና የ AI ቦት ነው።", reply_markup=markup)
+
 @bot.message_handler(func=lambda message: True)
-def handle_ai_chat(message):
+def handle_ai_request(message):
+    user_id = message.from_user.id
+    text = message.text
+
+    # Show typing...
+    bot.send_chat_action(user_id, 'typing')
+
     try:
-        # ቦቱ መልስ እስኪያገኝ 'typing...' እንዲል
-        bot.send_chat_action(message.chat.id, 'typing')
-        
-        # ተጠቃሚው የላከውን ጥያቄ ወደ Gemini መላክ
-        # እዚህ ጋር gemini-1.5-flash ሞዴልን እንጠቀማለን (ፈጣን ስለሆነ)
-        response = client.models.generate_content(
-            model="gemini-1.5-flash", 
-            contents=message.text
-        )
-        
-        # AIው የሰጠውን መልስ ለተጠቃሚው መላክ
-        bot.reply_to(message, response.text)
-        
-        # ለአንተ (ለአድሚኑ) ሪፖርት እንዲያደርግ (አማራጭ)
-        if message.from_user.id != ADMIN_ID:
-            print(f"User {message.from_user.first_name} asked: {message.text}")
+        # Check if user wants a calculation
+        if text.startswith("/calc"):
+            # Simple logic for quick math
+            bot.reply_to(message, f"የስሌት ውጤት: {eval(text.replace('/calc ', ''))}")
+            return
+
+        # Gemini AI call
+        response = model.generate_content(text)
+        reply = response.text
+
+        # Save to History
+        conn = sqlite3.connect('users_data.db')
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO history (user_id, query, response, timestamp) VALUES (?, ?, ?, ?)", 
+                       (user_id, text, reply, datetime.datetime.now().strftime("%H:%M:%S")))
+        conn.commit()
+        conn.close()
+
+        bot.reply_to(message, reply)
 
     except Exception as e:
-        # ስህተት ቢፈጠር ለተጠቃሚው የሚላክ መልዕክት
-        error_msg = "ይቅርታ፣ አሁን ላይ መልስ ለመስጠት አልቻልኩም። እባክዎ ትንሽ ቆይተው ይሞክሩ።"
-        bot.reply_to(message, error_msg)
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
+        bot.reply_to(message, "ይቅርታ፣ የሆነ ስህተት ተፈጥሯል። ቆይተው ይሞክሩ።")
 
-# --- ቦቱን ማስጀመር ---
+# --- 4. ADMIN FEATURES ---
+@bot.message_handler(commands=['stats'])
+def get_stats(message):
+    if message.from_user.id == ADMIN_ID:
+        conn = sqlite3.connect('users_data.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM users")
+        count = cursor.fetchone()[0]
+        bot.send_message(ADMIN_ID, f"አጠቃላይ ተጠቃሚዎች: {count}")
+        conn.close()
+
 if __name__ == "__main__":
-    print("ቦቱ በተሳካ ሁኔታ ስራ ጀምሯል... ሰላም ለኢትዮጵያ! 🇪🇹")
+    print("AA Mega Bot is running...")
     bot.infinity_polling()
