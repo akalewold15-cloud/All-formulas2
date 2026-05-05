@@ -5,7 +5,7 @@ import math
 import datetime
 import logging
 
-# --- 1. CONFIGURATION ---
+# ---- 1. CONFIGURATION ---
 BOT_TOKEN =8513514659:AAFEWJ647fRyfNhasIvT-IyJDJR5gD5an-8
 GEMINI_API_KEY = "AIzaSyAbcfnu7CXmfXvjxshiYrxQJJXLIQ4ZxhU"
 ADMIN_ID = 7266453062 # Replace with your Telegram ID
